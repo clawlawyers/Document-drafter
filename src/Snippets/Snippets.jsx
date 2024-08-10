@@ -6,7 +6,7 @@ import TextBoxDialog from "../components/Dialogs/TextBoxDialog";
 
 const Snippets = () => {
   return (
-    <div className="flex flex-row h-screen gap-3 m-6">
+    <div className="flex flex-row h-screen gap-3 p-6">
       <div className=" flex flex-col w-3/4 gap-[0.70rem] ">
        
         <NavbarRight></NavbarRight>

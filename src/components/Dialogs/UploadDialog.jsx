@@ -6,6 +6,7 @@ import FolderImage from "../../assets/icons/dropbox.svg";
 import DropBox from "../../assets/icons/—Pngtree—dropbox icon_3584851 1.svg";
 import analyzingGif from "../../assets/icons/analyze.gif"; // Add your analyzing GIF here
 import { useNavigate } from "react-router-dom"; // Import useNavigate
+import UserModal from "../Modals/UserModal";
 
 const UploadDialog = () => {
   const [file, setFile] = useState(null);
@@ -56,7 +57,7 @@ const UploadDialog = () => {
         setTimeout(() => {
           setUploadStatus(""); // Hide analysis GIF
           setFile(null); // Reset file selection
-          navigate("/new-page"); // Navigate to a new URL
+          navigate("/Snippets"); // Navigate to a new URL
         }, 3000); // Hide analysis GIF after a delay
       }
     }, 500); // Adjust interval for realistic progress
@@ -95,13 +96,7 @@ const UploadDialog = () => {
     <div className="bg-customBlack h-full p-3 rounded-md">
       {/* Avatar */}
       <div className="flex flex-row justify-end w-full">
-        <Avatar
-          sx={{ bgcolor: "#018081" }}
-          alt="Remy Sharp"
-          src="/broken-image.jpg"
-        >
-          S
-        </Avatar>
+        <UserModal />
       </div>
 
       {/* Devices or Upload Status */}
