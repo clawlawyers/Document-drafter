@@ -15,13 +15,13 @@ const FavourDialog = () => {
       </div>
       <div className="flex flex-row gap-3  text-xs text-nowrap ">
         <button className="rounded border-[1px]  hover:bg-hover-gradient hover:text-black hover:border-0  px-4 py-2 ">
-          In whoose favour
+          <a href="/snippets/summary">Summary</a>
         </button>
         <button className="rounded border-[1px]  hover:bg-hover-gradient hover:text-black hover:border-0 px-4  py-2 ">
-          How to make neutral
+          <a href="/snippets/neutral">How to make neutral</a>
         </button>
         <button className="rounded border-[1px]  hover:bg-hover-gradient hover:text-black hover:border-0  px-4 py-2 ">
-          Bend In Opp. Direction
+          <a href="/snippets/direction">Bend in Opp. Direction</a>
         </button>
       </div>
       {!isLoading ? (
