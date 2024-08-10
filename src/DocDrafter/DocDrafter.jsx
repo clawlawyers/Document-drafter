@@ -2,6 +2,7 @@ import React from "react";
 import UserModal from "../components/Modals/UserModal";
 import { Input } from "@mui/material";
 import Footer from "../components/ui/Footer";
+import CustomInput from "../components/ui/CustomInput";
 const DocDrafter = () => {
   return (
     <div className="flex flex-col h-screen w-full p-5 ">
@@ -24,10 +25,7 @@ const DocDrafter = () => {
           </div>
 
           <div className="flex flex-col gap-2 justify-center w-full ">
-           <div className="flex flex-row justify-center gap-5 items-center w-full">
-           <input type="text" placeholder="Enter Your Prompt to Generate Document" className="p-2 w-full bg-slate-200 rounded-md text-neutral-800"/>
-            <button className="bg-btn-gradient p-2 px-9 rounded-md" >Send</button>
-           </div>
+           <CustomInput />
            <Footer />
           </div>
         </div>
