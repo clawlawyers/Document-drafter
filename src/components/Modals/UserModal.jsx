@@ -14,13 +14,13 @@ const UserModal = () => {
             sx={{ bgcolor: "#018081" }}
             alt="Remy Sharp"
             src="/broken-image.jpg"
-            className="z-10"
+            className="z-20"
           >
             S
           </Avatar>
         </div>
         {showDetails && (
-          <div className="absolute bg-white  text-black font-sans p-3 pl-4 pb-4 pt-[5rem] -right-2  rounded-[0.625rem] text-nowrap -top-2 gap-7  flex flex-col">
+          <div className="absolute z-10 bg-white  text-black font-sans p-3 pl-4 pb-4 pt-[5rem] -right-2  rounded-[0.625rem] text-nowrap -top-2 gap-7  flex flex-col">
             <div className="flex flex-col shadow-lg rounded-[0.625rem] border-2 border-black p-4 gap-8 justify-between">
               <div className="flex gap-2 flex-row ">
                 <svg
