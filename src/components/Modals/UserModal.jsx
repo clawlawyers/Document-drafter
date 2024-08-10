@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import { Avatar } from "@mui/material";
-
+import KeyboardArrowDownOutlinedIcon from "@mui/icons-material/KeyboardArrowDownOutlined";
 const UserModal = () => {
   const [showDetails, setshowDetails] = useState(false);
+  const [showHistroy, setshowHistroy] = useState(false);
   const handlepopup = () => {
     setshowDetails(!showDetails);
   };
@@ -45,8 +46,24 @@ const UserModal = () => {
               </div>
             </div>
             <div className="flex flex-col font-sans text-customBlue font-bold gap-2 text-lg">
-              <div>History Search</div>
-              <div className="border-t-2 border-customBlue">Log Out</div>
+              <div className="hover:cursor-pointer" onClick={()=>setshowHistroy(false)}>History Search</div>
+              {showHistroy ? (
+                <div className="border-t-2 pt-1 border-customBlue">Log Out</div>
+              ) : (
+                <div className="border-t-2 pt-5  border-customBlue flex flex-col gap-3">
+                  <div className=" rounded-[0.625rem] leading-3 border-[0.1rem] text-wrap border-customBlue font-sans text-[0.625rem] p-2 px-3 text-justify bg-[#D9D9D9] ">
+                    It is a long established fact that a reader will be
+                    distracted by the readable content of a page when looking at
+                    its layout. The point of using Lorem Ipsum is that it has a
+                    more-or-less normal distribution of letters, as opposed to
+                    using 'Content here, content here', making it look like
+                    readable English.{" "}
+                  </div>
+                  <div className="text-center text-4xl pt-4 hover:cursor-pointer " onClick={()=>setshowHistroy(true)} ><KeyboardArrowDownOutlinedIcon style={{
+                    fontSize: "4rem",
+                  }}/></div>
+                </div>
+              )}
             </div>
           </div>
         )}
