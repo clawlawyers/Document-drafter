@@ -9,6 +9,8 @@ import "./App.css";
 import Hero from "./Home/Hero/Hero";
 import Upload from "./Home/Upload";
 import Snippets from "./Snippets/Snippets";
+import DocDrafter from "./DocDrafter/DocDrafter";
+import DrafterArgs from "./DocDrafter/DrafterArgs";
 
 const router = createBrowserRouter([
   {
@@ -23,6 +25,14 @@ const router = createBrowserRouter([
     path: "/Snippets",
     element: <Snippets />,
   },
+  {
+    path:"/Drafter",
+    element:<DocDrafter />
+  },
+  {
+    path:"/DrafterArgs",
+    element:<DrafterArgs />
+  }
 ]);
 
 function App() {

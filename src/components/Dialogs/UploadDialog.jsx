@@ -4,41 +4,41 @@ import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 import GoogleDriveImage from "../../assets/icons/Google_Drive_logo 1.svg";
 import FolderImage from "../../assets/icons/dropbox.svg";
 import DropBox from "../../assets/icons/—Pngtree—dropbox icon_3584851 1.svg";
-import analyzingGif from "../../assets/icons/analyze.gif"; // Add your analyzing GIF here
-import { useNavigate } from "react-router-dom"; // Import useNavigate
+import analyzingGif from "../../assets/icons/analyze.gif";
+import { useNavigate } from "react-router-dom";
 import UserModal from "../Modals/UserModal";
+import ResponseDialog from "../Dialogs/EditableDialog"; // Import the new dialog
 
 const UploadDialog = () => {
   const [file, setFile] = useState(null);
   const [uploadProgress, setUploadProgress] = useState(0);
   const [uploadStatus, setUploadStatus] = useState(""); // "uploading", "complete", "analyzing"
-  const fileInputRef = useRef(null); // Create a ref for the file input
-  const navigate = useNavigate(); // Initialize useNavigate
+  const [responseText, setResponseText] = useState(""); // State for response text
+  const [openResponseDialog, setOpenResponseDialog] = useState(false); // State for dialog visibility
+  const fileInputRef = useRef(null);
+  const navigate = useNavigate();
 
   const handleGoogleDriveUpload = () => {
     console.log("Upload from Google Drive clicked");
-    // Add your Google Drive upload logic here
   };
 
   const handleComputerUpload = () => {
     if (fileInputRef.current) {
-      fileInputRef.current.click(); // Trigger the file input click
+      fileInputRef.current.click();
     }
   };
 
   const handleDropboxUpload = () => {
     console.log("Upload from Dropbox clicked");
-    // Add your Dropbox upload logic here
   };
 
   const handleFileChange = (event) => {
-    const file = event.target.files[0]; // Get the selected file
+    const file = event.target.files[0];
     if (file) {
-      setFile(file); // Save the file to state
+      setFile(file);
       setUploadStatus("uploading");
       console.log("File selected:", file.name);
 
-      // Simulate upload progress
       simulateUpload();
     }
   };
@@ -46,21 +46,27 @@ const UploadDialog = () => {
   const simulateUpload = () => {
     let progress = 0;
     const interval = setInterval(() => {
-      progress += 10; // Increment progress
+      progress += 10;
       setUploadProgress(progress);
 
       if (progress >= 100) {
         clearInterval(interval);
         setUploadStatus("complete");
-        setTimeout(() => setUploadStatus("analyzing"), 1000); // Show analyzing GIF after a delay
-        // Simulate analysis duration
+        setTimeout(() => setUploadStatus("analyzing"), 1000);
         setTimeout(() => {
-          setUploadStatus(""); // Hide analysis GIF
-          setFile(null); // Reset file selection
-          navigate("/Snippets"); // Navigate to a new URL
-        }, 3000); // Hide analysis GIF after a delay
+          setUploadStatus("");
+          setFile(null);
+          // Set some example response text
+          setResponseText("This is the generated response text.");
+          setOpenResponseDialog(true); // Open the response dialog
+        }, 3000);
       }
-    }, 500); // Adjust interval for realistic progress
+    }, 500);
+  };
+
+  const handleSaveResponse = (text) => {
+    // Handle the save action, e.g., save to backend or local storage
+    console.log("Saved response text:", text);
   };
 
   const uploadOptions = [
@@ -70,7 +76,7 @@ const UploadDialog = () => {
       text: "Upload from Drive",
       hasText: true,
       textClass: "text-neutral-800 font-semibold mt-2",
-      onClick: handleGoogleDriveUpload, // Attach Google Drive upload handler
+      onClick: handleGoogleDriveUpload,
     },
     {
       src: FolderImage,
@@ -79,7 +85,7 @@ const UploadDialog = () => {
       textClass: "text-neutral-800 font-semibold mt-2",
       hasText: true,
       containerClass: "-mt-5",
-      onClick: handleComputerUpload, // Attach Computer upload handler
+      onClick: handleComputerUpload,
     },
     {
       src: DropBox,
@@ -88,27 +94,23 @@ const UploadDialog = () => {
       textClass: "text-neutral-800 font-semibold ",
       containerClass: "-mt-2",
       hasText: true,
-      onClick: handleDropboxUpload, // Attach Dropbox upload handler
+      onClick: handleDropboxUpload,
     },
   ];
 
   return (
     <div className="bg-customBlack h-full p-3 rounded-md">
-      {/* Avatar */}
       <div className="flex flex-row justify-end w-full">
         <UserModal />
       </div>
 
-      {/* Devices or Upload Status */}
       <div className="flex flex-row justify-center w-full px-96 items-center h-[70vh]">
-        <div className="flex flex-col w-full  p-5 bg-upload-card rounded-md space-y-7">
-          {/* Close Button */}
+        <div className="flex flex-col w-full p-5 bg-upload-card rounded-md space-y-7">
           <div>
             <div className="w-full flex justify-end">
               <HighlightOffIcon className="text-teal-500 text-2xl scale-150 cursor-pointer" />
             </div>
 
-            {/* Title */}
             <div className="flex justify-center">
               <p className="text-teal-700 font-bold text-2xl">
                 {!file ? "Upload Your Document" : ""}
@@ -116,7 +118,6 @@ const UploadDialog = () => {
             </div>
           </div>
 
-          {/* Conditional Rendering */}
           {file ? (
             <div className="flex flex-col w-full items-center space-y-4 mt-5">
               {uploadStatus === "uploading" && (
@@ -165,7 +166,7 @@ const UploadDialog = () => {
                     className="hover:scale-110 duration-300 cursor-pointer"
                     src={option.src}
                     alt={option.alt}
-                    onClick={option.onClick} // Attach onClick handler
+                    onClick={option.onClick}
                   />
                   {option.hasText && (
                     <p className={option.textClass}>{option.text}</p>
@@ -173,10 +174,10 @@ const UploadDialog = () => {
                   {option.alt === "Upload from Computer" && (
                     <input
                       type="file"
-                      accept=".pdf, .doc, .docx, .txt" // Adjust file types as needed
+                      accept=".pdf, .doc, .docx, .txt"
                       onChange={handleFileChange}
-                      ref={fileInputRef} // Attach ref to the file input
-                      className="hidden" // Hide file input
+                      ref={fileInputRef}
+                      className="hidden"
                     />
                   )}
                 </div>
@@ -185,6 +186,14 @@ const UploadDialog = () => {
           )}
         </div>
       </div>
+
+      {/* Response Dialog */}
+      <ResponseDialog
+        open={openResponseDialog}
+        onClose={() => setOpenResponseDialog(false)}
+        responseText={responseText}
+        onSave={handleSaveResponse}
+      />
     </div>
   );
 };

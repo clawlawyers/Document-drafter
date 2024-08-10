@@ -7,6 +7,7 @@ import UserModal from "../../components/Modals/UserModal";
 
 import { useNavigate } from "react-router-dom";
 import LoginDialog from "../../components/Dialogs/LoginDialog";
+import Footer from "../../components/ui/Footer";
 const Hero = () => {
   let navigate = useNavigate();
   const [loginPopup, setLoginPopup] = useState(false);
@@ -54,7 +55,7 @@ const Hero = () => {
                 <img src={Cloud} alt="" />
                 <div>Upload Your Document</div>
               </div>
-              <div className="flex items-center flex-col gap-3 p-5 bg-logo-gradient rounded-[0.9375rem] border-white border-[3px] px-14">
+              <div className="flex hover:scale-110 duration-200 items-center flex-col gap-3 p-5 bg-logo-gradient rounded-[0.9375rem] border-white border-[3px] px-14">
                 <img src={Prompt} alt="" />
                 <div>Create Document from Prompt</div>
               </div>
@@ -64,10 +65,7 @@ const Hero = () => {
               </div>
             </div>
           </div>
-          <div className="border-white border-t-[0.1rem] mt-3 p-3 text-center font-sans text-customGrey ">
-            Adira AI is a Proprietory Legal Based Generative AI developed by
-            CLAW Legal Tech
-          </div>
+         <Footer />
         </div>
 
         {loginPopup && (

@@ -13,6 +13,9 @@ export default {
           "linear-gradient(90deg, #018081 0%, rgba(0, 27, 27, 0.00) 100%);",
         "upload-card" : "linear-gradient(102.52deg, #FFFFFF 0.1%, #B4B4B4 99.9%)",
         "hover-gradient": "linear-gradient(90deg, #018081 0%, #00A9AB 100%)",
+        "edit-gradient" : " linear-gradient(151.58deg, rgba(0, 67, 67, 0.2) 0.65%, rgba(0, 168, 169, 0.2) 99.35%)",
+        "btn-gradient" : "linear-gradient(93.61deg, #004343 0.2%, #00A9AB 99.8%)"
+        
       },
       colors: {
         customBlack: "rgba(34, 34, 34, 0.8)",
