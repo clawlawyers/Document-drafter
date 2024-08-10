@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 
 const TextBoxDialog = () => {
+  const [showDocument, setshowDocument] = useState(false);
   return (
     <div className="flex flex-col gap-3 p-4">
       <div className="flex gap-2 flex-row ">
@@ -30,10 +31,25 @@ const TextBoxDialog = () => {
         <button className="rounded border-[1px]  w-1/2 hover:bg-hover-gradient hover:text-black hover:border-0   py-1 ">
           Find in Drafter
         </button>
-        <button className="rounded border-[1px] w-1/2 hover:bg-hover-gradient hover:text-black hover:border-0   py-1 ">
+        <button
+          onClick={() => setshowDocument(true)}
+          className="rounded border-[1px] w-1/2 hover:bg-hover-gradient hover:text-black hover:border-0   py-1 "
+        >
           Find in Document
         </button>
       </div>
+      {showDocument && (
+        <div className="flex flex-col gap-3 rounded-[0.625rem] border-[0.1rem] border-white font-sans text-[0.625rem] p-2 px-3 text-justify bg-customBlue ">
+          <div className="flex flex-col gap-1">
+            <div className="font-bold text-[1rem]">Document heading 1</div>
+            <div>
+              It is a long established fact that a reader will be distracted by
+              the readable content of a page when looking at its layout. The
+              point of using Lorem Ipsum is that it has a more-or-less no
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
