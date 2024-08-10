@@ -63,17 +63,16 @@ const DrafterArgs = () => {
             </div>
           </div>
           <div className="flex flex-row w-full justify-between items-center">
-          <button className="bg-btn-gradient p-2 px-9 rounded-md">
-            Re enter Prompt
-          </button>
-          <button className="bg-btn-gradient p-2 px-9 rounded-md">
-            Submit
-          </button>
+            <button className="bg-btn-gradient p-[1em] px-[2em] rounded-md text-sm">
+              Re enter Prompt
+            </button>
+            <button className="bg-btn-gradient p-2 px-9 rounded-md">
+              Submit
+            </button>
+          </div>
         </div>
-        </div>
-        
       </div>
-      {loading && <CustomInput />}
+      {loading && <CustomInput btn={true} />}
 
       <Footer />
     </div>

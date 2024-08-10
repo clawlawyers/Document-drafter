@@ -8,6 +8,7 @@ import UserModal from "../../components/Modals/UserModal";
 import { useNavigate } from "react-router-dom";
 import LoginDialog from "../../components/Dialogs/LoginDialog";
 import Footer from "../../components/ui/Footer";
+import HomeNav from "../../components/Navbar/HomeNav";
 const Hero = () => {
   let navigate = useNavigate();
   const [loginPopup, setLoginPopup] = useState(false);
@@ -21,21 +22,7 @@ const Hero = () => {
   return (
     <div className="flex flex-col h-screen">
       <div className="flex flex-col h-full   m-4  p-2 gap-3 rounded-[0.625rem]   bg-customBlack">
-        <div className="flex flex-row justify-between">
-          <button className="px-10 py-2 border-white rounded-[0.3125rem] border-2">
-            CLAW Home
-          </button>
-          {isLoggedIn ? (
-            <button
-              onClick={() => setLoginPopup(true)}
-              className="px-14 py-2 font-sans bg-customBlue border-black rounded-[0.3125rem] border-2 "
-            >
-              Log In
-            </button>
-          ) : (
-            <UserModal/>
-          )}
-        </div>
+        <HomeNav isLoggedIn={isLoggedIn} setLoginPopup={setLoginPopup} />
         <div className="flex flex-col justify-between w-full h-full">
           <div className="flex flex-col gap-[6rem] items-center      ">
             <div className="flex flex-col gap-4 items-center ">
@@ -55,11 +42,11 @@ const Hero = () => {
                 <img src={Cloud} alt="" />
                 <div>Upload Your Document</div>
               </div>
-              <div className="flex hover:scale-110 duration-200 items-center flex-col gap-3 p-5 bg-logo-gradient rounded-[0.9375rem] border-white border-[3px] px-14">
+              <div onClick={()=> navigate("/Drafter")} className="flex hover:scale-110 duration-200 items-center flex-col gap-3 p-5 bg-logo-gradient rounded-[0.9375rem] border-white border-[3px] px-14">
                 <img src={Prompt} alt="" />
                 <div>Create Document from Prompt</div>
               </div>
-              <div className="flex items-center flex-col gap-3 p-5 bg-logo-gradient rounded-[0.9375rem] border-white border-[3px] px-14">
+              <div onClick={()=> navigate("/DocType")} className="flex hover:scale-110 duration-200 items-center flex-col gap-3 p-5 bg-logo-gradient rounded-[0.9375rem] border-white border-[3px] px-14">
                 <img src={Type} alt="" />
                 <div>Select Type of Document</div>
               </div>
