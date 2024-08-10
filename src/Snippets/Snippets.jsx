@@ -2,6 +2,7 @@ import React from "react";
 import { motion } from "framer-motion";
 import NavbarRight from "../components/Navbar/NavbarRight";
 import NavbarLeft from "../components/Navbar/NavbarLeft";
+import TextBoxDialog from "../components/Dialogs/TextBoxDialog";
 
 const Snippets = () => {
   return (
@@ -75,6 +76,7 @@ const Snippets = () => {
         </div> */}
        < NavbarLeft></NavbarLeft>
         <div className="flex relative flex-col  h-full  mt-4 p-2 gap-3 rounded-[0.625rem]   bg-customBlack">
+          <TextBoxDialog></TextBoxDialog>
           <div className="absolute w-[95%] bottom-3">
             <input
               className="bg-white text-black rounded-md border-[0.05rem] border-black p-2 px-4 w-full"
