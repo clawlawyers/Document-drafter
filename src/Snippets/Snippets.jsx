@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 
 const Snippets = () => {
   return (
-    <div className="flex flex-row h-screen gap-3 m-6">
+    <div className="flex flex-row h-screen gap-3 p-6">
       <div className=" flex flex-col w-3/4 gap-[0.70rem] ">
         <div className="flex flex-row    justify-between">
           <div className="flex flex-row gap-3  ">
@@ -26,7 +26,7 @@ const Snippets = () => {
             </svg>
           </div>
         </div>
-        <div className="flex flex-col  h-full  mt-4 p-2 gap-3 rounded-[0.625rem]   bg-customBlack">
+        <div className="flex flex-col  h-[90vh]  mt-4 p-2 gap-3 rounded-[0.625rem]   bg-customBlack">
           <div className="flex flex-col gap-5 mx-6 my-5">
             <div className="flex flex-row gap-3  ">
               <div className="flex flex-col rounded-[0.635rem] border-2 px-4 py-2  border-white bg-popup-gradient w-3/4 gap-1">
@@ -90,7 +90,7 @@ const Snippets = () => {
             S
           </div>
         </div>
-        <div className="flex relative flex-col  h-full  mt-4 p-2 gap-3 rounded-[0.625rem]   bg-customBlack">
+        <div className="flex relative flex-col   mt-4 p-2 gap-3 rounded-[0.625rem] h-[90vh]   bg-customBlack">
           <div className="absolute w-[95%] bottom-3">
             <input
               className="bg-white text-black rounded-md border-[0.05rem] border-black p-2 px-4 w-full"
