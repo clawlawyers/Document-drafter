@@ -1,18 +1,19 @@
 // src/redux/slices/authSlice.js
 
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   formData: {
-    firstName: '',
-    lastName: '',
-    number: '',
+    firstName: "",
+    lastName: "",
+    number: "",
   },
   isOtpVerified: false,
+  fileBlob: false,
 };
 
 const authSlice = createSlice({
-  name: 'auth',
+  name: "auth",
   initialState,
   reducers: {
     setFormData: (state, action) => {
@@ -24,9 +25,14 @@ const authSlice = createSlice({
     resetAuth: (state) => {
       return initialState;
     },
+    setFileBlob: (state, action) => {
+      
+      state.fileBlob = action.payload;
+    },
   },
 });
 
-export const { setFormData, setOtpVerified, resetAuth } = authSlice.actions;
+export const { setFormData, setOtpVerified, resetAuth, setFileBlob } =
+  authSlice.actions;
 
 export default authSlice.reducer;

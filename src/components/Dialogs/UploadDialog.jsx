@@ -8,7 +8,8 @@ import analyzingGif from "../../assets/icons/analyze.gif";
 import { useNavigate } from "react-router-dom";
 import UserModal from "../Modals/UserModal";
 import ResponseDialog from "../Dialogs/EditableDialog"; // Import the new dialog
-
+import { useDispatch, useSelector } from "react-redux";
+import { setFileBlob } from "../../features/authSlice";
 const UploadDialog = () => {
   const [file, setFile] = useState(null);
   const [uploadProgress, setUploadProgress] = useState(0);
@@ -17,6 +18,8 @@ const UploadDialog = () => {
   const [openResponseDialog, setOpenResponseDialog] = useState(false); // State for dialog visibility
   const fileInputRef = useRef(null);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { fileBlob } = useSelector((state) => state.auth);
 
   const handleGoogleDriveUpload = () => {
     console.log("Upload from Google Drive clicked");
@@ -32,7 +35,7 @@ const UploadDialog = () => {
     console.log("Upload from Dropbox clicked");
   };
 
-  const handleFileChange = (event) => {
+  const handleFileChange = async (event) => {
     const file = event.target.files[0];
     if (file) {
       setFile(file);
@@ -52,9 +55,12 @@ const UploadDialog = () => {
       if (progress >= 100) {
         clearInterval(interval);
         setUploadStatus("complete");
+        dispatch(setFileBlob(true));
+
         setTimeout(() => setUploadStatus("analyzing"), 1000);
         setTimeout(() => {
           setUploadStatus("");
+
           setFile(null);
           // Set some example response text
           setResponseText("This is the generated response text.");
