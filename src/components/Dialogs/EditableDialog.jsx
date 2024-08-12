@@ -9,8 +9,12 @@ import {
 } from "@mui/material";
 import logo from "../../assets/icons/logo.svg";
 import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { setDocumentText } from "../../features/DocumentSlice";
 
-const ResponseDialog = ({ open, onClose, responseText, onSave }) => {
+const ResponseDialog = ({ open, onClose,  onSave }) => {
+  const dispatch = useDispatch();
+  const responseText = useSelector((data) => data.document.documentText)
   const navigate = useNavigate();
   const [text, setText] = useState(responseText);
   const [isEditing, setIsEditing] = useState(false);
@@ -18,6 +22,7 @@ const ResponseDialog = ({ open, onClose, responseText, onSave }) => {
   // Sync the state with the prop whenever it changes
   useEffect(() => {
     setText(responseText);
+    dispatch(setDocumentText(responseText));
   }, [responseText]);
 
   const handleEdit = () => {

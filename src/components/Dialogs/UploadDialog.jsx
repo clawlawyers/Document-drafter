@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useCallback } from "react";
 import { Avatar, LinearProgress, Box, Typography } from "@mui/material";
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 import GoogleDriveImage from "../../assets/icons/Google_Drive_logo 1.svg";
@@ -7,14 +7,13 @@ import DropBox from "../../assets/icons/—Pngtree—dropbox icon_3584851 1.svg"
 import analyzingGif from "../../assets/icons/analyze.gif";
 import { useNavigate } from "react-router-dom";
 import UserModal from "../Modals/UserModal";
-import ResponseDialog from "../Dialogs/EditableDialog"; // Import the new dialog
+import ResponseDialog from "../Dialogs/EditableDialog";
 import { useDispatch, useSelector } from "react-redux";
 import { setFileBlob } from "../../features/authSlice";
-import { draftTour } from "../../utils/tour";
-import { driver } from "driver.js";
-import { setDocId, setDocumentText } from '../../features/DocumentSlice';
-
+import { setDocId, setDocumentText } from "../../features/DocumentSlice";
 import axios from "axios";
+import { setBreakoutData, setLoading, setError } from '../../features/breakoutSlice';
+
 const UploadDialog = () => {
   const [file, setFile] = useState(null);
   const [uploadProgress, setUploadProgress] = useState(0);
@@ -25,56 +24,90 @@ const UploadDialog = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { fileBlob } = useSelector((state) => state.auth);
-  // const driverObj = driver({
-  //   showProgress: true,
-  //   steps: draftTour,
-  // });
-  // useEffect(() => {
-  //   driverObj.drive();
-  // }, []);
+  const doc_id = useSelector((state) => state.document.docId);
 
-  const handleGoogleDriveUpload = () => {
+  const breakoutCalledRef = useRef(false); // Use ref to avoid re-render on change
+
+  // Memoize breakout function to avoid unnecessary re-creation
+  const breakout = useCallback(async () => {
+    if (breakoutCalledRef.current) return;
+    breakoutCalledRef.current = true;
+  
+    dispatch(setLoading(true));
+  
+    try {
+      const res = await axios.post(
+        "http://localhost:8000/api/v1/ai-drafter/breakout",
+        { doc_id: doc_id }
+      );
+      console.log(res.data);
+      dispatch(setBreakoutData(res.data));
+      setUploadStatus(""); // Stop the analyzing GIF after response
+      setFile(null);
+      setOpenResponseDialog(true); // Open the response dialog
+    } catch (error) {
+      console.error("Breakout failed", error);
+      dispatch(setError(error.message));
+    } finally {
+      dispatch(setLoading(false));
+      breakoutCalledRef.current = false; // Reset the flag if needed
+    }
+  }, [doc_id, dispatch]);
+
+  useEffect(() => {
+    if (uploadStatus === "analyzing" && doc_id) {
+      breakout();
+    }
+  }, [uploadStatus, doc_id, breakout]);
+
+  const handleDropboxUpload = useCallback(() => {
+    console.log("Upload from Dropbox clicked");
+  }, []);
+
+  const handleFileChange = useCallback(
+    async (event) => {
+      const file = event.target.files[0];
+      if (file) {
+        setFile(file);
+        setUploadStatus("uploading");
+
+        try {
+          const formData = new FormData();
+          formData.append("file", file);
+          const res = await axios.post(
+            "http://localhost:8000/api/v1/ai-drafter/upload_document",
+            formData
+          );
+          const data = res.data.data.fetchedData;
+          console.log(data);
+          dispatch(setDocId(data.doc_id));
+          dispatch(setDocumentText(data.document));
+          setResponseText(data.document);
+
+      
+            
+        
+        } catch (error) {
+          console.error("Upload failed", error);
+        } finally {
+          simulateUpload();
+        }
+      }
+    },
+    [dispatch]
+  );
+
+  const handleGoogleDriveUpload = useCallback(() => {
     console.log("Upload from Google Drive clicked");
-  };
+  }, []);
 
-  const handleComputerUpload = () => {
+  const handleComputerUpload = useCallback(() => {
     if (fileInputRef.current) {
       fileInputRef.current.click();
     }
-  };
+  }, []);
 
-  const handleDropboxUpload = () => {
-    console.log("Upload from Dropbox clicked");
-  };
-
-  const handleFileChange = async (event) => {
-    const file = event.target.files[0];
-    if (file) {
-      setFile(file);
-      setUploadStatus("uploading");
-
-      try {
-        const formData = new FormData();
-        formData.append("file", file);
-        const res = await axios.post(
-          "http://localhost:8000/api/v1/ai-drafter/upload_document",
-          formData
-        );
-        const data = res.data.data.fetchedData;
-        console.log(data);
-        dispatch(setDocId(data.doc_id));
-        dispatch(setDocumentText(data.document));
-        setResponseText(data.document);
-        
-      } catch (error) {
-        console.error("Upload failed", error);
-      } finally {
-        simulateUpload();
-      }
-    }
-  };
-
-  const simulateUpload = () => {
+  const simulateUpload = useCallback(() => {
     let progress = 0;
     const interval = setInterval(() => {
       progress += 10;
@@ -84,26 +117,20 @@ const UploadDialog = () => {
         clearInterval(interval);
         setUploadStatus("complete");
         dispatch(setFileBlob(true));
-
-        setTimeout(() => setUploadStatus("analyzing"), 1000);
-        setTimeout(() => {
-          setUploadStatus("");
-
-          setFile(null);
-          // Set some example response text
-         
-          setOpenResponseDialog(true); // Open the response dialog
-        }, 3000);
+        setUploadStatus("analyzing");
+        
       }
     }, 500);
-  };
+  }, [dispatch]);
 
-  const handleSaveResponse = (text) => {
-    // Handle the save action, e.g., save to backend or local storage
-    console.log("Saved response text:", text);
-    dispatch(setDocumentText(text));
-
-  };
+  const handleSaveResponse = useCallback(
+    async (text) => {
+      // Handle the save action, e.g., save to backend or local storage
+      console.log("Saved response text:", text);
+      dispatch(setDocumentText(text));
+    },
+    [dispatch]
+  );
 
   const uploadOptions = [
     {
@@ -226,9 +253,9 @@ const UploadDialog = () => {
       {/* Response Dialog */}
       <ResponseDialog
         open={openResponseDialog}
-        onClose={() => setOpenResponseDialog(false)}
-        responseText={responseText}
-        onSave={handleSaveResponse}
+        onClose={setOpenResponseDialog}
+         // Pass the initial value
+        onSave={handleSaveResponse} // Handle save action
       />
     </div>
   );
