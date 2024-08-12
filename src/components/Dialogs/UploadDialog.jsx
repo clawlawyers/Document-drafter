@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { Avatar, LinearProgress, Box, Typography } from "@mui/material";
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 import GoogleDriveImage from "../../assets/icons/Google_Drive_logo 1.svg";
@@ -10,6 +10,11 @@ import UserModal from "../Modals/UserModal";
 import ResponseDialog from "../Dialogs/EditableDialog"; // Import the new dialog
 import { useDispatch, useSelector } from "react-redux";
 import { setFileBlob } from "../../features/authSlice";
+import { draftTour } from "../../utils/tour";
+import { driver } from "driver.js";
+import { setDocId, setDocumentText } from '../../features/DocumentSlice';
+
+import axios from "axios";
 const UploadDialog = () => {
   const [file, setFile] = useState(null);
   const [uploadProgress, setUploadProgress] = useState(0);
@@ -20,6 +25,13 @@ const UploadDialog = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { fileBlob } = useSelector((state) => state.auth);
+  // const driverObj = driver({
+  //   showProgress: true,
+  //   steps: draftTour,
+  // });
+  // useEffect(() => {
+  //   driverObj.drive();
+  // }, []);
 
   const handleGoogleDriveUpload = () => {
     console.log("Upload from Google Drive clicked");
@@ -40,9 +52,25 @@ const UploadDialog = () => {
     if (file) {
       setFile(file);
       setUploadStatus("uploading");
-      console.log("File selected:", file.name);
 
-      simulateUpload();
+      try {
+        const formData = new FormData();
+        formData.append("file", file);
+        const res = await axios.post(
+          "http://localhost:8000/api/v1/ai-drafter/upload_document",
+          formData
+        );
+        const data = res.data.data.fetchedData;
+        console.log(data);
+        dispatch(setDocId(data.doc_id));
+        dispatch(setDocumentText(data.document));
+        setResponseText(data.document);
+        
+      } catch (error) {
+        console.error("Upload failed", error);
+      } finally {
+        simulateUpload();
+      }
     }
   };
 
@@ -63,7 +91,7 @@ const UploadDialog = () => {
 
           setFile(null);
           // Set some example response text
-          setResponseText("This is the generated response text.");
+         
           setOpenResponseDialog(true); // Open the response dialog
         }, 3000);
       }
@@ -73,6 +101,8 @@ const UploadDialog = () => {
   const handleSaveResponse = (text) => {
     // Handle the save action, e.g., save to backend or local storage
     console.log("Saved response text:", text);
+    dispatch(setDocumentText(text));
+
   };
 
   const uploadOptions = [

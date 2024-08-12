@@ -9,8 +9,18 @@ import SummaryDialog from "../components/Dialogs/SummaryDialog";
 import NeutralDialog from "../components/Dialogs/NeutralDialog";
 import FavourDialog from "../components/Dialogs/FavourDialog";
 import DirectionDialog from "../components/Dialogs/DirectionDialog";
-
+import { driver } from "driver.js";
+import "driver.js/dist/driver.css";
+import { draftTour } from "../utils/tour";
+import { useEffect } from "react";
 const Snippets = () => {
+//   const driverObj = driver({
+//     showProgress: true,
+//     steps: draftTour,
+//   });
+// useEffect(()=> {
+//   driverObj.drive();
+// },[])
   return (
     <div className="flex flex-row h-screen gap-3 p-6">
       <div className=" flex flex-col w-3/4 gap-[0.70rem] ">
@@ -89,7 +99,7 @@ const Snippets = () => {
           </div>
         </div> */}
         <NavbarLeft></NavbarLeft>
-        <div className="flex relative flex-col  h-full  mt-4 p-2 gap-3 rounded-[0.625rem]   bg-customBlack">
+        <div className="chat section flex relative flex-col  h-full  mt-4 p-2 gap-3 rounded-[0.625rem]   bg-customBlack">
           <TextBoxDialog></TextBoxDialog>
           <div className="absolute w-[95%] bottom-3">
             <input
