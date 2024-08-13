@@ -12,34 +12,39 @@ import DirectionDialog from "../components/Dialogs/DirectionDialog";
 import { driver } from "driver.js";
 import "driver.js/dist/driver.css";
 import { draftTour } from "../utils/tour";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 const Snippets = () => {
-  const  doc_id  = useSelector((state) => state.document.docId);
-  console.log("doc id is",doc_id)
+  const doc_id = useSelector((state) => state.document.docId);
+  console.log("doc id is", doc_id);
+  const [showGIF, setShowGif] = useState(false);
 
   return (
     <div className="flex flex-row h-screen gap-3 p-6">
       <div className=" flex flex-col w-3/4 gap-[0.70rem] ">
         <NavbarRight></NavbarRight>
-        <div className="flex flex-col  h-full  mt-4 p-2 gap-3 rounded-[0.625rem]   bg-customBlack">
-          
+        <div className="flex flex-col scrollbar-hide      h-full  mt-4 p-2 gap-3 overflow-y-auto rounded-[0.625rem]   bg-customBlack">
           <Routes>
             <Route path="/" element={<Outlet />}>
               <Route path="" element={<SnippetDialog />} />
-              <Route path="/Summary" element={<SummaryDialog />} />
-              <Route path="/Favour" element={<FavourDialog />} />
-              <Route path="/Neutral" element={<NeutralDialog />} />
-              <Route path="/Direction" element={<DirectionDialog />} />
+              <Route path="/Summary/:id" element={<SummaryDialog />} />
+              <Route path="/Favour/:id" element={<FavourDialog />} />
+              <Route path="/Neutral/:id" element={<NeutralDialog />} />
+              <Route path="/Direction/:id" element={<DirectionDialog />} />
             </Route>
           </Routes>
         </div>
       </div>
       <div className="flex flex-col w-1/4 ">
-       
         <NavbarLeft></NavbarLeft>
         <div className="chat section flex relative flex-col  h-full  mt-4 p-2 gap-3 rounded-[0.625rem]   bg-customBlack">
-          <TextBoxDialog></TextBoxDialog>
+          {showGIF ? (
+            <TextBoxDialog></TextBoxDialog>
+          ) : (
+            <div className="flex flex-col h-screen justify-center items-center">
+              dads
+            </div>
+          )}
           <div className="absolute w-[95%] bottom-3">
             <input
               className="bg-white text-black rounded-md border-[0.05rem] border-black p-2 px-4 w-full"

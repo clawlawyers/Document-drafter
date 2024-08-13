@@ -1,10 +1,12 @@
 import React, { useState } from "react";
 
 const TextBoxDialog = () => {
+  const [isLoading, setisLoading] = useState(false);
+ 
   const [showDocument, setshowDocument] = useState(false);
-  const [responseData, setresponseData] = useState(
-    "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English."
-  );
+  const [responseData, setresponseData] = useState([
+    "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English.",
+  ]);
   return (
     <div className="flex flex-col gap-3 p-4">
       <div className="flex gap-2 flex-row ">
@@ -24,7 +26,7 @@ const TextBoxDialog = () => {
       </div>
       <div className=" font-sans text-sm">What is in section 4.1</div>
       <div className=" rounded-[0.625rem] border-[0.1rem] border-customBlue font-sans text-[0.625rem] p-2 px-3 text-justify bg-[#868686] ">
-       {responseData}
+        {responseData}
       </div>
       <div className="flex flex-row text-[0.6875rem] font-sans  gap-2">
         <button className="rounded border-[1px]  w-1/2 hover:bg-hover-gradient hover:text-black hover:border-0   py-1 ">

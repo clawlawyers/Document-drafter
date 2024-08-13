@@ -1,30 +1,24 @@
 import React from "react";
 import { useState } from "react";
-import Cloud from "../../assets/icons/Cloud.svg";
-import Type from "../../assets/icons/Type.svg";
-import Prompt from "../../assets/icons/Prompt.svg";
+
 import UserModal from "../../components/Modals/UserModal";
 
-import { useNavigate } from "react-router-dom";
 import LoginDialog from "../../components/Dialogs/LoginDialog";
 import Footer from "../../components/ui/Footer";
 import HomeNav from "../../components/Navbar/HomeNav";
+import HeroPage from "../../components/ui/HeroPage";
 const Hero = () => {
-  let navigate = useNavigate();
   const [loginPopup, setLoginPopup] = useState(false);
   const [isLoggedIn, setisLoggedIn] = useState(false);
 
-  
+  //todo: get login credential like user._id to check if user is logged in or not and then setisLoggedIn to true
 
-  //todo: get login credential like user._id to check if user is logged in or not and then setisLoggedIn to true 
-
-  
   return (
     <div className="flex flex-col h-screen">
       <div className="flex flex-col h-full   m-4  p-2 gap-3 rounded-[0.625rem]   bg-customBlack">
         <HomeNav isLoggedIn={isLoggedIn} setLoginPopup={setLoginPopup} />
         <div className="flex flex-col justify-between w-full h-full">
-          <div className="flex flex-col gap-[6rem] items-center      ">
+          {/* <div className="flex flex-col gap-[6rem] items-center      ">
             <div className="flex flex-col gap-4 items-center ">
               <div className="font-sans font-medium text-xl ">Welcome to</div>
               <div className="font-sans font-semibold text-6xl px-6   py-2 justify-items-center  bg-logo-gradient">
@@ -51,13 +45,13 @@ const Hero = () => {
                 <div>Select Type of Document</div>
               </div>
             </div>
-          </div>
-         <Footer />
+          </div> */}
+          <HeroPage></HeroPage>
+
+          <Footer />
         </div>
 
-        {loginPopup && (
-          <LoginDialog setLoginPopup={setLoginPopup} />
-        )}
+        {loginPopup && <LoginDialog setLoginPopup={setLoginPopup} />}
       </div>
     </div>
   );

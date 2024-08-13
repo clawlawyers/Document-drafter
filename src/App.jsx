@@ -35,42 +35,38 @@ const router = createBrowserRouter([
         element: <Snippets />,
       },
       {
-        path: "Summary",
+        path: "Summary/:id",
         element: <SummaryDialog />,
       },
       {
-        path: "Neutral",
+        path: "Neutral/:id",
         element: <NeutralDialog />,
       },
       {
-        path: "Favour",
+        path: "Favour/:id",
         element: <FavourDialog />,
       },
       {
-        path: "Direction",
+        path: "Direction/:id",
         element: <DirectionDialog />,
       },
     ],
   },
   {
-    path:"/Drafter",
-    element:<DocDrafter />,
-    children:[
+    path: "/Drafter",
+    element: <DocDrafter />,
+    children: [
       {
-        path:"DrafterArgs",
-        element:<DrafterArgs />
+        path: "DrafterArgs",
+        element: <DrafterArgs />,
       },
-    ]
+    ],
   },
   {
-    path:"/DocType",
-    element:<DocType />,
-    children:[
-      
-    ]
-  }
-  
-
+    path: "/DocType",
+    element: <DocType />,
+    children: [],
+  },
 ]);
 
 function App() {
