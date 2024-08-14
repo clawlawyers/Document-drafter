@@ -12,7 +12,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { setFileBlob } from "../../features/authSlice";
 import { setDocId, setDocumentText } from "../../features/DocumentSlice";
 import axios from "axios";
-import { setBreakoutData, setLoading, setError } from '../../features/breakoutSlice';
+import {
+  setBreakoutData,
+  setLoading,
+  setError,
+} from "../../features/breakoutSlice";
+import DocEdit from "../../DocEdit/DocEdit";
+import toast from "react-hot-toast";
 
 const UploadDialog = () => {
   const [file, setFile] = useState(null);
@@ -32,9 +38,9 @@ const UploadDialog = () => {
   const breakout = useCallback(async () => {
     if (breakoutCalledRef.current) return;
     breakoutCalledRef.current = true;
-  
+
     dispatch(setLoading(true));
-  
+
     try {
       const res = await axios.post(
         "http://localhost:8000/api/v1/ai-drafter/breakout",
@@ -44,7 +50,8 @@ const UploadDialog = () => {
       dispatch(setBreakoutData(res.data));
       setUploadStatus(""); // Stop the analyzing GIF after response
       setFile(null);
-      setOpenResponseDialog(true); // Open the response dialog
+      // setOpenResponseDialog(true); // Open the response dialog
+      navigate("/DocPreview");
     } catch (error) {
       console.error("Breakout failed", error);
       dispatch(setError(error.message));
@@ -83,15 +90,13 @@ const UploadDialog = () => {
           dispatch(setDocId(data.doc_id));
           dispatch(setDocumentText(data.document));
           setResponseText(data.document);
-
-      
-            
-        
+          simulateUpload();
         } catch (error) {
           console.error("Upload failed", error);
-        } finally {
-          simulateUpload();
-        }
+          toast.error("An error occured");
+          navigate("/")
+          
+        } 
       }
     },
     [dispatch]
@@ -118,7 +123,6 @@ const UploadDialog = () => {
         setUploadStatus("complete");
         dispatch(setFileBlob(true));
         setUploadStatus("analyzing");
-        
       }
     }, 500);
   }, [dispatch]);
@@ -131,6 +135,13 @@ const UploadDialog = () => {
     },
     [dispatch]
   );
+  const handleCancel = () => {
+    setFile(null);
+    setUploadProgress(0);
+    setUploadStatus("");
+    dispatch(setFileBlob(false));
+    navigate("/");
+  };
 
   const uploadOptions = [
     {
@@ -167,11 +178,16 @@ const UploadDialog = () => {
         <UserModal />
       </div>
 
-      <div className="flex flex-row justify-center w-full px-96 items-center h-[70vh]">
-        <div className="flex flex-col w-full p-5 bg-upload-card rounded-md space-y-7">
+      <div className="flex flex-row justify-center w-full  items-center h-[70vh]">
+        <div className="flex flex-col w-1/2 p-5 bg-upload-card rounded-md space-y-7">
           <div>
             <div className="w-full flex justify-end">
-              <HighlightOffIcon className="text-teal-500 text-2xl scale-150 cursor-pointer" />
+              {uploadStatus !== "analyzing" && (
+                <HighlightOffIcon
+                  onClick={handleCancel}
+                  className="text-teal-500 text-2xl scale-150 cursor-pointer"
+                />
+              )}
             </div>
 
             <div className="flex justify-center">
@@ -251,12 +267,12 @@ const UploadDialog = () => {
       </div>
 
       {/* Response Dialog */}
-      <ResponseDialog
+      {/* <ResponseDialog
         open={openResponseDialog}
         onClose={setOpenResponseDialog}
          // Pass the initial value
         onSave={handleSaveResponse} // Handle save action
-      />
+      /> */}
     </div>
   );
 };

@@ -2,8 +2,8 @@ import React from "react";
 
 const Banner = () => {
   return (
-    <div className="flex flex-row font-sans   gap-[20rem] px-[10rem]     justify-around">
-      <div className="flex items-center justify-center  flex-col gap-3">
+    <div className="flex flex-row font-sans space-x-10  w-full px-10     justify-between">
+      <div className="flex items-center justify-center    flex-col gap-3">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           width="28"
@@ -16,8 +16,8 @@ const Banner = () => {
             fill="white"
           />
         </svg>
-        <div className="font-bold text-base">Legal Efficiency</div>
-        <div className="text-xs text-center">
+        <div className="font-bold text-base text-center">Legal Efficiency</div>
+        <div className="text-xs text-center lg:px-10">
           Summarize lengthy legal documents effortlessly and create customized
           drafts in minutes
         </div>
@@ -52,7 +52,7 @@ const Banner = () => {
           />
         </svg>
         <div className="font-bold text-base">Precision at Scale</div>
-        <div className="text-center text-xs">
+        <div className="text-center text-xs lg:px-10">
           Transform complex legalese into concise snippets with our AI-powered
           document wizard
         </div>
@@ -71,7 +71,7 @@ const Banner = () => {
           />
         </svg>
         <div className="font-bold text-base">Your Legal Ally</div>
-        <div className="text-xs text-center">
+        <div className="text-xs text-center lg:px-10">
           From summaries to tailored drafts, streamline your legal work with our
           intuitive AI tool
         </div>

@@ -16,6 +16,8 @@ import NeutralDialog from "./components/Dialogs/NeutralDialog";
 import DocDrafter from "./DocDrafter/DocDrafter";
 import DrafterArgs from "./DocDrafter/DrafterArgs";
 import DocType from "./DocType/DocType";
+import DocEdit from "./DocEdit/DocEdit";
+import Summary from "./Summary/Summary";
 
 const router = createBrowserRouter([
   {
@@ -26,6 +28,15 @@ const router = createBrowserRouter([
     path: "/upload",
     element: <Upload />,
   },
+  {
+    path: "/DocPreview",
+    element: <DocEdit />,
+  },
+  {
+    path: "/Summary",
+    element: <Summary />,
+  },
+
   {
     path: "/Snippets",
     element: <Snippets />,
@@ -55,12 +66,10 @@ const router = createBrowserRouter([
   {
     path: "/Drafter",
     element: <DocDrafter />,
-    children: [
-      {
-        path: "DrafterArgs",
-        element: <DrafterArgs />,
-      },
-    ],
+  },
+  {
+    path: "/Drafter/DrafterArgs",
+    element: <DrafterArgs />,
   },
   {
     path: "/DocType",

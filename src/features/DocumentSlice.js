@@ -6,13 +6,14 @@ const documentSlice = createSlice({
   name: 'document',
   initialState: {
     docId: null,
-    documentText: '',
+    documentText: null,
   },
   reducers: {
     setDocId: (state, action) => {
       state.docId = action.payload;
     },
     setDocumentText: (state, action) => {
+      console.log("set doc text " , action.payload)
       state.documentText = action.payload;
     },
   },

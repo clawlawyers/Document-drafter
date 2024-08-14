@@ -7,14 +7,16 @@ import { Provider } from "react-redux";
 import store from "./features/store";
 import { PersistGate } from "redux-persist/integration/react";
 import { persistStore } from "redux-persist";
+import { Toaster } from "react-hot-toast";
 const root = ReactDOM.createRoot(document.getElementById("root"));
 let persistor = persistStore(store);
 root.render(
-    <PersistGate persistor={persistor}>
-  <Provider store={store}>
+  <PersistGate persistor={persistor}>
+    <Provider store={store}>
       <App />
-  </Provider>
-    </PersistGate>
+      <Toaster />
+    </Provider>
+  </PersistGate>
 );
 
 // If you want to start measuring performance in your app, pass a function
