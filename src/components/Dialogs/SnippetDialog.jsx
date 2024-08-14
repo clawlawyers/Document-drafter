@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
+import { twMerge } from "tailwind-merge";
 
 const SnippetDialog = () => {
   const breakout = useSelector((state) => state.breakout);
@@ -9,6 +10,7 @@ const SnippetDialog = () => {
 
   useEffect(() => {
     if (breakout.breakoutData) {
+      console.log(breakout.greenHeading);
       setHeadPoints(
         breakout.breakoutData.data.fetchedData.headpoints.map(
           (heading) => heading.replace(/^#+\s*/, "") // Remove leading # symbols
@@ -31,7 +33,13 @@ const SnippetDialog = () => {
     <div className="hide-scrollbar flex flex-col gap-5 mx-6 my-5  h-[80vh]">
       {combinedData.map((item, i) => (
         <div key={i} className="flex flex-row gap-3">
-          <div className="flex flex-col rounded-[0.635rem] border-2 px-4 py-2 border-white bg-popup-gradient w-3/4 gap-1">
+          <div
+            className={twMerge(
+              "flex flex-col rounded-[0.635rem] border-2 px-4 py-2 border-white bg-popup-gradient w-3/4 gap-1",
+              "",
+              breakout.greenHeading.includes(`${i + 1}`) && "border-green-500"
+            )}
+          >
             <div className="font-sans text-[1.125rem] font-bold leading-[1.13625rem]">
               {item.heading}
             </div>

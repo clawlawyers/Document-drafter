@@ -1,12 +1,25 @@
 import React, { useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { setGreenHeading } from "../../features/breakoutSlice";
 
-const TextBoxDialog = () => {
+const TextBoxDialog = ({ responseData }) => {
   const [isLoading, setisLoading] = useState(false);
- 
+
   const [showDocument, setshowDocument] = useState(false);
-  const [responseData, setresponseData] = useState([
-    "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English.",
-  ]);
+  // const [responseData, setresponseData] = useState([
+  //   "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English.",
+  // ]);
+  const dispatch = useDispatch();
+  const handleDraft = () => {
+    let greenHeading = [];
+    Object.keys(responseData.response.data.data.fetchedData.headpoint).map(
+      function (key, index) {
+        greenHeading.push(key.split("d")[1]);
+      }
+    );
+    dispatch(setGreenHeading(greenHeading));
+    console.log(greenHeading);
+  };
   return (
     <div className="flex flex-col gap-3 p-4">
       <div className="flex gap-2 flex-row ">
@@ -24,12 +37,15 @@ const TextBoxDialog = () => {
         </svg>
         <div className="font-sans text-customBlue font-bold">Soumya Banik</div>
       </div>
-      <div className=" font-sans text-sm">What is in section 4.1</div>
+      <div className=" font-sans text-sm">{responseData.query}</div>
       <div className=" rounded-[0.625rem] border-[0.1rem] border-customBlue font-sans text-[0.625rem] p-2 px-3 text-justify bg-[#868686] ">
-        {responseData}
+        {responseData.response.data.data.fetchedData.answer}
       </div>
       <div className="flex flex-row text-[0.6875rem] font-sans  gap-2">
-        <button className="rounded border-[1px]  w-1/2 hover:bg-hover-gradient hover:text-black hover:border-0   py-1 ">
+        <button
+          className="rounded border-[1px]  w-1/2 hover:bg-hover-gradient hover:text-black hover:border-0   py-1 "
+          onClick={handleDraft}
+        >
           Find in Drafter
         </button>
         <button
@@ -41,14 +57,36 @@ const TextBoxDialog = () => {
       </div>
       {showDocument && (
         <div className="flex flex-col gap-3 rounded-[0.625rem] border-[0.1rem] border-white font-sans text-[0.625rem] p-2 px-3 text-justify bg-customBlue ">
-          <div className="flex flex-col gap-1">
-            <div className="font-bold text-[1rem]">Document heading 1</div>
-            <div>
-              It is a long established fact that a reader will be distracted by
-              the readable content of a page when looking at its layout. The
-              point of using Lorem Ipsum is that it has a more-or-less no
-            </div>
-          </div>
+          {Object.keys(
+            responseData.response.data.data.fetchedData.headpoint
+          ).map(function (key, index) {
+            console.log("hi");
+
+            // responseData.response.data.data.fetchedData.references[
+            //   index
+            // ].keys();
+            return (
+              <div className="flex flex-col gap-1">
+                <div className="font-bold text-[1rem]">
+                  {
+                    responseData.response.data.data.fetchedData.headpoint[key][
+                      "headpoint"
+                    ]
+                  }
+                </div>
+
+                <div>
+                  {
+                    Object.values(
+                      responseData.response.data.data.fetchedData.references[
+                        index
+                      ]
+                    )[0]
+                  }
+                </div>
+              </div>
+            );
+          })}
         </div>
       )}
     </div>
