@@ -52,6 +52,7 @@ const DocDrafter = () => {
               onChange={onChange}
               loading={loading}
               value={prompt}
+              required={true}
             />
             <Footer />
           </div>

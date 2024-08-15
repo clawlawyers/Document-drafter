@@ -17,6 +17,7 @@ import {
 } from "../features/DocumentSlice";
 import { createDoc, getDocFromPrompt } from "../actions/createDoc";
 import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
 
 const DrafterArgs = () => {
   let navigate = useNavigate();
@@ -45,8 +46,11 @@ const DrafterArgs = () => {
     };
 
     fetchDocId();
-    if (docId) {
+    if (docId && prompt) {
       fetchData();
+    }
+    else{
+      navigate("/Drafter")
     }
   }, [dispatch]);
 
@@ -66,9 +70,14 @@ const DrafterArgs = () => {
         data.data.data.fetchedData.optional_requirements;
       setOptionalReq(optionalRequirements);
       dispatch(setOptionalRequirements(optionalRequirements));
-      setIsLoading(false);
+     
     } catch (e) {
+      setDocText("")
+      toast.error("Failed to fetch data")
       console.log(e);
+    }
+    finally{
+      setIsLoading(false);
     }
   };
 
@@ -114,10 +123,12 @@ const DrafterArgs = () => {
           {/* user */}
           <div className="flex font-semibold text-lg gap-5 w-full flex-row justify-start items-center">
             <UserModal />
-            {prompt}
+            <div className="h-20 items-center justify-center flex flex-col overflow-y-auto scrollbar-hide">
+              {prompt}
+              </div>
           </div>
           {/* arguments container */}
-          <div className="bg-card-gradient overflow-y-auto scroll-smooth rounded-md w-full flex flex-col items-start p-5 h-96">
+          <div className="bg-card-gradient scrollbar-hide overflow-y-auto scroll-smooth rounded-md w-full flex flex-col items-start p-5 h-96">
             {loading ? (
               <div className="flex flex-col h-full items-center justify-center w-full">
                 <img
@@ -208,7 +219,7 @@ const DrafterArgs = () => {
             <button onClick={() => navigate("/Drafter")} className="bg-btn-gradient p-[1em] px-[2em] rounded-md text-sm">
               Re-enter Prompt
             </button>
-            <button onClick={() => navigate("/Summary")} className="bg-btn-gradient p-[1em] px-[2em] rounded-md text-sm">
+            <button onClick={() => navigate("/DocPreview")} className="bg-btn-gradient p-[1em] px-[2em] rounded-md text-sm">
               Generate Document
             </button>
           </div>

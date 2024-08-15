@@ -4,13 +4,13 @@ import { twMerge } from "tailwind-merge";
 
 const SnippetDialog = () => {
   const breakout = useSelector((state) => state.breakout);
-
+  console.log(breakout)
   const [headPoints, setHeadPoints] = useState([]);
   const [details, setDetails] = useState([]);
 
   useEffect(() => {
     if (breakout.breakoutData) {
-      console.log(breakout.greenHeading);
+      console.log(breakout?.greenHeading);
       setHeadPoints(
         breakout.breakoutData.data.fetchedData.headpoints.map(
           (heading) => heading.replace(/^#+\s*/, "") // Remove leading # symbols
@@ -37,7 +37,7 @@ const SnippetDialog = () => {
             className={twMerge(
               "flex flex-col rounded-[0.635rem] border-2 px-4 py-2 border-white bg-popup-gradient w-3/4 gap-1",
               "",
-              breakout.greenHeading.includes(`${i + 1}`) && "border-green-500"
+              breakout?.greenHeading?.includes(`${i + 1}`) && "border-green-500"
             )}
           >
             <div className="font-sans text-[1.125rem] font-bold leading-[1.13625rem]">

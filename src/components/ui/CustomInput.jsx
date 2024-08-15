@@ -7,7 +7,8 @@ const CustomInput = ({
   onChange,
   onSubmit,
   loading,
-  value
+  value,
+  required
 }) => {
   return (
     <form
@@ -21,6 +22,7 @@ const CustomInput = ({
         onChange={onChange}
         disabled={loading}
         value={value}
+        required={required}
       />
       {btn ? (
         <button
