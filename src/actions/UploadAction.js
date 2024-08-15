@@ -11,6 +11,7 @@ export const getAnswer = async(doc_id , query) => {
         return res
     }
     catch(e){
-        console.error("An error occured",e);
+        throw new Error(e.value);
     }
 }
+

@@ -1,8 +1,8 @@
 import React from "react";
 
-const CustomInput = ({
+const CustomSelect = ({
   className,
-  btn,
+  options,
   placeholder,
   onChange,
   onSubmit,
@@ -14,15 +14,22 @@ const CustomInput = ({
       onSubmit={onSubmit}
       className={`${className} flex flex-row justify-center gap-5 items-center w-full`}
     >
-      <input
-        type="text"
-        placeholder={`${placeholder}`}
-        className="p-2 w-full bg-slate-200 rounded-md text-neutral-800 border-2 outline-none border-teal-500"
+      <select
+        className="p-2 w-full bg-slate-200 rounded-md text-neutral-800 border-2 outline-none border-teal-500 text-sm"
         onChange={onChange}
         disabled={loading}
         value={value}
-      />
-      {btn ? (
+      >
+        <option value="" disabled>
+          {placeholder}
+        </option>
+        {options.map((option, index) => (
+          <option key={index} value={option.value}>
+            {option.label}
+          </option>
+        ))}
+      </select>
+      {onSubmit ? (
         <button
           disabled={loading}
           type="submit"
@@ -39,4 +46,4 @@ const CustomInput = ({
   );
 };
 
-export default CustomInput;
+export default CustomSelect;

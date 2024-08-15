@@ -5,8 +5,6 @@ import SummaryLoader from "../components/loaders/SummaryLoader";
 import UploadSummary from "../components/Dialogs/UploadSummaryDialog";
 const Summary = () => {
 
-  
-
   const [loading, setLoading] = useState(false);
   const [response , setResponse] = useState("");
   return (

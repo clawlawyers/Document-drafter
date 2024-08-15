@@ -8,7 +8,6 @@ const EditSidebar = () => {
   const dispatch = useDispatch();
   const doc_id = useSelector((state) => state.document.docId);
   const [query, setQuery] = useState("");
-  const [answer, setAnswer] = useState(null); // Set initial state to null
   const [loading, setLoading] = useState(false);
 
   const onChange = (e) => {
@@ -20,44 +19,29 @@ const EditSidebar = () => {
     setLoading(true);
 
     try {
-      const res = await getAnswer(doc_id, query).then((res)=> {
-        const doc = res.data.data.fetchedData.document
-        console.log(doc);
-        setAnswer(doc);
-        setAnswer(doc);
-      dispatch(setDocumentText(doc));
-        
-      });
-      
-    
+      const res = await getAnswer(doc_id, query);
+      const doc = res.data.data.fetchedData.document;
+      console.log("Fetched document:", doc);
+      if(doc)
+          dispatch(setDocumentText(doc));
     } catch (error) {
       console.error("Error fetching answer:", error);
-      setAnswer("An error occurred while fetching the document.");
     } finally {
       setLoading(false);
     }
   };
 
-
   return (
     <main className="px-4 space-y-5 w-full flex flex-col justify-between items-center rounded-md h-full">
-      <section className="flex flex-col h-full items-center justify-center text-center space-y-10 overflow-y-auto ">
-        {answer ? (
-          <div className="flex flex-col w-full overflow-y-auto p-5">
-            {typeof answer === "string" ? answer : "Document data displayed here"}
-          </div>
-        ) : (
-          <>
-            <h4 className="font-bold text-white text-3xl">
-              Want to Edit
-              <br /> Generated Document?
-            </h4>
-            <p>
-              Ask the AI to change a part of the document. Provide proper details
-              to get better results.
-            </p>
-          </>
-        )}
+      <section className="flex flex-col h-full items-center justify-center text-center space-y-10 overflow-y-auto">
+        <h4 className="font-bold text-white text-3xl">
+          Want to Edit
+          <br /> Generated Document?
+        </h4>
+        <p>
+          Ask the AI to change a part of the document. Provide proper details
+          to get better results.
+        </p>
       </section>
       <form
         onSubmit={handleSubmit}
@@ -69,7 +53,7 @@ const EditSidebar = () => {
           placeholder="Enter your query"
           onChange={onChange}
           readOnly={loading}
-          value={query} // Add controlled input value
+          value={query}
         />
         <button
           type="submit"
@@ -85,3 +69,4 @@ const EditSidebar = () => {
 };
 
 export default EditSidebar;
+
