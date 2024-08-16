@@ -24,7 +24,7 @@ const DocDrafter = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
+    localStorage.setItem("from","drafter")
     dispatch(setPrompt(prompt));
     navigate("/Drafter/DrafterArgs");
   };

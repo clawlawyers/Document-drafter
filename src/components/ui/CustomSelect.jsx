@@ -24,7 +24,7 @@ const CustomSelect = ({
           {placeholder}
         </option>
         {options.map((option, index) => (
-          <option key={index} value={option.value}>
+          <option key={index} value={option.label}>
             {option.label}
           </option>
         ))}

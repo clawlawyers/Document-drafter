@@ -6,8 +6,12 @@ import Banner from "../components/ui/Banner";
 import { useState } from "react";
 import CustomDropdown from "../components/ui/CustomSelect";
 import { options } from "./Options";
-
+import { setPrompt } from "../features/PromptSlice";
+import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
 const DocType = () => {
+  let navigate = useNavigate();
+  let dispatch = useDispatch();
   const [selectedValue, setSelectedValue] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -19,8 +23,12 @@ const DocType = () => {
     e.preventDefault();
     setLoading(true);
     // Perform submit action
-    console.log(selectedValue)
+    localStorage.setItem("from","docType")
+
+    dispatch(setPrompt(selectedValue));
+    navigate("/Drafter/DrafterArgs");
     setLoading(false);
+    
   };
 
   return (

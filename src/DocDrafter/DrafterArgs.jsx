@@ -14,45 +14,87 @@ import {
   setDocumentText,
   setEssentialRequirements,
   setOptionalRequirements,
+  clearDocumentState,
 } from "../features/DocumentSlice";
 import { createDoc, getDocFromPrompt } from "../actions/createDoc";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import toast from "react-hot-toast";
+import { getRequirements, uploadOptional, uploadPre } from "../actions/DocType";
 
 const DrafterArgs = () => {
+  let path = localStorage.getItem("from");
   let navigate = useNavigate();
   let dispatch = useDispatch();
   const [loading, setIsLoading] = useState(false);
   const prompt = useSelector((state) => state.prompt.prompt);
   const docId = useSelector((state) => state.document.docId);
+
   const [documentText, setDocText] = useState("");
   const [EssentialReq, setEssentialReq] = useState([]);
   const [OptionalReq, setOptionalReq] = useState([]);
-  const [openDialog, setOpenDialog] = useState(null); // { type: 'essential' | 'optional', index: number }
-  const [newRequirement, setNewRequirement] = useState("");
+  const [essentialInputs, setEssentialInputs] = useState({});
+  const [optionalInputs, setOptionalInputs] = useState({});
 
   useEffect(() => {
-    // Clear the previous docId on component mount
     dispatch(clearDocId());
 
     const fetchDocId = async () => {
       try {
-        const data = await createDoc();
-        const doc_id = data.data.data.fetchedData.doc_id;
-        dispatch(setDocId(doc_id));
+        const data = await createDoc().then((data) => {
+          const doc_id = data.data.data.fetchedData.doc_id;
+          console.log(doc_id)
+          console.log(data)
+          dispatch(setDocId(doc_id));
+          if (doc_id && prompt) {
+            if (path !== "docType") {
+              fetchData();
+            } else {
+              fetchReq(doc_id);
+            }
+          }
+        });
+
+        console.log(docId);
       } catch (error) {
         console.error("Failed to fetch document ID:", error);
       }
     };
-
     fetchDocId();
-    if (docId && prompt) {
-      fetchData();
+
+    
+  }, []);
+
+  useEffect(() => {}, [docId]);
+
+  const fetchReq = async (doc_id) => {
+    console.log(docId);
+
+    try {
+      setIsLoading(true);
+      const data = await getRequirements(doc_id, prompt);
+      const res = data.data.data.fetchedData;
+
+      setEssentialReq(res.essential_requirements);
+      setOptionalReq(res.optional_requirements);
+
+      // Initialize input state
+      const initialEssentialInputs = {};
+      res.essential_requirements.forEach((req) => {
+        initialEssentialInputs[req] = "";
+      });
+      setEssentialInputs(initialEssentialInputs);
+
+      const initialOptionalInputs = {};
+      res.optional_requirements.forEach((req) => {
+        initialOptionalInputs[req] = "";
+      });
+      setOptionalInputs(initialOptionalInputs);
+    } catch (e) {
+      console.error(e);
+    } finally {
+      setIsLoading(false);
     }
-    else{
-      navigate("/Drafter")
-    }
-  }, [dispatch]);
+  };
 
   const fetchData = async () => {
     try {
@@ -70,45 +112,72 @@ const DrafterArgs = () => {
         data.data.data.fetchedData.optional_requirements;
       setOptionalReq(optionalRequirements);
       dispatch(setOptionalRequirements(optionalRequirements));
-     
     } catch (e) {
-      setDocText("")
-      toast.error("Failed to fetch data")
+      setDocText("");
+      toast.error("Failed to fetch data");
       console.log(e);
-    }
-    finally{
+    } finally {
       setIsLoading(false);
     }
   };
 
-  const handleDialogToggle = (type, index) => {
-    if (openDialog && openDialog.type === type && openDialog.index === index) {
-      setOpenDialog(null); // Close dialog if it's already open
-    } else {
-      setOpenDialog({ type, index });
+  const handleInputChange = (e, type) => {
+    const { name, value } = e.target;
+
+    if (type === "essential") {
+      setEssentialInputs((prevState) => ({
+        ...prevState,
+        [name]: value,
+      }));
+    } else if (type === "optional") {
+      setOptionalInputs((prevState) => ({
+        ...prevState,
+        [name]: value,
+      }));
     }
-    setNewRequirement("");
   };
 
-  const handleAddRequirement = () => {
-    if (openDialog) {
-      if (openDialog.type === 'essential') {
-        const updatedRequirements = [...EssentialReq];
-        updatedRequirements[openDialog.index] = newRequirement;
-        setEssentialReq(updatedRequirements);
-        dispatch(setEssentialRequirements(updatedRequirements));
-      } else if (openDialog.type === 'optional') {
-        const updatedRequirements = [...OptionalReq];
-        updatedRequirements[openDialog.index] = newRequirement;
-        setOptionalReq(updatedRequirements);
-        dispatch(setOptionalRequirements(updatedRequirements));
-      }
-    } else {
-      // Add to the Essential Requirements list if no item is being edited
-      setEssentialReq([...EssentialReq, newRequirement]);
-      dispatch(setEssentialRequirements([...EssentialReq, newRequirement]));
+  const handleSaveRequirements = async (e) => {
+    e.preventDefault();
+
+    // Combine essential and optional inputs into a single object
+    const allInputs = {
+      essential_requirements:essentialInputs,
+      optional_requirements:optionalInputs,
+    };
+
+    // Convert the essential requirements to a JSON string with indentation for readability
+    const essentialJsonString = JSON.stringify(
+      allInputs.essential_requirements,
+      null,
+      4
+    ); // 'null, 4' adds indentation
+
+    // Convert the optional requirements to a JSON string with indentation
+    const optionalJsonString = JSON.stringify(
+      allInputs.optional_requirements,
+      null,
+      4
+    );
+
+    // Final result where the JSON string is encapsulated as a plain string
+    const finalEssentialString = `${JSON.stringify(essentialJsonString)}`;
+    const finalOptionalString = `${JSON.stringify(optionalJsonString)}`;
+    try {
+      const res1 = await uploadPre(docId, finalEssentialString);
+      console.log(res1);
+      const res2 = await uploadOptional(docId, finalOptionalString);
+      console.log(res2);
+    } catch (e) {
+      console.log(e);
     }
-    handleDialogToggle(null, null); // Close the dialog
+
+    // You can send this final string to your API
+    console.log(finalOptionalString); // Optional requirements in string format
+    console.log(finalEssentialString); // Optional requirements in string format
+
+
+    toast.success("Requirements saved successfully!");
   };
 
   return (
@@ -125,7 +194,7 @@ const DrafterArgs = () => {
             <UserModal />
             <div className="h-20 items-center justify-center flex flex-col overflow-y-auto scrollbar-hide">
               {prompt}
-              </div>
+            </div>
           </div>
           {/* arguments container */}
           <div className="bg-card-gradient scrollbar-hide overflow-y-auto scroll-smooth rounded-md w-full flex flex-col items-start p-5 h-96">
@@ -151,75 +220,73 @@ const DrafterArgs = () => {
                 alt="Loading..."
               />
             ) : (
-              <section className="w-full flex flex-col space-y-2 justify-between items-center">
-                <div className="w-full overflow-y-auto scrollbar-hide flex flex-col space-y-5 justify-start items-center h-52">
-                  <p className="font-semibold text-lg">Essential Requirement</p>
-                  {/* cards */}
+              <form
+                onSubmit={handleSaveRequirements}
+                className="w-full flex flex-col space-y-4 justify-between items-center"
+              >
+                <div className="w-full overflow-y-auto scrollbar-hide flex flex-col space-y-4 justify-start items-center h-52">
+                  <p className="font-semibold text-lg">
+                    Essential Requirements
+                  </p>
                   {EssentialReq.map((item, index) => (
-                    <div key={index} className="relative bg-card-gradient text-sm p-2 justify-between flex flex-row w-full border-2 border-white rounded-md">
-                      <p>{item}</p>
-                      <button
-                        onClick={() => handleDialogToggle('essential', index)}
-                        className="ml-auto">
-                        {openDialog && openDialog.type === 'essential' && openDialog.index === index ? <Close /> : <Add />}
-                      </button>
-                      {openDialog && openDialog.type === 'essential' && openDialog.index === index && (
-                        <div className="z-10 absolute left-0 bottom-[-4rem] bg-teal-500 border border-teal-600 rounded-md p-2 w-full">
-                          <input
-                            type="text"
-                            value={newRequirement}
-                            onChange={(e) => setNewRequirement(e.target.value)}
-                            placeholder="Enter requirement"
-                            className="w-full p-1 border border-gray-300 rounded-md"
-                          />
-                          <button
-                            onClick={handleAddRequirement}
-                            className="ml-2 text-white">
-                            <Send />
-                          </button>
-                        </div>
-                      )}
+                    <div key={index} className="w-full flex flex-col space-y-2">
+                      <label htmlFor={item} className="text-sm font-medium">
+                        {item}
+                      </label>
+                      <input
+                        type="text"
+                        required
+                        id={item}
+                        name={item}
+                        value={essentialInputs[item] || ""}
+                        onChange={(e) => handleInputChange(e, "essential")}
+                        placeholder={`Enter ${item}`}
+                        className="w-full p-2 border border-gray-300 rounded-md"
+                      />
                     </div>
                   ))}
                 </div>
-                <div className="w-full scrollbar-hide overflow-y-auto flex flex-col space-y-5 justify-start items-center h-52">
-                  <p className="font-semibold text-lg">Optional Requirement</p>
-                  {/* cards */}
+
+                <div className="w-full overflow-y-auto scrollbar-hide flex flex-col space-y-4 justify-start items-center h-52">
+                  <p className="font-semibold text-lg">Optional Requirements</p>
                   {OptionalReq.map((item, index) => (
-                    <div key={index} className="relative bg-card-gradient text-sm p-2 justify-between flex flex-row w-full border-2 border-white rounded-md">
-                      <p>{item}</p>
-                      <button
-                        onClick={() => handleDialogToggle('optional', index)}
-                        className="ml-auto">
-                        {openDialog && openDialog.type === 'optional' && openDialog.index === index ? <Close /> : <Add />}
-                      </button>
-                      {openDialog && openDialog.type === 'optional' && openDialog.index === index && (
-                        <div className="z-10 absolute left-0 bottom-[-4rem] bg-teal-500 border border-teal-600 rounded-md p-2 w-full">
-                          <input
-                            type="text"
-                            value={newRequirement}
-                            onChange={(e) => setNewRequirement(e.target.value)}
-                            placeholder="Enter requirement"
-                            className="w-full p-1 border border-gray-300 rounded-md"
-                          />
-                          <button
-                            onClick={handleAddRequirement}
-                            className="ml-2 text-white">
-                            <Send />
-                          </button>
-                        </div>
-                      )}
+                    <div key={index} className="w-full flex flex-col space-y-2">
+                      <label htmlFor={item} className="text-sm font-medium">
+                        {item}
+                      </label>
+                      <input
+                        type="text"
+                        id={item}
+                        name={item}
+                        value={optionalInputs[item] || ""}
+                        onChange={(e) => handleInputChange(e, "optional")}
+                        placeholder={`Enter ${item}`}
+                        className="w-full p-2 border border-gray-300 rounded-md"
+                      />
                     </div>
                   ))}
                 </div>
-              </section>
+
+                <button
+                  type="submit"
+                  className="bg-teal-600 text-white w-full py-2 rounded-md font-medium"
+                >
+                  Save Requirements
+                </button>
+              </form>
             )}
           </div>
           <div className="flex flex-row w-full justify-between items-center">
-            <button onClick={() => navigate("/Drafter")} className="bg-btn-gradient p-[1em] px-[2em] rounded-md text-sm">
+            <button
+              onClick={() => navigate("/Drafter")}
+              className="bg-btn-gradient p-[1em] px-[2em] rounded-md text-sm"
+            >
               Re-enter Prompt
             </button>
-            <button onClick={() => navigate("/DocPreview")} className="bg-btn-gradient p-[1em] px-[2em] rounded-md text-sm">
+            <button
+              onClick={() => navigate("/DocPreview")}
+              className="bg-btn-gradient p-[1em] px-[2em] rounded-md text-sm"
+            >
               Generate Document
             </button>
           </div>
