@@ -20,7 +20,7 @@ import { createDoc, getDocFromPrompt } from "../actions/createDoc";
 import { useNavigate, useParams } from "react-router-dom";
 import toast from "react-hot-toast";
 import { getRequirements, uploadOptional, uploadPre } from "../actions/DocType";
-
+import { generateDocument } from "../actions/DocType";
 const DrafterArgs = () => {
   let path = localStorage.getItem("from");
   let navigate = useNavigate();
@@ -136,6 +136,27 @@ const DrafterArgs = () => {
       }));
     }
   };
+
+  const handleGenerate = async () => {
+    if(path !== "docType")
+     navigate("/DocPreview");
+
+    else
+    {
+      try {
+        setIsLoading(true);
+        const res = await generateDocument(docId);
+        console.log(res.data.data.fetchedData.document);
+        setDocText(res.data.data.fetchedData.document);
+      } catch (e) {
+        console.log(e);
+      }
+      finally{
+        setIsLoading(false);
+      }
+    }
+
+  }
 
   const handleSaveRequirements = async (e) => {
     e.preventDefault();
@@ -284,7 +305,7 @@ const DrafterArgs = () => {
               Re-enter Prompt
             </button>
             <button
-              onClick={() => navigate("/DocPreview")}
+              onClick={handleGenerate}
               className="bg-btn-gradient p-[1em] px-[2em] rounded-md text-sm"
             >
               Generate Document

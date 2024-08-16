@@ -53,5 +53,16 @@ export const uploadOptional = async(doc_id , req) => {
 }
 
 export const generateDocument = async(doc_id) => {
-
+   try{
+    const res = await axios.post("http://localhost:8000/api/v1/ai-drafter/generate_document",
+    {
+        doc_id
+    }
+)
+return res;
+   }
+   catch(e)
+   {
+    console.error(e.value)
+   }
 }
