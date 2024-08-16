@@ -161,8 +161,8 @@ const DrafterArgs = () => {
     );
 
     // Final result where the JSON string is encapsulated as a plain string
-    const finalEssentialString = `${JSON.stringify(essentialJsonString)}`;
-    const finalOptionalString = `${JSON.stringify(optionalJsonString)}`;
+    const finalEssentialString = essentialJsonString;
+    const finalOptionalString = optionalJsonString;
     try {
       const res1 = await uploadPre(docId, finalEssentialString);
       console.log(res1);

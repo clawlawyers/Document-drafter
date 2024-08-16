@@ -1,10 +1,11 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice } from "@reduxjs/toolkit";
 
 const documentSlice = createSlice({
-  name: 'document',
+  name: "document",
   initialState: {
     docId: null,
-    documentText: "",
+    documentText: null,
+    uploadDocText: null,
     essentialRequirements: [], // Storing the list of essential requirements
     optionalRequirements: [], // Storing the list of optional requirements
   },
@@ -13,7 +14,11 @@ const documentSlice = createSlice({
       state.docId = action.payload;
     },
     setDocumentText: (state, action) => {
+      console.log("reducer", action.payload);
       state.documentText = action.payload;
+    },
+    setUploadDocText: (state, action) => {
+      state.uploadDocText = action.payload;
     },
     setEssentialRequirements: (state, action) => {
       state.essentialRequirements = action.payload;
@@ -40,6 +45,7 @@ export const {
   setOptionalRequirements,
   clearDocId,
   clearDocumentState,
+  setUploadDocText
 } = documentSlice.actions;
 
 export default documentSlice.reducer;

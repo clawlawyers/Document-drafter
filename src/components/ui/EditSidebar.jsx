@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { getAnswer } from "../../actions/UploadAction";
 import { useDispatch, useSelector } from "react-redux";
 import { CircularProgress } from "@mui/material";
-import setDocumentText from "../../features/DocumentSlice";
+import setDocumentText, { setUploadDocText } from "../../features/DocumentSlice";
 
 const EditSidebar = () => {
   const dispatch = useDispatch();
@@ -21,9 +21,10 @@ const EditSidebar = () => {
     try {
       const res = await getAnswer(doc_id, query);
       const doc = res.data.data.fetchedData.document;
-      console.log("Fetched document:", doc);
-      if(doc)
-          dispatch(setDocumentText(doc));
+    console.log(doc);
+      
+      dispatch(setUploadDocText(doc));
+      // dispatch(setDocumentText(doc));
     } catch (error) {
       console.error("Error fetching answer:", error);
     } finally {
