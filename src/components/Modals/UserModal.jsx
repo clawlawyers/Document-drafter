@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Avatar } from "@mui/material";
 import KeyboardArrowDownOutlinedIcon from "@mui/icons-material/KeyboardArrowDownOutlined";
+import { CurrencyRupeeSharp } from "@mui/icons-material";
 const UserModal = () => {
   const [showDetails, setshowDetails] = useState(false);
   const [showHistroy, setshowHistroy] = useState(false);
@@ -40,12 +41,16 @@ const UserModal = () => {
                   Soumya Banik
                 </div>
               </div>
-              <div className="flex gap-10 flex-row bg-customBlue p-4  text-white font-bold py-1 border border-black rounded-lg justify-between">
-                <div>Time Remaning: </div>
-                <div className="pr-4">00:59</div>
+              <div className="flex space-x-2 flex-row bg-customBlue p-4  text-white font-bold py-1 border border-black rounded-lg justify-start">
+                <div> Plan: </div>
+                <div className="">Free Tier</div>
+              </div>
+              <div className="flex space-x-2 flex-row bg-customBlue p-4  text-white font-bold py-1 border border-black rounded-lg justify-between">
+                <div>Phone Number: </div>
+                <div className="">+91 XXXXXXXXXX </div>
               </div>
             </div>
-            <div className="flex flex-col font-sans text-customBlue font-bold gap-2 text-lg">
+            {/* <div className="flex flex-col font-sans text-customBlue font-bold gap-2 text-lg">
               <div className="hover:cursor-pointer" onClick={()=>setshowHistroy(false)}>History Search</div>
               {showHistroy ? (
                 <div className="border-t-2 pt-1 border-customBlue">Log Out</div>
@@ -64,7 +69,7 @@ const UserModal = () => {
                   }}/></div>
                 </div>
               )}
-            </div>
+            </div> */}
           </div>
         )}
       </div>
