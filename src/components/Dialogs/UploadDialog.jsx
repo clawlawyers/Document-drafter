@@ -19,6 +19,7 @@ import {
 } from "../../features/breakoutSlice";
 import DocEdit from "../../DocEdit/DocEdit";
 import toast from "react-hot-toast";
+import { NODE_API_ENDPOINT } from "../../utils/utils";
 
 const UploadDialog = () => {
   const [file, setFile] = useState(null);
@@ -42,10 +43,9 @@ const UploadDialog = () => {
     dispatch(setLoading(true));
 
     try {
-      const res = await axios.post(
-        "http://localhost:8000/api/v1/ai-drafter/breakout",
-        { doc_id: doc_id }
-      );
+      const res = await axios.post(`${NODE_API_ENDPOINT}/ai-drafter/breakout`, {
+        doc_id: doc_id,
+      });
       console.log(res.data);
       dispatch(setBreakoutData(res.data));
       setUploadStatus(""); // Stop the analyzing GIF after response
@@ -82,7 +82,7 @@ const UploadDialog = () => {
           const formData = new FormData();
           formData.append("file", file);
           const res = await axios.post(
-            "http://localhost:8000/api/v1/ai-drafter/upload_document",
+            `${NODE_API_ENDPOINT}/ai-drafter/upload_document`,
             formData
           );
           const data = res.data.data.fetchedData;
@@ -94,9 +94,8 @@ const UploadDialog = () => {
         } catch (error) {
           console.error("Upload failed", error);
           toast.error("An error occured");
-          navigate("/")
-          
-        } 
+          navigate("/");
+        }
       }
     },
     [dispatch]

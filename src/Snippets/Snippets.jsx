@@ -17,6 +17,7 @@ import { useSelector } from "react-redux";
 import QueryGIF from "../components/ui/QueryGIF";
 import axios from "axios";
 import giff from "../assets/icons/query.gif";
+import { NODE_API_ENDPOINT } from "../utils/utils";
 const Snippets = () => {
   const doc_id = useSelector((state) => state.document.docId);
   console.log("doc id is", doc_id);
@@ -38,7 +39,7 @@ const Snippets = () => {
     let config = {
       method: "post",
       maxBodyLength: Infinity,
-      url: "http://localhost:8000/api/v1/ai-drafter/ask_question",
+      url: `${NODE_API_ENDPOINT}/ai-drafter/ask_question`,
       headers: {
         "Content-Type": "application/json",
       },
