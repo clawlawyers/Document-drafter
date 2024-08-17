@@ -7,7 +7,7 @@ export const getAnswer = async (doc_id, query) => {
       `${NODE_API_ENDPOINT}/ai-drafter/edit_document`,
       {
         doc_id: doc_id,
-        prompt: query,
+        edit_query: query,
       }
     );
     return res;
