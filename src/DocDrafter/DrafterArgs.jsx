@@ -101,6 +101,9 @@ const DrafterArgs = () => {
       setIsLoading(true);
       const data = await getDocFromPrompt(docId, prompt);
       const docText = data.data.data.fetchedData.document;
+      const test = docText.toString();
+      console.log(typeof(test));
+      console.log(test);
       setDocText(docText);
       dispatch(setDocumentText(docText));
 
@@ -208,8 +211,8 @@ const DrafterArgs = () => {
         <NavbarLeft />
       </div>
 
-      <div className="flex space-x-5 flex-row w-full h-full justify-center items-center">
-        <div className="w-[70%] space-y-5 flex flex-col h-full bg-customBlack rounded-md p-5">
+      <div className="flex space-x-5 flex-row w-full h-[70vh]  justify-center items-center">
+        <div className="w-[70%] space-y-2 flex flex-col h-full bg-customBlack rounded-md px-5 py-5">
           {/* user */}
           <div className="flex font-semibold text-lg gap-5 w-full flex-row justify-start items-center">
             <UserModal />
@@ -218,7 +221,7 @@ const DrafterArgs = () => {
             </div>
           </div>
           {/* arguments container */}
-          <div className="bg-card-gradient scrollbar-hide overflow-y-auto scroll-smooth rounded-md w-full flex flex-col items-start p-5 h-96">
+          <div className="bg-card-gradient scrollbar-hide overflow-y-auto scroll-smooth rounded-md w-full flex flex-col items-start p-5 h-full">
             {loading ? (
               <div className="flex flex-col h-full items-center justify-center w-full">
                 <img
@@ -233,7 +236,7 @@ const DrafterArgs = () => {
           </div>
         </div>
         <div className="w-[30%] space-y-5 flex flex-col justify-center items-center h-full">
-          <div className="w-full p-2 flex justify-center items-center h-full rounded-md flex-col bg-customBlack">
+          <div className="w-full p-2 flex justify-center items-center h-[60vh] overflow-y-auto rounded-md flex-col bg-customBlack">
             {loading ? (
               <img
                 className="flex flex-row justify-center items-center w-40 h-40"
@@ -243,7 +246,7 @@ const DrafterArgs = () => {
             ) : (
               <form
                 onSubmit={handleSaveRequirements}
-                className="w-full flex flex-col space-y-4 justify-between items-center"
+                className="w-full h-full flex flex-col space-y-4 justify-between items-center"
               >
                 <div className="w-full overflow-y-auto scrollbar-hide flex flex-col space-y-4 justify-start items-center h-52">
                   <p className="font-semibold text-lg">

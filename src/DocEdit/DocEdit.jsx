@@ -70,6 +70,7 @@ const DocEdit = ({ onSave }) => {
                                     className="hide-scrollbar w-full bg-transparent outline-none h-full p-2"
                                     readOnly
                                     value={text}
+                                    style={{whiteSpace:"pre-wrap"}}
                                 />
                             )}
                         </div>

@@ -14,7 +14,7 @@ const documentSlice = createSlice({
       state.docId = action.payload;
     },
     setDocumentText: (state, action) => {
-      console.log("reducer", action.payload);
+      
       state.documentText = action.payload;
     },
     setUploadDocText: (state, action) => {
