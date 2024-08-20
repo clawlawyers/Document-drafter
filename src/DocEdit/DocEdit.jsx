@@ -10,21 +10,23 @@ import { useNavigate } from "react-router-dom";
 
 const DocEdit = ({ onSave }) => {
     let navigate = useNavigate();
-    const ediText = useSelector((state) => state.document.documentText);
+    const ediText = useSelector((state) => state.document.uploadDocText);
     const texteditable = useSelector((state) => state.document.uploadDocText);
     const [text, setText] = useState("");
 
     const [loading, setLoading] = useState(true);
     const [activeSidebar, setActiveSidebar] = useState("preview");
 
-    useEffect(() => {
-        setText(ediText);
-    }, [ediText]);
+    // useEffect(() => {
+    //     setText(ediText);
+    // }, [ediText]);
 
     useEffect(() => {
-        if (texteditable) {
-            setText(texteditable);
+        if (ediText) {
+            setText(ediText);
         }
+        else
+            setText(texteditable)
     }, [texteditable]);
 
     useEffect(() => {
@@ -56,8 +58,8 @@ const DocEdit = ({ onSave }) => {
                     <NavbarLeft />
                 </div>
 
-                <div className="flex flex-row w-full p-5 space-x-5 bg-customBlack rounded-md h-full justify-center items-start">
-                    <div className="flex flex-col w-[70%] h-full space-y-5">
+                <div className="flex flex-row w-full  space-x-5 rounded-md h-full justify-center items-start">
+                    <div className="flex flex-col bg-customBlack rounded-md  w-[70%] h-full space-y-5 p-5">
                         <div className="border-white bg-card-gradient flex flex-col justify-center items-center border-2 rounded-md w-full h-full">
                             {loading ? (
                                 <img
@@ -93,7 +95,7 @@ const DocEdit = ({ onSave }) => {
                         </div>
                     </div>
 
-                    <div className="w-[30%] h-full overflow-hidden ">
+                    <div className="w-[30%] h-full overflow-hidden bg-customBlack rounded-md p-5  ">
                         <AnimatePresence mode="wait">
                             {activeSidebar === "edit" ? (
                                 <motion.div

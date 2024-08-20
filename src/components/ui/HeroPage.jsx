@@ -21,7 +21,7 @@ const HeroPage = () => {
       <div className="flex flex-row gap-7 cursor-pointer   ">
         <div
           onClick={() => navigate("/upload")}
-          className="hover:scale-110 duration-200 flex items-center flex-col gap-3 p-5 bg-logo-gradient rounded-[0.9375rem] border-white border-[3px] px-14"
+          className="hover:scale-110 duration-200 flex items-center flex-col gap-3 p-5  bg-logo-gradient rounded-[0.9375rem] border-white border-[3px] px-20"
         >
           <img src={Cloud} alt="" />
           <div>Upload Your Document</div>
@@ -35,7 +35,7 @@ const HeroPage = () => {
         </div>
         <div
           onClick={() => navigate("/DocType")}
-          className="flex hover:scale-110 duration-200 items-center flex-col gap-3 p-5 bg-logo-gradient rounded-[0.9375rem] border-white border-[3px] px-14"
+          className="flex hover:scale-110 duration-200 items-center flex-col gap-3 p-5 bg-logo-gradient rounded-[0.9375rem] border-white border-[3px] px-20"
         >
           <img src={Type} alt="" />
           <div>Select Type of Document</div>

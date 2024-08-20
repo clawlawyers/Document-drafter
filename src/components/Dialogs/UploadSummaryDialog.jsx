@@ -45,7 +45,7 @@ const UploadSummary = () => {
         </div>
         {/* buttons */}
         <div className="flex flex-row justify-center items-center w-full space-x-5">
-          <button onClick={()=>navigate("/") } className="bg-card-gradient  text-white font-bold p-3 px-10 rounded-md">
+          <button onClick={()=>navigate("/Snippets") } className="bg-card-gradient  text-white font-bold p-3 px-10 rounded-md">
             Go Back
           </button>
           <button

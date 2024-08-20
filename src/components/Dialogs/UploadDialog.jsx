@@ -10,7 +10,7 @@ import UserModal from "../Modals/UserModal";
 import ResponseDialog from "../Dialogs/EditableDialog";
 import { useDispatch, useSelector } from "react-redux";
 import { setFileBlob } from "../../features/authSlice";
-import { setDocId, setDocumentText } from "../../features/DocumentSlice";
+import { setDocId, setUploadDocText } from "../../features/DocumentSlice";
 import axios from "axios";
 import {
   setBreakoutData,
@@ -88,7 +88,7 @@ const UploadDialog = () => {
           const data = res.data.data.fetchedData;
           console.log(data);
           dispatch(setDocId(data.doc_id));
-          dispatch(setDocumentText(data.document));
+          dispatch(setUploadDocText(data.document));
           setResponseText(data.document);
           simulateUpload();
         } catch (error) {
@@ -130,7 +130,7 @@ const UploadDialog = () => {
     async (text) => {
       // Handle the save action, e.g., save to backend or local storage
       console.log("Saved response text:", text);
-      dispatch(setDocumentText(text));
+      dispatch(setUploadDocText(text));
     },
     [dispatch]
   );
@@ -184,7 +184,7 @@ const UploadDialog = () => {
               {uploadStatus !== "analyzing" && (
                 <HighlightOffIcon
                   onClick={handleCancel}
-                  className="text-teal-500 text-2xl scale-150 cursor-pointer"
+                  className="text-teal-700 text-2xl scale-150 cursor-pointer"
                 />
               )}
             </div>
@@ -265,13 +265,6 @@ const UploadDialog = () => {
         </div>
       </div>
 
-      {/* Response Dialog */}
-      {/* <ResponseDialog
-        open={openResponseDialog}
-        onClose={setOpenResponseDialog}
-         // Pass the initial value
-        onSave={handleSaveResponse} // Handle save action
-      /> */}
     </div>
   );
 };

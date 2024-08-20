@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from "react";
 import { useSelector } from "react-redux";
 import axios from "axios";
-import { Route, Routes, Outlet } from "react-router-dom";
+import { Route, Routes, Outlet, useNavigate } from "react-router-dom";
 import NavbarRight from "../components/Navbar/NavbarRight";
 import NavbarLeft from "../components/Navbar/NavbarLeft";
 import TextBoxDialog from "../components/Dialogs/TextBoxDialog";
@@ -11,10 +11,11 @@ import NeutralDialog from "../components/Dialogs/NeutralDialog";
 import FavourDialog from "../components/Dialogs/FavourDialog";
 import DirectionDialog from "../components/Dialogs/DirectionDialog";
 import QueryGIF from "../components/ui/QueryGIF";
-import giff from "../assets/icons/query.gif";
+import giff from "../assets/icons/2.gif";
 import { NODE_API_ENDPOINT } from "../utils/utils";
-
+import toast from "react-hot-toast";
 const Snippets = () => {
+  let navigate = useNavigate();
   const doc_id = useSelector((state) => state.document.docId);
   const [showGIF, setShowGif] = useState(false);
   const [query, setquery] = useState("");
@@ -35,13 +36,13 @@ const Snippets = () => {
     }
   }, [textBoxData]);
 
-  const hadnleSend = async (e) => {
+  const handleSend = async (e) => {
     e.preventDefault();
     let data = JSON.stringify({
       doc_id: doc_id,
       query: query,
     });
-
+  
     let config = {
       method: "post",
       maxBodyLength: Infinity,
@@ -52,7 +53,7 @@ const Snippets = () => {
       data: data,
     };
     var newdata = textBoxData;
-
+  
     newdata.push({
       query: query,
       response: {},
@@ -60,24 +61,29 @@ const Snippets = () => {
     });
     setTextBoxData([...newdata]);
     console.log(textBoxData);
-
-    const response = await axios.request(config);
-    newdata[newdata.length - 1].isLoading = true;
-    newdata[newdata.length - 1].response = response;
-
-    setTextBoxData(newdata);
-    localStorage.setItem("newdata", JSON.stringify(newdata));
-    console.log(textBoxData);
-    console.log("query is", query);
-    setquery("");
-    localStorage.removeItem("newdata")
+  
+    try {
+      const response = await axios.request(config);
+      newdata[newdata.length - 1].isLoading = true;
+      newdata[newdata.length - 1].response = response;
+  
+      setTextBoxData(newdata);
+      localStorage.setItem("newdata", JSON.stringify(newdata));
+      console.log(textBoxData);
+      console.log("query is", query);
+      setquery("");
+      localStorage.removeItem("newdata");
+    } catch (error) {
+      console.error("Error sending data:", error);
+      toast.error("Error fetching");
+    }
   };
 
   return (
     <div className="flex flex-row h-screen gap-3 p-6">
-      <div className="flex flex-col w-3/4 gap-[0.70rem]">
+      <div className="flex flex-col w-3/4 gap-6">
         <NavbarRight />
-        <div className="flex flex-col scrollbar-hide h-full mt-4 p-2 gap-3 overflow-y-auto rounded-[0.625rem] bg-customBlack">
+        <div className="flex flex-col scrollbar-hide h-[86vh] pb-5  gap-3  rounded-[0.625rem] bg-customBlack">
           <Routes>
             <Route path="/" element={<Outlet />}>
               <Route path="" element={<SnippetDialog />} />
@@ -87,6 +93,11 @@ const Snippets = () => {
               <Route path="/Direction/:id" element={<DirectionDialog />} />
             </Route>
           </Routes>
+          <div className="flex flex-row w-full justify-end items-center px-5 font-semibold space-x-5">
+            <button onClick={()=> navigate("/summary")} className="bg-card-gradient p-2 border border-white rounded-md" >Generate Summary</button>
+            <button onClick={()=> navigate("/DocPreview")} className="bg-card-gradient p-2 border border-white rounded-md" >Document Preview</button>
+
+          </div>
         </div>
       </div>
       <div className="flex flex-col w-1/4">
@@ -110,7 +121,7 @@ const Snippets = () => {
               <QueryGIF />
             )}
           </div>
-          <form onSubmit={hadnleSend} className="sticky w-[95%] p-2 space-x-2 flex flex-row justify-center items-center bottom-3">
+          <form onSubmit={handleSend} className="sticky w-[95%] p-2 space-x-2 flex flex-row justify-center items-center bottom-3">
             <input
               className="bg-white text-black rounded-md border-[0.05rem] border-black p-2 px-4 w-full"
               type="text"
@@ -120,7 +131,7 @@ const Snippets = () => {
             />
             <button
               type="submit"
-              className="text-sm text-white bg-black p-2.5 px-3 rounded"
+              className="text-sm text-white bg-[#001616] p-2.5 px-3 rounded"
             >
               SEND
             </button>

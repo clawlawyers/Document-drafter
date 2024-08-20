@@ -11,7 +11,7 @@ import { useEffect } from "react";
 import {
   setDocId,
   clearDocId,
-  setDocumentText,
+  setUploadDocText,
   setEssentialRequirements,
   setOptionalRequirements,
   clearDocumentState,
@@ -29,7 +29,7 @@ const DrafterArgs = () => {
   const prompt = useSelector((state) => state.prompt.prompt);
   const docId = useSelector((state) => state.document.docId);
 
-  const [documentText, setDocText] = useState("");
+  const [uploadDocText, setDocText] = useState("");
   const [EssentialReq, setEssentialReq] = useState([]);
   const [OptionalReq, setOptionalReq] = useState([]);
   const [essentialInputs, setEssentialInputs] = useState({});
@@ -105,7 +105,7 @@ const DrafterArgs = () => {
       console.log(typeof(test));
       console.log(test);
       setDocText(docText);
-      dispatch(setDocumentText(docText));
+      dispatch(setUploadDocText(docText));
 
       const essentialRequirements =
         data.data.data.fetchedData.essential_requirements;
@@ -231,7 +231,7 @@ const DrafterArgs = () => {
                 />
               </div>
             ) : (
-              <p>{documentText}</p>
+              <p>{uploadDocText}</p>
             )}
           </div>
         </div>

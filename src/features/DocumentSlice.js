@@ -4,8 +4,8 @@ const documentSlice = createSlice({
   name: "document",
   initialState: {
     docId: null,
-    documentText: null,
     uploadDocText: null,
+    // uploadDocText: null,
     essentialRequirements: [], // Storing the list of essential requirements
     optionalRequirements: [], // Storing the list of optional requirements
   },
@@ -13,10 +13,10 @@ const documentSlice = createSlice({
     setDocId: (state, action) => {
       state.docId = action.payload;
     },
-    setDocumentText: (state, action) => {
+    // setUploadDocText: (state, action) => {
       
-      state.documentText = action.payload;
-    },
+    //   state.uploadDocText = action.payload;
+    // },
     setUploadDocText: (state, action) => {
       state.uploadDocText = action.payload;
     },
@@ -31,7 +31,7 @@ const documentSlice = createSlice({
     },
     clearDocumentState: (state) => {
       state.docId = null;
-      state.documentText = null;
+      state.uploadDocText = null;
       state.essentialRequirements = [];
       state.optionalRequirements = [];
     },
@@ -40,12 +40,11 @@ const documentSlice = createSlice({
 
 export const {
   setDocId,
-  setDocumentText,
+  setUploadDocText,
   setEssentialRequirements,
   setOptionalRequirements,
   clearDocId,
   clearDocumentState,
-  setUploadDocText
 } = documentSlice.actions;
 
 export default documentSlice.reducer;

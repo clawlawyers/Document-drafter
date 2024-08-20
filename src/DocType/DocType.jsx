@@ -19,13 +19,14 @@ const DocType = () => {
     setSelectedValue(e.target.value);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async(e) => {
     e.preventDefault();
     setLoading(true);
     // Perform submit action
     localStorage.setItem("from","docType")
 
     dispatch(setPrompt(selectedValue));
+
     navigate("/Drafter/DrafterArgs");
     setLoading(false);
     

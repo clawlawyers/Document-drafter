@@ -5,7 +5,9 @@ import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import remarkBreaks from "remark-breaks";
 import loaderGif from "../../assets/icons/2.gif";
+import toast from "react-hot-toast";
 const SummaryDisplay = () => {
+
   const [text, setText] = useState("");
   const [loading, setLoading] = useState(false);
   const doc_id = useSelector((state) => state.document.docId);
@@ -18,6 +20,7 @@ const SummaryDisplay = () => {
       setText(res.data.data.fetchedData.summary);
     } catch (e) {
       console.log(e);
+      toast.error("Failed to fetch ")
     } finally {
       setLoading(false);
     }

@@ -30,9 +30,9 @@ const SnippetDialog = () => {
   }));
 
   return (
-    <div className="hide-scrollbar flex flex-col gap-5 mx-6 my-5  h-[80vh]">
+    <div className="hide-scrollbar overflow-y-auto flex flex-col gap-5 mx-6 my-5  h-fit">
       {combinedData.map((item, i) => (
-        <div key={i} className="flex flex-row gap-3">
+        <div key={i} className="flex flex-row items-center gap-3">
           <div
             className={twMerge(
               "flex flex-col rounded-[0.635rem] border-2 px-4 py-2 border-white bg-popup-gradient w-3/4 gap-1",
@@ -65,6 +65,7 @@ const SnippetDialog = () => {
           </div>
         </div>
       ))}
+      
     </div>
   );
 };
