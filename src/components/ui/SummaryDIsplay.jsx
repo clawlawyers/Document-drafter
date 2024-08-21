@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { getSummary } from "../../actions/Summary";
 import { useSelector } from "react-redux";
-import ReactMarkdown from "react-markdown";
-import remarkGfm from "remark-gfm";
-import remarkBreaks from "remark-breaks";
+
 import loaderGif from "../../assets/icons/2.gif";
 import toast from "react-hot-toast";
 const SummaryDisplay = () => {
@@ -21,6 +19,7 @@ const SummaryDisplay = () => {
     } catch (e) {
       console.log(e);
       toast.error("Failed to fetch ")
+     
     } finally {
       setLoading(false);
     }
@@ -50,9 +49,9 @@ const SummaryDisplay = () => {
             id="summary-text"
             className="h-full overflow-y-auto scrollbar-hide"
           >
-            <ReactMarkdown remarkPlugins={[remarkGfm, remarkBreaks]}>
-              {text}
-            </ReactMarkdown>
+            <p>
+              {text || "Loading ..."}
+            </p>
           </div>
         )}
       </div>

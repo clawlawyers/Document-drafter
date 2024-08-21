@@ -2,3 +2,27 @@ export const NODE_API_ENDPOINT =
   process.env.NODE_ENV === "production"
     ? "https://claw-app-dev.onrender.com/api/v1"
     : "http://localhost:8000/api/v1";
+
+   export  function formatAgreementText(text) {
+      return text
+        // Convert newlines to <br />
+        .replace(/\n/g, '<br />')
+    
+        // Convert tabs to four non-breaking spaces
+        .replace(/\t/g, '&nbsp;&nbsp;&nbsp;&nbsp;')
+    
+        // Convert multiple spaces to non-breaking spaces
+        .replace(/ {2,}/g, match => '&nbsp;'.repeat(match.length))
+    
+        // Convert greater-than, less-than, and ampersand to HTML entities
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+    
+        // Convert double quotes to HTML entities to prevent issues with attributes
+        .replace(/"/g, '&quot;')
+    
+        // Convert single quotes to HTML entities to prevent issues with attributes
+        .replace(/'/g, '&#39;');
+    }
+    

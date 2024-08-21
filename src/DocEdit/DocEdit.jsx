@@ -7,6 +7,7 @@ import { useSelector } from "react-redux";
 import loaderGif from "../assets/icons/2.gif";
 import EditSidebar from "../components/ui/EditSidebar";
 import { useNavigate } from "react-router-dom";
+import { formatAgreementText } from "../utils/utils";
 
 const DocEdit = ({ onSave }) => {
     let navigate = useNavigate();
@@ -16,6 +17,8 @@ const DocEdit = ({ onSave }) => {
 
     const [loading, setLoading] = useState(true);
     const [activeSidebar, setActiveSidebar] = useState("preview");
+
+  
 
     // useEffect(() => {
     //     setText(ediText);
@@ -69,11 +72,12 @@ const DocEdit = ({ onSave }) => {
                                 />
                             ) : (
                                 <textarea
-                                    className="hide-scrollbar w-full bg-transparent outline-none h-full p-2"
-                                    readOnly
-                                    value={text}
-                                    style={{whiteSpace:"pre-wrap"}}
-                                />
+                                className="hide-scrollbar w-full bg-transparent outline-none h-full p-2"
+                                readOnly
+                                value={`${text}`}
+                                style={{ whiteSpace: "pre-wrap", overflowWrap: "break-word", wordWrap: "break-word" }}
+                              />
+                              
                             )}
                         </div>
                         <div className="flex flex-row justify-end items-center gap-5">
