@@ -6,8 +6,9 @@ import remarkGfm from "remark-gfm";
 import remarkBreaks from "remark-breaks";
 import loaderGif from "../../assets/icons/2.gif";
 import toast from "react-hot-toast";
-const SummaryDisplay = () => {
+import Markdown from "react-markdown";
 
+const SummaryDisplay = () => {
   const [text, setText] = useState("");
   const [loading, setLoading] = useState(false);
   const doc_id = useSelector((state) => state.document.docId);
@@ -20,7 +21,7 @@ const SummaryDisplay = () => {
       setText(res.data.data.fetchedData.summary);
     } catch (e) {
       console.log(e);
-      toast.error("Failed to fetch ")
+      toast.error("Failed to fetch ");
     } finally {
       setLoading(false);
     }
@@ -50,9 +51,7 @@ const SummaryDisplay = () => {
             id="summary-text"
             className="h-full overflow-y-auto scrollbar-hide"
           >
-            <ReactMarkdown remarkPlugins={[remarkGfm, remarkBreaks]}>
-              {text}
-            </ReactMarkdown>
+            <Markdown>{text}</Markdown>
           </div>
         )}
       </div>
