@@ -5,6 +5,7 @@ import { useSelector } from "react-redux";
 import loaderGif from "../../assets/icons/2.gif";
 import toast from "react-hot-toast";
 import Markdown from "react-markdown";
+import { trimQuotes } from "../../utils/utils";
 
 const SummaryDisplay = () => {
   const [text, setText] = useState("");
@@ -15,8 +16,17 @@ const SummaryDisplay = () => {
     setLoading(true);
     try {
       const res = await getSummary(doc_id);
-      console.log(res.data.data.fetchedData.summary);
-      setText(res.data.data.fetchedData.summary);
+      let temp = String.raw`${res.data.data.fetchedData.summary}`;
+
+// Replace \n with line breaks, \t with tabs, and \" with "
+temp = temp.replace(/\\n/g, '\n\n').replace(/\\t/g, '\t').replace(/\\"/g, '"').replace(/1\n"/g, '\n');
+
+console.log(temp);  // Check the processed text
+   // Update state with processed text
+ // Check the processed text
+      // Update state with processed text
+
+      setText(trimQuotes(temp));
     } catch (e) {
       console.log(e);
       toast.error("Failed to fetch ");

@@ -83,7 +83,7 @@ const Snippets = () => {
     <div className="flex flex-row h-screen gap-3 p-6">
       <div className="flex flex-col w-3/4 gap-6">
         <NavbarRight />
-        <div className="flex flex-col scrollbar-hide h-[86vh] pb-5  gap-3  rounded-[0.625rem] bg-customBlack">
+        <div className="flex flex-col scrollbar-hide h-[86vh] pb-5  gap-3 justify-between  rounded-[0.625rem] bg-customBlack">
           <Routes>
             <Route path="/" element={<Outlet />}>
               <Route path="" element={<SnippetDialog />} />
@@ -102,7 +102,7 @@ const Snippets = () => {
       </div>
       <div className="flex flex-col w-1/4">
         <NavbarLeft />
-        <div className="overflow-y-auto flex relative flex-col h-full mt-4 p-2 gap-3 rounded-[0.625rem] bg-customBlack">
+        <div className="overflow-y-auto flex relative flex-col h-[86vh] mt-4 p-2 gap-3 rounded-[0.625rem] bg-customBlack">
           <div ref={chatContainerRef} className="chat section overflow-y-auto scrollbar-hide h-full flex flex-col">
             {textBoxData.length > 0 ? (
               <div className="flex flex-col justify-center items-center w-full pb-10 gap-3">

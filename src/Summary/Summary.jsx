@@ -14,7 +14,7 @@ const Summary = () => {
         <NavbarLeft />
       </section>
       {loading ? <SummaryLoader /> : 
-      <div className="w-full lg:px-52 h-full ">
+      <div className="w-full lg:px-52 h-[90vh] ">
         <UploadSummary text={response} />
       </div>
       }

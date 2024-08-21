@@ -24,7 +24,6 @@ import { generateDocument } from "../actions/DocType";
 import Markdown from "react-markdown";
 import { trimQuotes } from "../utils/utils";
 
-
 const DrafterArgs = () => {
   let path = localStorage.getItem("from");
   let navigate = useNavigate();
@@ -32,13 +31,14 @@ const DrafterArgs = () => {
   const [loading, setIsLoading] = useState(false);
   const prompt = useSelector((state) => state.prompt.prompt);
   const docId = useSelector((state) => state.document.docId);
-
+  const docuText = useSelector((state)=> state.document.uploadDocText)
   const [uploadDocText, setDocText] = useState("");
+  const [fallbackText , setFallbackText] = useState();
   const [EssentialReq, setEssentialReq] = useState([]);
   const [OptionalReq, setOptionalReq] = useState([]);
   const [essentialInputs, setEssentialInputs] = useState({});
   const [optionalInputs, setOptionalInputs] = useState({});
-
+  const[docID , setDocID] = useState(null)
   useEffect(() => {
     dispatch(clearDocId());
 
@@ -49,16 +49,16 @@ const DrafterArgs = () => {
           console.log(doc_id);
           console.log(data);
           dispatch(setDocId(doc_id));
+          setDocID(doc_id);
           if (doc_id && prompt) {
             if (path !== "docType") {
-              fetchData();
+              fetchData(doc_id);
             } else {
               fetchReq(doc_id);
             }
           }
         });
 
-        console.log(docId);
       } catch (error) {
         console.error("Failed to fetch document ID:", error);
       }
@@ -67,6 +67,8 @@ const DrafterArgs = () => {
   }, []);
 
   useEffect(() => {}, [docId]);
+
+
 
   const fetchReq = async (doc_id) => {
     console.log(docId);
@@ -98,28 +100,29 @@ const DrafterArgs = () => {
     }
   };
 
-  const fetchData = async () => {
+  const fetchData = async (doc_id) => {
     setIsLoading(true);
     try {
-      await getDocFromPrompt(docId, prompt).then((data)=> {
+      await getDocFromPrompt(doc_id, prompt).then((data) => {
+        const docText = data.data.data.fetchedData.document.replaceAll("\\\\", "");
+        const processedText = docText;
+        setDocText(trimQuotes(processedText));
+        // setDocText(docText);
+        console.log(docText);
+      setFallbackText("Sale Agreement\n\nThis Sale Agreement (\"Agreement\") is made and entered into on this [DATE] by and between:\n\n1. [SELLER'S NAME], residing at [SELLER'S ADDRESS] (hereinafter referred to as the \"Seller\"); \nand\n2. [BUYER'S NAME], residing at [BUYER'S ADDRESS] (hereinafter referred to as the \"Buyer\").\n\nRecitals:\n\nWHEREAS, the Seller is the legal and beneficial owner of the property described below and desires to sell the same to the Buyer.\n\nWHEREAS, the Buyer is desirous of purchasing the said property from the Seller on the terms and conditions set forth in this Agreement.\n\nNOW, THEREFORE, in consideration of the mutual covenants and agreements hereinafter set forth, the parties hereto agree as follows:\n\n1. Description of Property:\nThe property being sold under this Agreement is described as [PROPERTY DETAILS, INCLUDING ADDRESS, LEGAL DESCRIPTION, AND ANY UNIQUE IDENTIFIERS]. The Seller hereby confirms that the property is free from all encumbrances, claims, and demands whatsoever.\n\n");
+      
+        dispatch(setUploadDocText(trimQuotes(processedText)));
 
-       const docText = data.data.data.fetchedData.document;
-       setDocText(docText);
-       dispatch(setUploadDocText(docText));
-       
-      const essentialRequirements =
-        data.data.data.fetchedData.essential_requirements;
+        const essentialRequirements =
+          data.data.data.fetchedData.essential_requirements;
         setEssentialReq(essentialRequirements);
         dispatch(setEssentialRequirements(essentialRequirements));
-      const optionalRequirements =
-      data.data.data.fetchedData.optional_requirements;
-      setOptionalReq(optionalRequirements);
-      dispatch(setOptionalRequirements(optionalRequirements));
-    });
-    console.log(uploadDocText)
-   
-      
-      
+        const optionalRequirements =
+          data.data.data.fetchedData.optional_requirements;
+        setOptionalReq(optionalRequirements);
+        dispatch(setOptionalRequirements(optionalRequirements));
+      });
+      console.log(uploadDocText);
     } catch (e) {
       setDocText("");
       toast.error("Failed to fetch data");
@@ -181,9 +184,10 @@ const DrafterArgs = () => {
       const res2 = await uploadOptional(docId, finalOptionalString);
       console.log(res2);
       const res = await generateDocument(docId);
-        console.log(res.data.data.fetchedData.document);
-        setDocText(res.data.data.fetchedData.document);
-        dispatch(setUploadDocText(res.data.data.fetchedData.document))
+      console.log(res.data.data.fetchedData.document);
+      setDocText(res.data.data.fetchedData.document);
+      setFallbackText("Sale Agreement\n\nThis Sale Agreement (\"Agreement\") is made and entered into on this [DATE] by and between:\n\n1. [SELLER'S NAME], residing at [SELLER'S ADDRESS] (hereinafter referred to as the \"Seller\"); \nand\n2. [BUYER'S NAME], residing at [BUYER'S ADDRESS] (hereinafter referred to as the \"Buyer\").\n\nRecitals:\n\nWHEREAS, the Seller is the legal and beneficial owner of the property described below and desires to sell the same to the Buyer.\n\nWHEREAS, the Buyer is desirous of purchasing the said property from the Seller on the terms and conditions set forth in this Agreement.\n\nNOW, THEREFORE, in consideration of the mutual covenants and agreements hereinafter set forth, the parties hereto agree as follows:\n\n1. Description of Property:\nThe property being sold under this Agreement is described as [PROPERTY DETAILS, INCLUDING ADDRESS, LEGAL DESCRIPTION, AND ANY UNIQUE IDENTIFIERS]. The Seller hereby confirms that the property is free from all encumbrances, claims, and demands whatsoever.\n\n");
+      dispatch(setUploadDocText(res.data.data.fetchedData.document));
     } catch (e) {
       console.log(e);
     }
@@ -193,8 +197,6 @@ const DrafterArgs = () => {
     console.log(finalEssentialString); // Optional requirements in string format
 
     toast.success("Requirements saved successfully!");
-    handleGenerate();
-
   };
 
   return (
@@ -224,11 +226,100 @@ const DrafterArgs = () => {
                 />
               </div>
             ) : (
-              <p>
-               {/* {uploadDocText && <Markdown>{trimQuotes(`${uploadDocText}`)}</Markdown>} */}
-               <Markdown>{uploadDocText}</Markdown>
+              <div>
+                <Markdown
+                  children={uploadDocText.replace(/\\n/g, '\n').replace(/\\t/g, '\t').replace(/\\"/g, '"')}
+                  components={{
+                    p(props) {
+                      const { children } = props;
+                      return (
+                        <p className="text-balance py-1 text-base text-primary-theme-white-50">
+                          {children}
+                        </p>
+                      );
+                    },
 
-              </p>
+                    h1(props) {
+                      const { children } = props;
+                      return (
+                        <h1 className="pb-6 pt-12 text-4xl font-bold text-primary-theme-white-50">
+                          {children}
+                        </h1>
+                      );
+                    },
+
+                    h3(props) {
+                      const { children } = props;
+                      return (
+                        <h3 className="py-3 text-xl font-bold text-primary-theme-white-50">
+                          {children}
+                        </h3>
+                      );
+                    },
+
+                    h4(props) {
+                      const { children } = props;
+                      return (
+                        <h4 className="py-3 text-lg font-bold text-primary-theme-white-50">
+                          {children}
+                        </h4>
+                      );
+                    },
+
+                    ul(props) {
+                      const { children } = props;
+                      return <ul className="">{children}</ul>;
+                    },
+
+                    a(props) {
+                      const { href } = props;
+                      return (
+                        <a
+                          className="text-wrap text-primary-theme-cyan-200/90 underline hover:text-primary-theme-cyan-200"
+                          href={href}
+                        >
+                          {href}
+                        </a>
+                      );
+                    },
+
+                    li(props) {
+                      const { children } = props;
+                      return (
+                        <li className="py-1 text-base text-primary-theme-white-50">
+                          {children}
+                        </li>
+                      );
+                    },
+
+                    hr() {
+                      return (
+                        <div className="h-0 border-t border-primary-theme-white-50 py-2" />
+                      );
+                    },
+
+                    img(props) {
+                      const { alt, src } = props;
+                      return (
+                        <img
+                          loading="lazy"
+                          alt={alt || "Image"}
+                          className="my-6 rounded-lg"
+                        />
+                      );
+                    },
+
+                    code(props) {
+                      const { children } = props;
+                      return (
+                        <div className="mx-2 my-6 overflow-auto rounded-md border border-primary-theme-white-50/10 p-2 text-primary-theme-white-200">
+                          <code>{children}</code>
+                        </div>
+                      );
+                    },
+                  }}
+                />
+              </div>
             )}
           </div>
         </div>
@@ -250,47 +341,51 @@ const DrafterArgs = () => {
                     Essential Requirements
                   </p>
                   <div className="w-full flex flex-col hide-scrollbar h-44 overflow-y-auto">
-
-                  {EssentialReq.map((item, index) => (
-                    <div key={index} className="w-full flex  flex-col space-y-2">
-                      <label htmlFor={item} className="text-sm font-medium">
-                        {item}
-                      </label>
-                      <input
-                        type="text"
-                        required
-                        id={item}
-                        name={item}
-                        value={essentialInputs[item] || ""}
-                        onChange={(e) => handleInputChange(e, "essential")}
-                        placeholder={`Enter ${item}`}
-                        className="w-full p-2 border border-gray-300 rounded-md"
-                      />
-                    </div>
-                  ))}
+                    {EssentialReq.map((item, index) => (
+                      <div
+                        key={index}
+                        className="w-full flex  flex-col space-y-2"
+                      >
+                        <label htmlFor={item} className="text-sm font-medium">
+                          {item}
+                        </label>
+                        <input
+                          type="text"
+                          required
+                          id={item}
+                          name={item}
+                          value={essentialInputs[item] || ""}
+                          onChange={(e) => handleInputChange(e, "essential")}
+                          placeholder={`Enter ${item}`}
+                          className="w-full p-2 border border-gray-300 rounded-md"
+                        />
+                      </div>
+                    ))}
                   </div>
                 </div>
 
                 <div className="w-full overflow-y-auto scrollbar-hide flex flex-col space-y-4 justify-start items-center h-52">
                   <p className="font-semibold text-lg">Optional Requirements</p>
                   <div className="w-full flex flex-col hide-scrollbar h-44 overflow-y-auto">
-
-                  {OptionalReq.map((item, index) => (
-                    <div key={index} className="w-full flex flex-col space-y-2">
-                      <label htmlFor={item} className="text-sm font-medium">
-                        {item}
-                      </label>
-                      <input
-                        type="text"
-                        id={item}
-                        name={item}
-                        value={optionalInputs[item] || ""}
-                        onChange={(e) => handleInputChange(e, "optional")}
-                        placeholder={`Enter ${item}`}
-                        className="w-full p-2 border border-gray-300 rounded-md"
-                      />
-                    </div>
-                  ))}
+                    {OptionalReq.map((item, index) => (
+                      <div
+                        key={index}
+                        className="w-full flex flex-col space-y-2"
+                      >
+                        <label htmlFor={item} className="text-sm font-medium">
+                          {item}
+                        </label>
+                        <input
+                          type="text"
+                          id={item}
+                          name={item}
+                          value={optionalInputs[item] || ""}
+                          onChange={(e) => handleInputChange(e, "optional")}
+                          placeholder={`Enter ${item}`}
+                          className="w-full p-2 border border-gray-300 rounded-md"
+                        />
+                      </div>
+                    ))}
                   </div>
                 </div>
 

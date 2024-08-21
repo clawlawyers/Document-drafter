@@ -25,3 +25,16 @@ export const getDocFromPrompt = async (doc_id, prompt) => {
     throw new Error(e.value);
   }
 };
+
+export const breakout = async(doc_id) => {
+  try{
+    const res = await axios.post(`${NODE_API_ENDPOINT}/ai-drafter/breakout`, {
+      doc_id: doc_id,
+    });
+    return res;
+  }
+  catch(e)
+  {
+    throw new Error(e.value)
+  }
+}
