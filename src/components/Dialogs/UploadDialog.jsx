@@ -50,6 +50,9 @@ const UploadDialog = () => {
       dispatch(setBreakoutData(res.data));
       setUploadStatus(""); // Stop the analyzing GIF after response
       setFile(null);
+      await axios.post(`${NODE_API_ENDPOINT}/ai-drafter/generate_db`, {
+        doc_id: doc_id,
+      });
       // setOpenResponseDialog(true); // Open the response dialog
       navigate("/DocPreview");
     } catch (error) {
@@ -264,7 +267,6 @@ const UploadDialog = () => {
           )}
         </div>
       </div>
-
     </div>
   );
 };
