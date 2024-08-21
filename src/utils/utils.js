@@ -28,7 +28,7 @@ export const NODE_API_ENDPOINT =
     
     export function trimQuotes(text) {
       if (text.startsWith('"') && text.endsWith('"')) {
-        return text.slice(1, -1);
+        return text.slice(1, -1).replace(/"/g, "'");
       }
-      return text;
+      return text.replace(/"/g, "'");
     }

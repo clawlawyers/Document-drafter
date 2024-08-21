@@ -21,6 +21,7 @@ const ResponseDialog = ({ open, onClose,  onSave }) => {
 
   // Sync the state with the prop whenever it changes
   useEffect(() => {
+    
     setText(responseText);
     dispatch(setUploadDocText(responseText));
   }, [responseText]);

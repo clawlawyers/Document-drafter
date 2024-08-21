@@ -24,8 +24,6 @@ import { generateDocument } from "../actions/DocType";
 import Markdown from "react-markdown";
 import { trimQuotes } from "../utils/utils";
 
-const reqDoc =
-  "Sale Agreement\n\nThis Sale Agreement is made and entered into on [DATE] by and between:\n\nSeller: [Seller's Name], residing at [Seller's Address]\nBuyer: [Buyer's Name], residing at [Buyer's Address]\n\nRecitals:\n\nWhereas the Seller is the sole and exclusive owner of the Property (as defined below) and desires to sell the Property to the Buyer, and the Buyer desires to purchase the Property from the Seller, on the terms and conditions set forth in this Agreement.\n\nNow, therefore, in consideration of the mutual covenants and agreements herein contained, the parties hereby agree as follows:\n\n1. Description of Property:\nThe property being sold under this Agreement is the real estate located at [Address/Legal Description], including all improvements, fixtures, and appurtenances thereto (the \"Property\"). The Property is more particularly described as [3-4 line detailed description].\n\n2. Purchase Price:\nThe total purchase price for the Property is [Amount in words] ([Amount in numbers]), payable as follows: (i) an initial deposit of [Deposit Amount] paid upon the execution of this Agreement, and (ii) the balance of [Balance Amount] to be paid at Closing (as defined below).\n\n3. Payment Terms:\nUpon the execution of this Agreement, the Buyer shall pay an initial deposit of [Deposit Amount] to the Seller. The remaining balance of [Balance Amount] shall be paid by the Buyer to the Seller at Closing.\n\n4. Closing:\nThe closing of the sale of the Property (the \"Closing\") shall take place on [Closing Date] at [Closing Location]. At Closing, the Seller shall deliver to the Buyer a duly executed and notarized warranty deed conveying good and marketable title to the Property, free and clear of all encumbrances, except for those permitted in this Agreement.\n\n5. Possession:\nUpon Closing, the Seller shall deliver full and exclusive possession of the Property to the Buyer, free and clear of any tenants or occupants.\n\n6. Conditions Precedent:\nThe obligations of the parties under this Agreement are subject to the following conditions precedent: (i) the Seller obtaining all necessary clearances and permits for the transfer of the Property, and (ii) there being no legal impediments or encumbrances affecting the Seller's ability to convey good and marketable title to the Property.\n\n7. Representations and Warranties:\nThe Seller represents and warrants that: (i) the Seller has good and marketable title to the Property, (ii) the Seller has the full right, power, and authority to sell the Property, and (iii) the Property is in good condition and repair, subject to normal wear and tear.\n\n8. Risk of Loss:\nThe risk of loss or damage to the Property shall remain with the Seller until the Closing. In the event of any such loss or damage prior to Closing, the Buyer shall have the option to terminate this Agreement or proceed with the transaction, with an appropriate adjustment to the Purchase Price.\n\n9. Governing Law:\nThis Agreement shall be governed by the laws of the State of [State]. The parties agree that the [Applicable Law 1] and [Applicable Law 2] shall apply to this transaction.\n\n10. Entire Agreement:\nThis Agreement constitutes the entire understanding and agreement between the parties with respect to the subject matter hereof and supersedes all prior agreements, understandings, negotiations, and discussions, whether oral or written, between the parties.\n\n11. Amendments:\nThis Agreement may only be amended, modified, or supplemented by a written instrument duly executed by the Seller and the Buyer.\n\n12. Miscellaneous:\na. Notices: All notices, demands, or other communications required or permitted to be given under this Agreement shall be in writing and delivered personally, sent by certified or registered mail, or transmitted by email.\nb. Severability: If any provision of this Agreement is held to be invalid or unenforceable, the remainder of this Agreement shall remain in full force and effect.\nc. Dispute Resolution: Any dispute arising out of or relating to this Agreement shall be resolved through mediation or, if mediation is unsuccessful, through binding arbitration in accordance with the rules of the [Dispute Resolution Authority].\nd. Force Majeure: Neither party shall be liable for any delay or failure to perform its obligations under this Agreement due to causes beyond its reasonable control, such as acts of God, war, riots, or natural disasters.\n\nIn Witness Whereof, the parties have executed this Sale Agreement as of the date first written above.\n\nSeller:\n[Seller's Name]\n\nBuyer:\n[Buyer's Name]\n\nWitnessed by:\n[Witness 1 Name]\n[Witness 2 Name]\n\nNotarized by:\n[Notary Public Name]";
 
 const DrafterArgs = () => {
   let path = localStorage.getItem("from");
@@ -101,26 +99,27 @@ const DrafterArgs = () => {
   };
 
   const fetchData = async () => {
+    setIsLoading(true);
     try {
-      setIsLoading(true);
-      const data = await getDocFromPrompt(docId, prompt);
-      const docText = data.data.data.fetchedData.document;
-      const test = docText.toString();
-      console.log(typeof test);
-      console.log(test);
-      const draftText = trimQuotes(docText);
-      setDocText(draftText);
-      setDocText(reqDoc);
-      dispatch(setUploadDocText(docText));
+      await getDocFromPrompt(docId, prompt).then((data)=> {
 
+       const docText = data.data.data.fetchedData.document;
+       setDocText(docText);
+       dispatch(setUploadDocText(docText));
+       
       const essentialRequirements =
         data.data.data.fetchedData.essential_requirements;
-      setEssentialReq(essentialRequirements);
-      dispatch(setEssentialRequirements(essentialRequirements));
+        setEssentialReq(essentialRequirements);
+        dispatch(setEssentialRequirements(essentialRequirements));
       const optionalRequirements =
-        data.data.data.fetchedData.optional_requirements;
+      data.data.data.fetchedData.optional_requirements;
       setOptionalReq(optionalRequirements);
       dispatch(setOptionalRequirements(optionalRequirements));
+    });
+    console.log(uploadDocText)
+   
+      
+      
     } catch (e) {
       setDocText("");
       toast.error("Failed to fetch data");
@@ -205,7 +204,7 @@ const DrafterArgs = () => {
   };
 
   return (
-    <div className="flex flex-col h-screen space-y-5 w-full p-5">
+    <div className="flex flex-col h-screen justify-between space-y-5 w-full p-5">
       <div className="flex flex-row justify-between w-full items-center">
         <NavbarRight showMenu={false} />
         <NavbarLeft />
@@ -232,7 +231,9 @@ const DrafterArgs = () => {
               </div>
             ) : (
               <p>
-                <Markdown>{uploadDocText}</Markdown>
+               {/* {uploadDocText && <Markdown>{trimQuotes(`${uploadDocText}`)}</Markdown>} */}
+               <Markdown>{uploadDocText}</Markdown>
+
               </p>
             )}
           </div>
@@ -250,12 +251,14 @@ const DrafterArgs = () => {
                 onSubmit={handleSaveRequirements}
                 className="w-full h-full flex flex-col space-y-4 justify-between items-center"
               >
-                <div className="w-full overflow-y-auto scrollbar-hide flex flex-col space-y-4 justify-start items-center h-52">
+                <div className="w-full  scrollbar-hide flex flex-col space-y-4 justify-start items-center h-52">
                   <p className="font-semibold text-lg">
                     Essential Requirements
                   </p>
+                  <div className="w-full flex flex-col hide-scrollbar h-44 overflow-y-auto">
+
                   {EssentialReq.map((item, index) => (
-                    <div key={index} className="w-full flex flex-col space-y-2">
+                    <div key={index} className="w-full flex  flex-col space-y-2">
                       <label htmlFor={item} className="text-sm font-medium">
                         {item}
                       </label>
@@ -271,10 +274,13 @@ const DrafterArgs = () => {
                       />
                     </div>
                   ))}
+                  </div>
                 </div>
 
                 <div className="w-full overflow-y-auto scrollbar-hide flex flex-col space-y-4 justify-start items-center h-52">
                   <p className="font-semibold text-lg">Optional Requirements</p>
+                  <div className="w-full flex flex-col hide-scrollbar h-44 overflow-y-auto">
+
                   {OptionalReq.map((item, index) => (
                     <div key={index} className="w-full flex flex-col space-y-2">
                       <label htmlFor={item} className="text-sm font-medium">
@@ -291,6 +297,7 @@ const DrafterArgs = () => {
                       />
                     </div>
                   ))}
+                  </div>
                 </div>
 
                 <button
