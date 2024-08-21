@@ -146,19 +146,7 @@ const DrafterArgs = () => {
   };
 
   const handleGenerate = async () => {
-    if (path !== "docType") navigate("/DocPreview");
-    else {
-      try {
-        setIsLoading(true);
-        const res = await generateDocument(docId);
-        console.log(res.data.data.fetchedData.document);
-        setDocText(res.data.data.fetchedData.document);
-      } catch (e) {
-        console.log(e);
-      } finally {
-        setIsLoading(false);
-      }
-    }
+    navigate("/DocPreview");
   };
 
   const handleSaveRequirements = async (e) => {
@@ -192,6 +180,10 @@ const DrafterArgs = () => {
       console.log(res1);
       const res2 = await uploadOptional(docId, finalOptionalString);
       console.log(res2);
+      const res = await generateDocument(docId);
+        console.log(res.data.data.fetchedData.document);
+        setDocText(res.data.data.fetchedData.document);
+        dispatch(setUploadDocText(res.data.data.fetchedData.document))
     } catch (e) {
       console.log(e);
     }
@@ -201,6 +193,8 @@ const DrafterArgs = () => {
     console.log(finalEssentialString); // Optional requirements in string format
 
     toast.success("Requirements saved successfully!");
+    handleGenerate();
+
   };
 
   return (
