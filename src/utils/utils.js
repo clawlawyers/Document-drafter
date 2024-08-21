@@ -3,7 +3,7 @@ export const NODE_API_ENDPOINT =
     ? "https://claw-app-dev.onrender.com/api/v1"
     : "http://localhost:8000/api/v1";
 
-   export  function formatAgreementText(text) {
+   export function formatAgreementText(text) {
       return text
         // Convert newlines to <br />
         .replace(/\n/g, '<br />')
@@ -26,3 +26,9 @@ export const NODE_API_ENDPOINT =
         .replace(/'/g, '&#39;');
     }
     
+    export function trimQuotes(text) {
+      if (text.startsWith('"') && text.endsWith('"')) {
+        return text.slice(1, -1);
+      }
+      return text;
+    }
