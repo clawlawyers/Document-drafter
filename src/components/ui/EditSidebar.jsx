@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React, {  useState } from "react";
 import { getAnswer } from "../../actions/UploadAction";
 import { useDispatch, useSelector } from "react-redux";
-import { CircularProgress } from "@mui/material";
+
 import {setUploadDocText } from "../../features/DocumentSlice";
 
 const EditSidebar = () => {
@@ -21,7 +21,7 @@ const EditSidebar = () => {
     try {
       const res = await getAnswer(doc_id, query);
       console.log(res);
-      const doc = res.data.data.fetchedData.answer;
+      const doc = res.data.data.fetchedData.updated_document;
      console.log(doc);
       
       dispatch(setUploadDocText(doc));

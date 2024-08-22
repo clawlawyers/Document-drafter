@@ -29,16 +29,17 @@ const DrafterArgs = () => {
   let navigate = useNavigate();
   let dispatch = useDispatch();
   const [loading, setIsLoading] = useState(false);
+  const [reqLoading, setReqLoading] = useState(false);
   const prompt = useSelector((state) => state.prompt.prompt);
   const docId = useSelector((state) => state.document.docId);
-  const docuText = useSelector((state)=> state.document.uploadDocText)
+  const docuText = useSelector((state) => state.document.uploadDocText);
   const [uploadDocText, setDocText] = useState("");
-  const [fallbackText , setFallbackText] = useState();
+  const [fallbackText, setFallbackText] = useState();
   const [EssentialReq, setEssentialReq] = useState([]);
   const [OptionalReq, setOptionalReq] = useState([]);
   const [essentialInputs, setEssentialInputs] = useState({});
   const [optionalInputs, setOptionalInputs] = useState({});
-  const[docID , setDocID] = useState(null)
+  const [docID, setDocID] = useState(null);
   useEffect(() => {
     dispatch(clearDocId());
 
@@ -58,7 +59,6 @@ const DrafterArgs = () => {
             }
           }
         });
-
       } catch (error) {
         console.error("Failed to fetch document ID:", error);
       }
@@ -67,8 +67,6 @@ const DrafterArgs = () => {
   }, []);
 
   useEffect(() => {}, [docId]);
-
-
 
   const fetchReq = async (doc_id) => {
     console.log(docId);
@@ -104,13 +102,18 @@ const DrafterArgs = () => {
     setIsLoading(true);
     try {
       await getDocFromPrompt(doc_id, prompt).then((data) => {
-        const docText = data.data.data.fetchedData.document.replaceAll("\\\\", "");
+        const docText = data.data.data.fetchedData.document.replaceAll(
+          "\\\\",
+          ""
+        );
         const processedText = docText;
         setDocText(trimQuotes(processedText));
         // setDocText(docText);
         console.log(docText);
-      setFallbackText("Sale Agreement\n\nThis Sale Agreement (\"Agreement\") is made and entered into on this [DATE] by and between:\n\n1. [SELLER'S NAME], residing at [SELLER'S ADDRESS] (hereinafter referred to as the \"Seller\"); \nand\n2. [BUYER'S NAME], residing at [BUYER'S ADDRESS] (hereinafter referred to as the \"Buyer\").\n\nRecitals:\n\nWHEREAS, the Seller is the legal and beneficial owner of the property described below and desires to sell the same to the Buyer.\n\nWHEREAS, the Buyer is desirous of purchasing the said property from the Seller on the terms and conditions set forth in this Agreement.\n\nNOW, THEREFORE, in consideration of the mutual covenants and agreements hereinafter set forth, the parties hereto agree as follows:\n\n1. Description of Property:\nThe property being sold under this Agreement is described as [PROPERTY DETAILS, INCLUDING ADDRESS, LEGAL DESCRIPTION, AND ANY UNIQUE IDENTIFIERS]. The Seller hereby confirms that the property is free from all encumbrances, claims, and demands whatsoever.\n\n");
-      
+        setFallbackText(
+          'Sale Agreement\n\nThis Sale Agreement ("Agreement") is made and entered into on this [DATE] by and between:\n\n1. [SELLER\'S NAME], residing at [SELLER\'S ADDRESS] (hereinafter referred to as the "Seller"); \nand\n2. [BUYER\'S NAME], residing at [BUYER\'S ADDRESS] (hereinafter referred to as the "Buyer").\n\nRecitals:\n\nWHEREAS, the Seller is the legal and beneficial owner of the property described below and desires to sell the same to the Buyer.\n\nWHEREAS, the Buyer is desirous of purchasing the said property from the Seller on the terms and conditions set forth in this Agreement.\n\nNOW, THEREFORE, in consideration of the mutual covenants and agreements hereinafter set forth, the parties hereto agree as follows:\n\n1. Description of Property:\nThe property being sold under this Agreement is described as [PROPERTY DETAILS, INCLUDING ADDRESS, LEGAL DESCRIPTION, AND ANY UNIQUE IDENTIFIERS]. The Seller hereby confirms that the property is free from all encumbrances, claims, and demands whatsoever.\n\n'
+        );
+
         dispatch(setUploadDocText(trimQuotes(processedText)));
 
         const essentialRequirements =
@@ -154,7 +157,7 @@ const DrafterArgs = () => {
 
   const handleSaveRequirements = async (e) => {
     e.preventDefault();
-
+    setReqLoading(true);
     // Combine essential and optional inputs into a single object
     const allInputs = {
       essential_requirements: essentialInputs,
@@ -186,10 +189,14 @@ const DrafterArgs = () => {
       const res = await generateDocument(docId);
       console.log(res.data.data.fetchedData.document);
       setDocText(res.data.data.fetchedData.document);
-      setFallbackText("Sale Agreement\n\nThis Sale Agreement (\"Agreement\") is made and entered into on this [DATE] by and between:\n\n1. [SELLER'S NAME], residing at [SELLER'S ADDRESS] (hereinafter referred to as the \"Seller\"); \nand\n2. [BUYER'S NAME], residing at [BUYER'S ADDRESS] (hereinafter referred to as the \"Buyer\").\n\nRecitals:\n\nWHEREAS, the Seller is the legal and beneficial owner of the property described below and desires to sell the same to the Buyer.\n\nWHEREAS, the Buyer is desirous of purchasing the said property from the Seller on the terms and conditions set forth in this Agreement.\n\nNOW, THEREFORE, in consideration of the mutual covenants and agreements hereinafter set forth, the parties hereto agree as follows:\n\n1. Description of Property:\nThe property being sold under this Agreement is described as [PROPERTY DETAILS, INCLUDING ADDRESS, LEGAL DESCRIPTION, AND ANY UNIQUE IDENTIFIERS]. The Seller hereby confirms that the property is free from all encumbrances, claims, and demands whatsoever.\n\n");
+      setFallbackText(
+        'Sale Agreement\n\nThis Sale Agreement ("Agreement") is made and entered into on this [DATE] by and between:\n\n1. [SELLER\'S NAME], residing at [SELLER\'S ADDRESS] (hereinafter referred to as the "Seller"); \nand\n2. [BUYER\'S NAME], residing at [BUYER\'S ADDRESS] (hereinafter referred to as the "Buyer").\n\nRecitals:\n\nWHEREAS, the Seller is the legal and beneficial owner of the property described below and desires to sell the same to the Buyer.\n\nWHEREAS, the Buyer is desirous of purchasing the said property from the Seller on the terms and conditions set forth in this Agreement.\n\nNOW, THEREFORE, in consideration of the mutual covenants and agreements hereinafter set forth, the parties hereto agree as follows:\n\n1. Description of Property:\nThe property being sold under this Agreement is described as [PROPERTY DETAILS, INCLUDING ADDRESS, LEGAL DESCRIPTION, AND ANY UNIQUE IDENTIFIERS]. The Seller hereby confirms that the property is free from all encumbrances, claims, and demands whatsoever.\n\n'
+      );
       dispatch(setUploadDocText(res.data.data.fetchedData.document));
     } catch (e) {
       console.log(e);
+    } finally {
+      setReqLoading(false);
     }
 
     // You can send this final string to your API
@@ -228,7 +235,10 @@ const DrafterArgs = () => {
             ) : (
               <div>
                 <Markdown
-                  children={uploadDocText.replace(/\\n/g, '\n').replace(/\\t/g, '\t').replace(/\\"/g, '"')}
+                  children={uploadDocText
+                    .replace(/\\n/g, "\n")
+                    .replace(/\\t/g, "\t")
+                    .replace(/\\"/g, '"')}
                   components={{
                     p(props) {
                       const { children } = props;
@@ -391,9 +401,13 @@ const DrafterArgs = () => {
 
                 <button
                   type="submit"
-                  className="bg-teal-600 text-white w-full py-2 rounded-md font-medium"
+                  className={`${
+                    reqLoading
+                      ? "opacity-75  pointer-events-none cursor-not-allowed"
+                      : ""
+                  } bg-teal-600 text-white w-full py-2 rounded-md font-medium`}
                 >
-                  Save Requirements
+                  {!reqLoading ? "Save Requirements" : "Loading...."}
                 </button>
               </form>
             )}
