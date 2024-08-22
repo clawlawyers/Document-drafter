@@ -200,9 +200,9 @@ const UploadDialog = () => {
           </div>
 
           {file ? (
-            <div className="flex flex-col w-full items-center space-y-4 mt-5">
+            <div className="flex flex-col w-full items-center space-y-4">
               {uploadStatus === "uploading" && (
-                <div className="flex flex-col w-full space-y-5 ">
+                <div className="flex flex-col w-full space-y-5 pb-7 ">
                   <p className="text-2xl font-semibold text-teal-600 text-center">
                     Uploading... {uploadProgress}%
                   </p>
@@ -210,7 +210,7 @@ const UploadDialog = () => {
                   <LinearProgress
                     variant="determinate"
                     value={uploadProgress}
-                    sx={{ height: "4px", width: "90%", padding: "5px" }}
+                    sx={{ height: "4px", width: "90%", padding: "5px" , }}
                   />
                 </div>
               )}
