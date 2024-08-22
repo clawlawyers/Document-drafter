@@ -83,7 +83,7 @@ const Snippets = () => {
     <div className="flex flex-row h-screen gap-3 p-6">
       <div className="flex flex-col w-3/4 gap-6">
         <NavbarRight />
-        <div className="flex flex-col scrollbar-hide h-[86vh] pb-5  gap-3 justify-between  rounded-[0.625rem] bg-customBlack">
+        <div className="flex flex-col scrollbar-hide h-[86vh]   gap-3 justify-between  rounded-[0.625rem] bg-customBlack">
           <Routes>
             <Route path="/" element={<Outlet />}>
               <Route path="" element={<SnippetDialog />} />
@@ -93,7 +93,7 @@ const Snippets = () => {
               <Route path="/Direction/:id" element={<DirectionDialog />} />
             </Route>
           </Routes>
-          <div className="flex flex-row w-full justify-end items-center px-5 font-semibold space-x-5">
+          <div className="flex flex-row pb-5 w-full justify-end items-center px-5 font-semibold space-x-5">
             <button onClick={()=> navigate("/summary")} className="bg-card-gradient p-2 border border-white rounded-md" >Generate Summary</button>
             <button onClick={()=> navigate("/DocPreview")} className="bg-card-gradient p-2 border border-white rounded-md" >Document Preview</button>
 

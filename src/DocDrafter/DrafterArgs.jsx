@@ -102,10 +102,7 @@ const DrafterArgs = () => {
     setIsLoading(true);
     try {
       await getDocFromPrompt(doc_id, prompt).then((data) => {
-        const docText = data.data.data.fetchedData.document.replaceAll(
-          "\\\\",
-          ""
-        );
+        const docText = data.data.data.fetchedData.document;
         const processedText = docText;
         setDocText(trimQuotes(processedText));
         // setDocText(docText);

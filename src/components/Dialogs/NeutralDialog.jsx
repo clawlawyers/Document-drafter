@@ -4,6 +4,7 @@ import { NODE_API_ENDPOINT, trimQuotes } from "../../utils/utils";
 import { useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
 import Markdown from "react-markdown";
+import loaderGif from "../../assets/icons/2.gif"
 
 const NeutralDialog = () => {
   let navigate = useNavigate();
@@ -35,7 +36,7 @@ const NeutralDialog = () => {
     setisLoading(false);
   };
   return (
-    <div className="flex flex-col font-sans gap-4 p-4 text-white">
+    <div className="flex flex-col h-[75vh] font-sans gap-4 p-4 text-white">
       <div className="bg-popup-gradient p-4 text-[1rem] font-bold  rounded-[0.625rem] border-2 border-white">
       <Markdown>
         {selectedHeadpoint}
@@ -63,7 +64,7 @@ const NeutralDialog = () => {
         </button>
       </div>
       {!isLoading ? (
-        <div className="flex flex-col gap-2 text-justify font-sans text-white m-5 ">
+        <div className="flex h-full overflow-y-auto scrollbar-hide flex-col gap-2 text-justify font-sans text-white m-5 ">
           <Markdown>
             {trimQuotes(
               data
@@ -75,7 +76,14 @@ const NeutralDialog = () => {
           </Markdown>
         </div>
       ) : (
-        <div></div>
+        <div className="flex overflow-y-auto scrollbar-hide justify-center items-center h-full flex-col gap-2 text-justify font-sans text-white m-5 ">
+          
+          <img
+            className="flex flex-row justify-center items-center w-40 h-40"
+            src={loaderGif}
+            alt="Loading..."
+          />
+        </div>
       )}
     </div>
   );
