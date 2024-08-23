@@ -27,7 +27,10 @@ const DocEdit = ({ onSave }) => {
     const updatedText = ediText || texteditable;
     if (updatedText) {
       const dispText = trimQuotes(updatedText);
+      // const jsonText = JSON.parse(dispText)
+      // console.log(jsonText);
       setText(dispText);
+
     }
   }, [ediText, texteditable]);
 
@@ -86,9 +89,7 @@ const DocEdit = ({ onSave }) => {
               ) : (
                 <Markdown className=" text-sm hide-scrollbar p-2 h-full w-full overflow-y-auto overflow-wrap break-word word-wrap break-word">
                   {text
-                    .replace(/\\n/g, "\n\n")
-                    .replace(/\\u20b9/g, "₹")
-                    .replace(/(\d+\.)/g, "\n$1")}
+}
                 </Markdown>
               )}
             </div>

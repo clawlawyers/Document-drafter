@@ -204,16 +204,16 @@ const DrafterArgs = () => {
   };
 
   return (
-    <div className="flex flex-col h-screen justify-between space-y-5 w-full p-5">
+    <div className="flex flex-col h-screen justify-between space-y-2 w-full p-5">
       <div className="flex flex-row justify-between w-full items-center">
         <NavbarRight showMenu={false} />
         <NavbarLeft />
       </div>
 
-      <div className="flex space-x-5 flex-row w-full h-[60%]  justify-center items-center">
+      <div className="flex space-x-5 flex-row w-full h-[80%]  justify-center items-center">
         <div className="w-[70%] space-y-2 flex flex-col h-full bg-customBlack rounded-md px-5 py-5">
           {/* user */}
-          <div className="flex font-semibold text-lg gap-5 w-full flex-row justify-start items-center">
+          <div className="flex  font-semibold text-lg gap-5 w-full flex-row justify-start items-center">
             <UserModal />
             <div className="h-20 items-center justify-center flex flex-col overflow-y-auto scrollbar-hide">
               {prompt}
@@ -231,101 +231,8 @@ const DrafterArgs = () => {
               </div>
             ) : (
               <div>
-                <Markdown
-                  children={uploadDocText
-                    .replace(/\\n/g, "\n")
-                    .replace(/\\t/g, "\t")
-                    .replace(/\\"/g, '"')}
-                  components={{
-                    p(props) {
-                      const { children } = props;
-                      return (
-                        <p className="text-balance py-1 text-base text-primary-theme-white-50">
-                          {children}
-                        </p>
-                      );
-                    },
-
-                    h1(props) {
-                      const { children } = props;
-                      return (
-                        <h1 className="pb-6 pt-12 text-4xl font-bold text-primary-theme-white-50">
-                          {children}
-                        </h1>
-                      );
-                    },
-
-                    h3(props) {
-                      const { children } = props;
-                      return (
-                        <h3 className="py-3 text-xl font-bold text-primary-theme-white-50">
-                          {children}
-                        </h3>
-                      );
-                    },
-
-                    h4(props) {
-                      const { children } = props;
-                      return (
-                        <h4 className="py-3 text-lg font-bold text-primary-theme-white-50">
-                          {children}
-                        </h4>
-                      );
-                    },
-
-                    ul(props) {
-                      const { children } = props;
-                      return <ul className="">{children}</ul>;
-                    },
-
-                    a(props) {
-                      const { href } = props;
-                      return (
-                        <a
-                          className="text-wrap text-primary-theme-cyan-200/90 underline hover:text-primary-theme-cyan-200"
-                          href={href}
-                        >
-                          {href}
-                        </a>
-                      );
-                    },
-
-                    li(props) {
-                      const { children } = props;
-                      return (
-                        <li className="py-1 text-base text-primary-theme-white-50">
-                          {children}
-                        </li>
-                      );
-                    },
-
-                    hr() {
-                      return (
-                        <div className="h-0 border-t border-primary-theme-white-50 py-2" />
-                      );
-                    },
-
-                    img(props) {
-                      const { alt, src } = props;
-                      return (
-                        <img
-                          loading="lazy"
-                          alt={alt || "Image"}
-                          className="my-6 rounded-lg"
-                        />
-                      );
-                    },
-
-                    code(props) {
-                      const { children } = props;
-                      return (
-                        <div className="mx-2 my-6 overflow-auto rounded-md border border-primary-theme-white-50/10 p-2 text-primary-theme-white-200">
-                          <code>{children}</code>
-                        </div>
-                      );
-                    },
-                  }}
-                />
+                <Markdown>{`${trimQuotes(uploadDocText)}`}</Markdown>
+                {/* <Markdown>{fallbackText}</Markdown> */}
               </div>
             )}
           </div>
