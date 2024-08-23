@@ -32,7 +32,8 @@ const Snippets = () => {
   useEffect(() => {
     // Scroll to the bottom of the chat container when textBoxData changes
     if (chatContainerRef.current) {
-      chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
+      chatContainerRef.current.scrollTop =
+        chatContainerRef.current.scrollHeight;
     }
   }, [textBoxData]);
 
@@ -42,7 +43,7 @@ const Snippets = () => {
       doc_id: doc_id,
       query: query,
     });
-  
+
     let config = {
       method: "post",
       maxBodyLength: Infinity,
@@ -53,7 +54,7 @@ const Snippets = () => {
       data: data,
     };
     var newdata = textBoxData;
-  
+
     newdata.push({
       query: query,
       response: {},
@@ -61,12 +62,12 @@ const Snippets = () => {
     });
     setTextBoxData([...newdata]);
     console.log(textBoxData);
-  
+
     try {
       const response = await axios.request(config);
       newdata[newdata.length - 1].isLoading = true;
       newdata[newdata.length - 1].response = response;
-  
+
       setTextBoxData(newdata);
       localStorage.setItem("newdata", JSON.stringify(newdata));
       console.log(textBoxData);
@@ -81,65 +82,76 @@ const Snippets = () => {
 
   return (
     <div className="flex flex-row h-screen gap-3 p-6">
-      <section className="flex flex-row  w-full justify-center items-center space-x-5 h-[86vh]">
-
-      <div className="flex flex-col h-full  w-3/4 gap-6">
-        <NavbarRight />
-        <div className="flex flex-col scrollbar-hide h-[90%]   gap-3 justify-between  rounded-[0.625rem] bg-customBlack">
-          <Routes>
-            <Route path="/" element={<Outlet />}>
-              <Route path="" element={<SnippetDialog />} />
-              <Route path="/Summary/:id" element={<SummaryDialog />} />
-              <Route path="/Favour/:id" element={<FavourDialog />} />
-              <Route path="/Neutral/:id" element={<NeutralDialog />} />
-              <Route path="/Direction/:id" element={<DirectionDialog />} />
-            </Route>
-          </Routes>
-          <div className="flex flex-row pb-5 w-full justify-end items-center px-5 font-semibold space-x-5">
-            <button onClick={()=> navigate("/summary")} className="bg-card-gradient p-2 border border-white rounded-md" >Generate Summary</button>
-            <button onClick={()=> navigate("/DocPreview")} className="bg-card-gradient p-2 border border-white rounded-md" >Document Preview</button>
-
+      <section className="flex flex-col md:flex-row w-full justify-center items-center space-x-0 md:space-x-5 h-full">
+        <div className="flex  flex-col h-full w-full md:w-3/4 gap-6 px-4 md:px-0">
+          <NavbarRight />
+          <div className="flex flex-col scrollbar-hide h-[80vh] p-2 gap-2 justify-between rounded-[0.625rem] bg-customBlack">
+            <Routes>
+              <Route path="/" element={<Outlet />}>
+                <Route path="" element={<SnippetDialog />} />
+                <Route path="/Summary/:id" element={<SummaryDialog />} />
+                <Route path="/Favour/:id" element={<FavourDialog />} />
+                <Route path="/Neutral/:id" element={<NeutralDialog />} />
+                <Route path="/Direction/:id" element={<DirectionDialog />} />
+              </Route>
+            </Routes>
+            <div className="flex flex-row  w-full justify-end items-center px-5 font-semibold space-x-5">
+              <button
+                onClick={() => navigate("/summary")}
+                className="bg-card-gradient p-2 border border-white rounded-md"
+              >
+                Generate Summary
+              </button>
+              <button
+                onClick={() => navigate("/DocPreview")}
+                className="bg-card-gradient p-2 border border-white rounded-md"
+              >
+                Document Preview
+              </button>
+            </div>
           </div>
         </div>
-      </div>
-      <div className="flex flex-col h-[102%] w-1/4">
-        <NavbarLeft />
-        <div className="overflow-y-auto flex relative flex-col h-[86vh] mt-4 p-2 gap-3 rounded-[0.625rem] bg-customBlack">
-          <div ref={chatContainerRef} className="chat section overflow-y-auto scrollbar-hide h-full flex flex-col">
-            {textBoxData.length > 0 ? (
-              <div className="flex flex-col justify-center items-center w-full pb-10 gap-3">
-                {textBoxData.map((item, i) => {
-                  if (item.isLoading)
-                    return (
-                      <TextBoxDialog
-                        key={i}
-                        responseData={item}
-                      />
-                    );
-                  return <img className="h-40 w-40" src={giff} key={i} alt="" />
-                })}
-              </div>
-            ) : (
-              <QueryGIF />
-            )}
-          </div>
-          <form onSubmit={handleSend} className="sticky w-[95%] p-2 space-x-2 flex flex-row justify-center items-center bottom-3">
-            <input
-              className="bg-white text-black rounded-md border-[0.05rem] border-black p-2 px-4 w-full"
-              type="text"
-              placeholder="Enter Your Question..."
-              value={query}
-              onChange={(e) => setquery(e.target.value)}
-            />
-            <button
-              type="submit"
-              className="text-sm text-white bg-[#001616] p-2.5 px-3 rounded"
+        <div className="flex flex-col  h-full w-full md:w-1/4">
+          <NavbarLeft />
+          <div className="overflow-y-auto flex relative flex-col h-[86vh] mt-4 p-2 gap-3 rounded-[0.625rem] bg-customBlack">
+            <div
+              ref={chatContainerRef}
+              className="chat section overflow-y-auto scrollbar-hide h-full flex flex-col"
             >
-              SEND
-            </button>
-          </form>
+              {textBoxData.length > 0 ? (
+                <div className="flex flex-col justify-center items-center w-full pb-10 gap-3">
+                  {textBoxData.map((item, i) => {
+                    if (item.isLoading)
+                      return <TextBoxDialog key={i} responseData={item} />;
+                    return (
+                      <img className="h-40 w-40" src={giff} key={i} alt="" />
+                    );
+                  })}
+                </div>
+              ) : (
+                <QueryGIF />
+              )}
+            </div>
+            <form
+              onSubmit={handleSend}
+              className="sticky w-[95%] p-2 space-x-2 flex flex-row justify-center items-center bottom-3"
+            >
+              <input
+                className="bg-white text-black rounded-md border-[0.05rem] border-black p-2 px-4 w-full"
+                type="text"
+                placeholder="Enter Your Question..."
+                value={query}
+                onChange={(e) => setquery(e.target.value)}
+              />
+              <button
+                type="submit"
+                className="text-sm text-white bg-[#001616] p-2.5 px-3 rounded"
+              >
+                SEND
+              </button>
+            </form>
+          </div>
         </div>
-      </div>
       </section>
     </div>
   );

@@ -36,7 +36,7 @@ const FavourDialog = () => {
     setisLoading(false);
   };
   return (
-    <div className="flex flex-col h-[75vh] font-sans gap-4 p-4 text-white">
+    <div className="flex flex-col h-[65vh]  font-sans gap-4 p-4 text-white">
       <div className="bg-popup-gradient p-4 text-[1rem] font-bold  rounded-[0.625rem] border-2 border-white">
         <Markdown>{selectedHeadpoint}</Markdown>
       </div>

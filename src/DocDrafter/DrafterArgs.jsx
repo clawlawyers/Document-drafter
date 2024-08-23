@@ -22,9 +22,14 @@ import toast from "react-hot-toast";
 import { getRequirements, uploadOptional, uploadPre } from "../actions/DocType";
 import { generateDocument } from "../actions/DocType";
 import Markdown from "react-markdown";
+import rehypeRaw from "rehype-raw";
+import rehypeSanitize from "rehype-sanitize";
 import { trimQuotes } from "../utils/utils";
-
+import { formatText } from "../utils/utils";
 const DrafterArgs = () => {
+
+  
+  
   let path = localStorage.getItem("from");
   let navigate = useNavigate();
   let dispatch = useDispatch();
@@ -231,8 +236,10 @@ const DrafterArgs = () => {
               </div>
             ) : (
               <div>
-                <Markdown>{`${trimQuotes(uploadDocText)}`}</Markdown>
-                {/* <Markdown>{fallbackText}</Markdown> */}
+                 <Markdown rehypePlugins={[rehypeRaw, ]}>
+            {formatText(trimQuotes(uploadDocText))}
+          </Markdown>
+               
               </div>
             )}
           </div>
@@ -250,8 +257,10 @@ const DrafterArgs = () => {
                 className="space-y-3 p-2 flex flex-col h-full w-full overflow-auto scrollbar-hide text-sm"
                 onSubmit={handleSaveRequirements}
               >
+                <div className="flex flex-col gap-3">
+
                 <div className="text-sm">
-                  <h2 className=" text-primary-theme-white-50 font-bold">
+                  <h2 className="underline text-primary-theme-white-50 font-bold">
                     Essential Requirements
                   </h2>
                   {EssentialReq.map((req, index) => (
@@ -272,7 +281,7 @@ const DrafterArgs = () => {
                     </div>
                   ))}
                 </div>
-                <div className="w-full h-1 bg-white" />
+                <div className="w-full h-0.5 bg-white" />
                 <div>
                   <h2 className="underline text-primary-theme-white-50 font-bold">
                     Optional Requirements
@@ -296,13 +305,14 @@ const DrafterArgs = () => {
                   ))}
                 </div>
 
+                </div>
                 <button
                   type="submit"
                   className={`${
                     reqLoading
                       ? "opacity-75  pointer-events-none cursor-not-allowed"
                       : ""
-                  }bg-teal-600 text-white w-full py-2 rounded-md font-medium`}
+                    }bg-teal-600 text-white w-full py-2 rounded-md font-medium`}
                 >
                   {reqLoading ? "Saving..." : "Save Requirements"}
                 </button>

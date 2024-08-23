@@ -33,7 +33,7 @@ const SnippetDialog = () => {
   }));
 
   return (
-    <div className="hide-scrollbar overflow-y-auto flex flex-col gap-5 mx-6 my-5 h-fit">
+    <div className="hide-scrollbar overflow-y-auto flex flex-col gap-5 mx-6 my-5 h-[65vh]">
       {combinedData.map((item, i) => (
         <div key={i} className="flex flex-row items-center gap-3">
           <div
@@ -43,11 +43,11 @@ const SnippetDialog = () => {
             )}
           >
             <div className="font-sans text-[1.125rem] font-bold leading-[1.13625rem]">
-              <Markdown>
-                {item.heading}
-                </Markdown>
+              <Markdown>{item.heading}</Markdown>
             </div>
-            <div className="font-sans text-[0.625rem]"><Markdown>{item.text}</Markdown></div>
+            <div className="font-sans  text-[0.625rem] w-fit break-words overflow-wrap break-word word-wrap break-word">
+              <p>{item.text}</p>
+            </div>
           </div>
           <div className="w-1/4 flex gap-4 flex-col text-[0.6875rem] font-sans">
             <div className="flex gap-3 text-xs">

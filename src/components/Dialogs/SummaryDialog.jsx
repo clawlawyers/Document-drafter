@@ -40,7 +40,7 @@ const SummaryDialog = () => {
     setisLoading(false);
   };
   return (
-    <div className="flex flex-col h-full font-sans gap-4 p-4 text-white">
+    <div className="flex flex-col h-[65vh] font-sans gap-3 p-4 text-white">
       <div className="bg-popup-gradient p-4 text-[1rem] font-bold  rounded-[0.625rem] border-2 border-white">
         <Markdown>{selectedHeadpoint}</Markdown>
       </div>
@@ -65,7 +65,7 @@ const SummaryDialog = () => {
         </button>
       </div>
       {!isLoading ? (
-        <div className="flex overflow-y-auto  scrollbar-hide h-full flex-col gap-2 text-justify font-sans text-white  ">
+        <div className="flex overflow-y-auto text-sm  scrollbar-hide h-[50vh]   flex-col gap-2 text-justify font-sans text-white  ">
           <Markdown>
             {trimQuotes(
               data

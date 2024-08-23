@@ -13,6 +13,9 @@ import { breakout } from "../actions/createDoc";
 import { setBreakoutData } from "../features/breakoutSlice";
 import axios from "axios";
 import { NODE_API_ENDPOINT } from "../utils/utils";
+import { formatText } from "../utils/utils";
+import rehypeRaw from "rehype-raw";
+
 const DocEdit = ({ onSave }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -29,8 +32,8 @@ const DocEdit = ({ onSave }) => {
       const dispText = trimQuotes(updatedText);
       // const jsonText = JSON.parse(dispText)
       // console.log(jsonText);
-      setText(dispText);
 
+      setText(formatText(dispText));
     }
   }, [ediText, texteditable]);
 
@@ -87,9 +90,11 @@ const DocEdit = ({ onSave }) => {
                   alt="Loading..."
                 />
               ) : (
-                <Markdown className=" text-sm hide-scrollbar p-2 h-full w-full overflow-y-auto overflow-wrap break-word word-wrap break-word">
-                  {text
-}
+                <Markdown
+                  className=" text-sm hide-scrollbar p-2 h-full w-full overflow-y-auto overflow-wrap break-word word-wrap break-word"
+                  rehypePlugins={[rehypeRaw]}
+                >
+                  {trimQuotes(text)}
                 </Markdown>
               )}
             </div>
