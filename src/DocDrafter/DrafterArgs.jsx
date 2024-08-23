@@ -210,7 +210,7 @@ const DrafterArgs = () => {
         <NavbarLeft />
       </div>
 
-      <div className="flex space-x-5 flex-row w-full h-[70vh]  justify-center items-center">
+      <div className="flex space-x-5 flex-row w-full h-[60%]  justify-center items-center">
         <div className="w-[70%] space-y-2 flex flex-col h-full bg-customBlack rounded-md px-5 py-5">
           {/* user */}
           <div className="flex font-semibold text-lg gap-5 w-full flex-row justify-start items-center">
@@ -331,7 +331,7 @@ const DrafterArgs = () => {
           </div>
         </div>
         <div className="w-[30%] space-y-5 flex flex-col justify-center items-center h-full">
-          <div className="w-full p-2 flex justify-center items-center h-[60vh] overflow-y-auto rounded-md flex-col bg-customBlack">
+          <div className="w-full p-2 flex justify-center items-center h-full overflow-y-auto rounded-md flex-col bg-customBlack">
             {loading ? (
               <img
                 className="flex flex-row justify-center items-center w-40 h-40"
@@ -340,60 +340,53 @@ const DrafterArgs = () => {
               />
             ) : (
               <form
+                className="space-y-3 p-2 flex flex-col h-full w-full overflow-auto scrollbar-hide text-sm"
                 onSubmit={handleSaveRequirements}
-                className="w-full h-full flex flex-col space-y-4 justify-between items-center"
               >
-                <div className="w-full  scrollbar-hide flex flex-col space-y-4 justify-start items-center h-52">
-                  <p className="font-semibold text-lg">
+                <div className="text-sm">
+                  <h2 className=" text-primary-theme-white-50 font-bold">
                     Essential Requirements
-                  </p>
-                  <div className="w-full flex flex-col hide-scrollbar h-44 overflow-y-auto">
-                    {EssentialReq.map((item, index) => (
-                      <div
-                        key={index}
-                        className="w-full flex  flex-col space-y-2"
+                  </h2>
+                  {EssentialReq.map((req, index) => (
+                    <div key={index}>
+                      <label
+                        htmlFor={req}
+                        className="text-primary-theme-white-50 text-xs"
                       >
-                        <label htmlFor={item} className="text-sm font-medium">
-                          {item}
-                        </label>
-                        <input
-                          type="text"
-                          required
-                          id={item}
-                          name={item}
-                          value={essentialInputs[item] || ""}
-                          onChange={(e) => handleInputChange(e, "essential")}
-                          placeholder={`Enter ${item}`}
-                          className="w-full p-2 border border-gray-300 rounded-md"
-                        />
-                      </div>
-                    ))}
-                  </div>
+                        {req}
+                      </label>
+                      <input
+                        type="text"
+                        name={req}
+                        value={essentialInputs[req]}
+                        onChange={(e) => handleInputChange(e, "essential")}
+                        className="w-full p-0.5 bg-customBlack border-white rounded-md text-primary-theme-white-50"
+                      />
+                    </div>
+                  ))}
                 </div>
-
-                <div className="w-full overflow-y-auto scrollbar-hide flex flex-col space-y-4 justify-start items-center h-52">
-                  <p className="font-semibold text-lg">Optional Requirements</p>
-                  <div className="w-full flex flex-col hide-scrollbar h-44 overflow-y-auto">
-                    {OptionalReq.map((item, index) => (
-                      <div
-                        key={index}
-                        className="w-full flex flex-col space-y-2"
+                <div className="w-full h-1 bg-white" />
+                <div>
+                  <h2 className="underline text-primary-theme-white-50 font-bold">
+                    Optional Requirements
+                  </h2>
+                  {OptionalReq.map((req, index) => (
+                    <div key={index}>
+                      <label
+                        htmlFor={req}
+                        className="text-primary-theme-white-50 text-xs"
                       >
-                        <label htmlFor={item} className="text-sm font-medium">
-                          {item}
-                        </label>
-                        <input
-                          type="text"
-                          id={item}
-                          name={item}
-                          value={optionalInputs[item] || ""}
-                          onChange={(e) => handleInputChange(e, "optional")}
-                          placeholder={`Enter ${item}`}
-                          className="w-full p-2 border border-gray-300 rounded-md"
-                        />
-                      </div>
-                    ))}
-                  </div>
+                        {req}
+                      </label>
+                      <input
+                        type="text"
+                        name={req}
+                        value={optionalInputs[req]}
+                        onChange={(e) => handleInputChange(e, "optional")}
+                        className="w-full p-2 bg-customBlack border-white rounded-md text-primary-theme-white-50"
+                      />
+                    </div>
+                  ))}
                 </div>
 
                 <button
@@ -402,23 +395,23 @@ const DrafterArgs = () => {
                     reqLoading
                       ? "opacity-75  pointer-events-none cursor-not-allowed"
                       : ""
-                  } bg-teal-600 text-white w-full py-2 rounded-md font-medium`}
+                  }bg-teal-600 text-white w-full py-2 rounded-md font-medium`}
                 >
-                  {!reqLoading ? "Save Requirements" : "Loading...."}
+                  {reqLoading ? "Saving..." : "Save Requirements"}
                 </button>
               </form>
             )}
           </div>
-          <div className="flex flex-row w-full justify-between items-center">
+          <div className="flex flex-row w-full  justify-between items-center">
             <button
               onClick={() => navigate("/Drafter")}
-              className="bg-btn-gradient p-[1em] px-[2em] rounded-md text-sm"
+              className="bg-btn-gradient p-2 rounded-md text-sm"
             >
               Re-enter Prompt
             </button>
             <button
               onClick={handleGenerate}
-              className="bg-btn-gradient p-[1em] px-[2em] rounded-md text-sm"
+              className="bg-btn-gradient p-2  rounded-md text-sm"
             >
               Generate Document
             </button>
