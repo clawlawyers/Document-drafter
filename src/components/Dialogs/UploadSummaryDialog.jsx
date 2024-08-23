@@ -40,11 +40,11 @@ const UploadSummary = () => {
   
 
   return (
-    <main className="flex flex-row justify-center rounded-md p-4 items-center w-full h-full bg-customBlack">
+    <main className="flex flex-row justify-center rounded-md scale-95 p-4 items-center w-full h-full bg-customBlack">
       <section className="flex-1 h-full w-full">
         <SummaryDisplay />
       </section>
-      <section className="flex-1 h-full flex flex-col justify-between pt-40 py-5 items-center ">
+      <section className="flex-1 h-full scale-90 flex flex-col justify-between pt-32 py-5 items-center ">
         <div className="flex flex-col space-y-5 justify-center items-center text-center">
           <h3 className="font-semibold text-4xl">Document Summary</h3>
           <p className="text-sm font-light">
@@ -54,7 +54,7 @@ const UploadSummary = () => {
           </p>
         </div>
         {/* buttons */}
-        <div className="flex flex-row justify-center items-center w-full space-x-5">
+        <div className="flex flex-row justify-center scale-90 items-center w-full space-x-5">
           <button onClick={()=>navigate("/Snippets") } className="bg-card-gradient  text-white font-bold p-3 px-10 rounded-md">
             Go Back
           </button>

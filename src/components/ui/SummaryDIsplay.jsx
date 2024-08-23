@@ -41,7 +41,7 @@ console.log(temp);  // Check the processed text
 
   return (
     <div className="bg-card-gradient bg-cover rounded-md border border-white flex flex-col items-center justify-center h-full w-full p-2">
-      <div className="flex flex-col w-full justify-start items-start h-[80vh] gap-3 ">
+      <div className="flex flex-col w-full justify-start items-start h-[80vh] gap-3 p-2 ">
         <div className="flex flex-row pt-3">
           <p className="text-3xl font-semibold text-teal-500">Adira AI</p>
           <sup>by Claw</sup>
@@ -57,7 +57,7 @@ console.log(temp);  // Check the processed text
         ) : (
           <div
             id="summary-text"
-            className="h-full overflow-y-auto scrollbar-hide"
+            className="h-full overflow-y-auto scrollbar-hide p-2"
           >
              <Markdown
                   children={text
