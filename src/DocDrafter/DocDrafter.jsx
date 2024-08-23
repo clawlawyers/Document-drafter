@@ -17,14 +17,13 @@ const DocDrafter = () => {
   const [prompt, setPromptValue] = useState("");
   const [loading, setLoading] = useState(false);
 
-
   const onChange = (e) => {
     setPromptValue(e.target.value);
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    localStorage.setItem("from","drafter")
+    localStorage.setItem("from", "drafter");
     dispatch(setPrompt(prompt));
     navigate("/Drafter/DrafterArgs");
   };
@@ -34,7 +33,10 @@ const DocDrafter = () => {
       <div className="bg-customBlack flex flex-col space-y-10 p-5 px-7 h-full w-full rounded-md">
         <div className="flex flex-col w-full justify-between h-full items-center">
           <div className="flex w-full flex-row justify-between">
-            <button className="px-10 py-2 border-white rounded-[0.3125rem] border-2">
+            <button
+              className="px-10 py-2 border-white rounded-[0.3125rem] border-2"
+              onClick={() => navigate("/")}
+            >
               CLAW Home
             </button>
             <UserModal />
