@@ -47,12 +47,12 @@ const UploadDialog = () => {
         doc_id: doc_id,
       });
       console.log(res.data);
-      dispatch(setBreakoutData(res.data));
-      setUploadStatus(""); // Stop the analyzing GIF after response
-      setFile(null);
       await axios.post(`${NODE_API_ENDPOINT}/ai-drafter/generate_db`, {
         doc_id: doc_id,
       });
+      dispatch(setBreakoutData(res.data));
+      setUploadStatus(""); // Stop the analyzing GIF after response
+      setFile(null);
       // setOpenResponseDialog(true); // Open the response dialog
       navigate("/DocPreview");
     } catch (error) {

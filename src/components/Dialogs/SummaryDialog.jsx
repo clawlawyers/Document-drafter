@@ -5,6 +5,8 @@ import { useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
 import Markdown from "react-markdown";
 import { useNavigate } from "react-router-dom";
+import loaderGif from "../../assets/icons/2.gif"
+
 const SummaryDialog = () => {
   let navigate = useNavigate();
   let location = useLocation();
@@ -38,7 +40,7 @@ const SummaryDialog = () => {
     setisLoading(false);
   };
   return (
-    <div className="flex flex-col font-sans gap-4 p-4 text-white">
+    <div className="flex flex-col h-[75vh] font-sans gap-4 p-4 text-white">
       <div className="bg-popup-gradient p-4 text-[1rem] font-bold  rounded-[0.625rem] border-2 border-white">
         <Markdown>{selectedHeadpoint}</Markdown>
       </div>
@@ -63,7 +65,7 @@ const SummaryDialog = () => {
         </button>
       </div>
       {!isLoading ? (
-        <div className="flex overflow-y-auto flex-col gap-2 text-justify font-sans text-white m-5 ">
+        <div className="flex overflow-y-auto  scrollbar-hide h-full flex-col gap-2 text-justify font-sans text-white  ">
           <Markdown>
             {trimQuotes(
               data
@@ -75,7 +77,14 @@ const SummaryDialog = () => {
           </Markdown>
         </div>
       ) : (
-        <div></div>
+        <div className="flex overflow-y-auto scrollbar-hide justify-center items-center h-full flex-col gap-2 text-justify font-sans text-white m-5 ">
+          
+          <img
+            className="flex flex-row justify-center items-center w-40 h-40"
+            src={loaderGif}
+            alt="Loading..."
+          />
+        </div>
       )}
     </div>
   );
