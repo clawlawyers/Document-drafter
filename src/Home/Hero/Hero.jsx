@@ -14,13 +14,13 @@ const Hero = () => {
   //todo: get login credential like user._id to check if user is logged in or not and then setisLoggedIn to true
 
   return (
-    <div className="flex flex-col h-screen p-3">
-      <div className="flex flex-col h-full   p-2 gap-3 rounded-[0.625rem]   bg-customBlack">
+    <div className="flex flex-col justify-center items-center w-full h-screen p-3">
+      <div className="flex flex-col h-[90vh] w-full   p-2 gap-3 rounded-[0.625rem]   bg-customBlack">
         <div className="h-[10%] w-full ">
 
         <HomeNav isLoggedIn={isLoggedIn} setLoginPopup={setLoginPopup} />
         </div>
-        <div className="flex flex-col justify-between w-full h-[90%]">
+        <div className="flex flex-col justify-between w-full max-h-[88%] ">
           
           <HeroPage></HeroPage>
 
