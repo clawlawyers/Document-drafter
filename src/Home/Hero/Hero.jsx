@@ -20,7 +20,7 @@ const Hero = () => {
 
         <HomeNav isLoggedIn={isLoggedIn} setLoginPopup={setLoginPopup} />
         </div>
-        <div className="flex flex-col justify-between w-full max-h-[88%] ">
+        <div className="flex flex-col justify-between w-full h-full  ">
           
           <HeroPage></HeroPage>
 

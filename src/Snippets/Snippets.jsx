@@ -81,9 +81,11 @@ const Snippets = () => {
 
   return (
     <div className="flex flex-row h-screen gap-3 p-6">
-      <div className="flex flex-col w-3/4 gap-6">
+      <section className="flex flex-row  w-full justify-center items-center space-x-5 h-[86vh]">
+
+      <div className="flex flex-col h-full  w-3/4 gap-6">
         <NavbarRight />
-        <div className="flex flex-col scrollbar-hide h-[86vh]   gap-3 justify-between  rounded-[0.625rem] bg-customBlack">
+        <div className="flex flex-col scrollbar-hide h-[90%]   gap-3 justify-between  rounded-[0.625rem] bg-customBlack">
           <Routes>
             <Route path="/" element={<Outlet />}>
               <Route path="" element={<SnippetDialog />} />
@@ -100,7 +102,7 @@ const Snippets = () => {
           </div>
         </div>
       </div>
-      <div className="flex flex-col w-1/4">
+      <div className="flex flex-col h-[102%] w-1/4">
         <NavbarLeft />
         <div className="overflow-y-auto flex relative flex-col h-[86vh] mt-4 p-2 gap-3 rounded-[0.625rem] bg-customBlack">
           <div ref={chatContainerRef} className="chat section overflow-y-auto scrollbar-hide h-full flex flex-col">
@@ -138,6 +140,7 @@ const Snippets = () => {
           </form>
         </div>
       </div>
+      </section>
     </div>
   );
 };

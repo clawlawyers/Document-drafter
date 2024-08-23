@@ -74,7 +74,7 @@ const DocEdit = ({ onSave }) => {
           <NavbarLeft />
         </div>
 
-        <div className="flex flex-row w-full space-x-5  rounded-md max-h-[88%] justify-center items-start">
+        <div className="flex flex-row w-full space-x-5  rounded-md h-[88%] justify-center items-start">
           <div className="flex flex-col bg-customBlack rounded-md w-[70%] h-full space-y-5 justify-between p-5">
             <div className="border-white bg-card-gradient flex flex-col justify-center  items-center border-2 rounded-md w-full h-[80%]">
               {loading ? (
@@ -84,13 +84,12 @@ const DocEdit = ({ onSave }) => {
                   alt="Loading..."
                 />
               ) : (
-
                 <Markdown className=" text-sm hide-scrollbar p-2 h-full w-full overflow-y-auto overflow-wrap break-word word-wrap break-word">
-                {text.replace(/\\n/g, "\n\n")
-                .replace(/\\t/g, "\t")
-                .replace(/\\"/g, '"')
-                .replace(/1\n"/g, "\n")}
-              </Markdown>
+                  {text
+                    .replace(/\\n/g, "\n\n")
+                    .replace(/\\u20b9/g, "₹")
+                    .replace(/(\d+\.)/g, "\n$1")}
+                </Markdown>
               )}
             </div>
             <div className="flex flex-row justify-end items-center gap-5">

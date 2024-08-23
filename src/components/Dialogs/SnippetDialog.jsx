@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import Markdown from "react-markdown";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom"; // Import useNavigate
 import { twMerge } from "tailwind-merge";
@@ -42,20 +43,22 @@ const SnippetDialog = () => {
             )}
           >
             <div className="font-sans text-[1.125rem] font-bold leading-[1.13625rem]">
-              {item.heading}
+              <Markdown>
+                {item.heading}
+                </Markdown>
             </div>
-            <div className="font-sans text-[0.625rem]">{item.text}</div>
+            <div className="font-sans text-[0.625rem]"><Markdown>{item.text}</Markdown></div>
           </div>
           <div className="w-1/4 flex gap-4 flex-col text-[0.6875rem] font-sans">
-            <div className="flex gap-3">
+            <div className="flex gap-3 text-xs">
               <button
-                className="rounded border-[1px] w-1/2 hover:bg-hover-gradient hover:text-black hover:border-0 py-1"
+                className="rounded border-[1px] w-1/2 hover:bg-hover-gradient hover:text-black hover:border-0 p-1"
                 onClick={() => navigate(`/Snippets/Summary/${i}`)} // Use navigate instead of <a>
               >
                 Summary
               </button>
               <button
-                className="rounded border-[1px] w-1/2 hover:bg-hover-gradient hover:text-black hover:border-0 py-1"
+                className="rounded border-[1px] w-1/2 hover:bg-hover-gradient hover:text-black hover:border-0 p-1"
                 onClick={() => navigate(`/Snippets/Favour/${i}`)} // Use navigate instead of <a>
               >
                 In whose favour
@@ -63,13 +66,13 @@ const SnippetDialog = () => {
             </div>
             <div className="flex text-[0.5625rem] -tracking-[0.01688rem] gap-3">
               <button
-                className="rounded border-[1px] w-1/2 hover:bg-hover-gradient hover:text-black hover:border-0 py-1"
+                className="rounded border-[1px] w-1/2 hover:bg-hover-gradient hover:text-black hover:border-0 p-1"
                 onClick={() => navigate(`/Snippets/Neutral/${i}`)} // Use navigate instead of <a>
               >
                 How to make neutral
               </button>
               <button
-                className="rounded border-[1px] w-1/2 hover:bg-hover-gradient hover:text-black hover:border-0 py-1"
+                className="rounded border-[1px] w-1/2 hover:bg-hover-gradient hover:text-black hover:border-0 p-1"
                 onClick={() => navigate(`/Snippets/Direction/${i}`)} // Use navigate instead of <a>
               >
                 Bend in Opp. Direction

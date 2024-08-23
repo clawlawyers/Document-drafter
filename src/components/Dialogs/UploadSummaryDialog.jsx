@@ -40,7 +40,7 @@ const UploadSummary = () => {
   
 
   return (
-    <main className="flex flex-row justify-center p-4 items-center w-full h-full bg-customBlack">
+    <main className="flex flex-row justify-center rounded-md p-4 items-center w-full h-full bg-customBlack">
       <section className="flex-1 h-full w-full">
         <SummaryDisplay />
       </section>
