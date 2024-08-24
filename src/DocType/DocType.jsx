@@ -16,6 +16,8 @@ const DocType = () => {
   const [loading, setLoading] = useState(false);
 
   const handleSelectChange = (e) => {
+
+    
     setSelectedValue(e.target.value);
   };
 
@@ -25,7 +27,7 @@ const DocType = () => {
     // Perform submit action
     localStorage.setItem("from","docType")
 
-    dispatch(setPrompt(selectedValue));
+    dispatch(setPrompt(selectedValue.replace(/\s*\(.*?\)\s*/g, '')));
 
     navigate("/Drafter/DrafterArgs");
     setLoading(false);

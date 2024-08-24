@@ -281,7 +281,7 @@ const DrafterArgs = () => {
                     </div>
                   ))}
                 </div>
-                <div className="w-full h-0.5 bg-white" />
+                <div className="w-full h-0.5 bg-white/50 rounded-md" />
                 <div>
                   <h2 className="underline text-primary-theme-white-50 font-bold">
                     Optional Requirements
