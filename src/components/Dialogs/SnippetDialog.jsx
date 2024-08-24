@@ -46,7 +46,7 @@ const SnippetDialog = () => {
               <Markdown>{item.heading}</Markdown>
             </div>
             <div className="font-sans  text-[0.625rem] w-fit break-words overflow-wrap break-word word-wrap break-word">
-              <p>{item.text}</p>
+              <Markdown>{item.text}</Markdown>
             </div>
           </div>
           <div className="w-1/4 flex gap-4 flex-col text-[0.6875rem] font-sans">

@@ -3,7 +3,11 @@ import { getAnswer } from "../../actions/UploadAction";
 import { useDispatch, useSelector } from "react-redux";
 
 import {setUploadDocText } from "../../features/DocumentSlice";
-
+import { formatText } from "../../utils/utils";
+import axios from "axios";
+import { NODE_API_ENDPOINT } from "../../utils/utils";
+import { breakout } from "../../actions/createDoc";
+import { setBreakoutData } from "../../features/breakoutSlice";
 const EditSidebar = () => {
   const dispatch = useDispatch();
   const doc_id = useSelector((state) => state.document.docId);
@@ -13,25 +17,31 @@ const EditSidebar = () => {
   const onChange = (e) => {
     setQuery(e.target.value);
   };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-
+  
     try {
       const res = await getAnswer(doc_id, query);
       console.log(res);
       const doc = res.data.data.fetchedData.updated_document;
-     console.log(doc);
+      console.log(JSON.stringify(doc));
+  
       
-      dispatch(setUploadDocText(doc));
-      // dispatch(setUploadDocText(doc));
+      dispatch(setUploadDocText(JSON.stringify(doc)));
+      const res2 = await breakout(doc_id);
+      console.log(res2.data);
+      dispatch(setBreakoutData(res2.data));
+      await axios.post(`${NODE_API_ENDPOINT}/ai-drafter/generate_db`, {
+        doc_id: doc_id,
+      });
     } catch (error) {
       console.error("Error fetching answer:", error);
     } finally {
       setLoading(false);
     }
   };
+  
 
   return (
     <main className="px-4 space-y-5 w-full flex flex-col justify-between items-center rounded-md h-full">
@@ -56,6 +66,7 @@ const EditSidebar = () => {
           onChange={onChange}
           readOnly={loading}
           value={query}
+          required
         />
         <button
           type="submit"

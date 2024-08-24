@@ -15,6 +15,7 @@ import axios from "axios";
 import { NODE_API_ENDPOINT } from "../utils/utils";
 import { formatText } from "../utils/utils";
 import rehypeRaw from "rehype-raw";
+import rehypeSanitize from "rehype-sanitize";
 
 const DocEdit = ({ onSave }) => {
   const dispatch = useDispatch();
@@ -22,20 +23,14 @@ const DocEdit = ({ onSave }) => {
   const ediText = useSelector((state) => state.document.uploadDocText);
   const texteditable = useSelector((state) => state.document.uploadDocText);
   const doc_id = useSelector((state) => state.document.docId);
-  const [text, setText] = useState("");
+  const [text, setText] = useState(ediText);
   const [loading, setLoading] = useState(true);
   const [activeSidebar, setActiveSidebar] = useState("preview");
   console.log(doc_id);
+  let count = 0;
   useEffect(() => {
-    const updatedText = ediText || texteditable;
-    if (updatedText) {
-      const dispText = trimQuotes(updatedText);
-      // const jsonText = JSON.parse(dispText)
-      // console.log(jsonText);
-
-      setText(formatText(dispText));
-    }
-  }, [ediText, texteditable]);
+    setText(ediText);
+  });
 
   useEffect(() => {
     breakoutFunc();
@@ -94,7 +89,7 @@ const DocEdit = ({ onSave }) => {
                   className=" text-sm hide-scrollbar p-2 h-full w-full overflow-y-auto overflow-wrap break-word word-wrap break-word"
                   rehypePlugins={[rehypeRaw]}
                 >
-                  {trimQuotes(text)}
+                  {trimQuotes(formatText(text))}
                 </Markdown>
               )}
             </div>

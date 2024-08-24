@@ -36,5 +36,7 @@ export const NODE_API_ENDPOINT =
     export   const formatText = (text) => {
       return text
         .replace(/\\n\\n/g, '<br/><br/>')   // Ensure two \n result in a new paragraph
-        .replace(/\\n/g, '  <br/>');     // Ensure single \n is treated as a line break
+        .replace(/\\n/g, '  <br/>')
+        .replace(/\\u20B9/g, '₹')
+        ;     // Ensure single \n is treated as a line break
     };
