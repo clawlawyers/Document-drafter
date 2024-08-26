@@ -4,7 +4,7 @@ const initialState = {
   breakoutData: null,
   loading: false,
   error: null,
-  greenHeading: [],
+  // greenHeading: [],
 };
 
 const breakoutSlice = createSlice({
@@ -25,9 +25,9 @@ const breakoutSlice = createSlice({
       state.loading = false;
       state.error = null;
     },
-    setGreenHeading: (state, action) => {
-      state.greenHeading = action.payload;
-    },
+    // setGreenHeading: (state, action) => {
+    //   state.greenHeading = action.payload;
+    // },
   },
 });
 
@@ -36,7 +36,7 @@ export const {
   setLoading,
   setError,
   clearBreakoutData,
-  setGreenHeading,
+  // setGreenHeading,
 } = breakoutSlice.actions;
 
 export default breakoutSlice.reducer;

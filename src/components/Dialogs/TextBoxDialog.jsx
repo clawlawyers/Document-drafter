@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { setGreenHeading } from "../../features/breakoutSlice";
+import { setGreenHeading } from "../../features/greenHeadingSlice";
 
 const TextBoxDialog = ({ responseData }) => {
   const [isLoading, setisLoading] = useState(false);

@@ -7,16 +7,19 @@ import documentReducer from "./DocumentSlice";
 import breakoutSlice from "./breakoutSlice";
 import storage from "redux-persist/lib/storage";
 import PromptSlice from "./PromptSlice";
+import greenHeadingSlice from "./greenHeadingSlice";
 const persistConfigure = {
   key: "root",
   version: 1,
+  blacklist: ["greenHeading"],
   storage,
 };
 const reducer = combineReducers({
   breakout: breakoutSlice,
   auth: authReducer,
   document: documentReducer,
-  prompt : PromptSlice
+  greenHeading: greenHeadingSlice,
+  prompt: PromptSlice,
 });
 
 const persistedReducer = persistReducer(persistConfigure, reducer);

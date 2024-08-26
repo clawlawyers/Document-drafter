@@ -16,8 +16,8 @@ import {
   setBreakoutData,
   setLoading,
   setError,
-  setGreenHeading,
 } from "../../features/breakoutSlice";
+
 import DocEdit from "../../DocEdit/DocEdit";
 import toast from "react-hot-toast";
 import { NODE_API_ENDPOINT } from "../../utils/utils";
@@ -51,7 +51,7 @@ const UploadDialog = () => {
       await axios.post(`${NODE_API_ENDPOINT}/ai-drafter/generate_db`, {
         doc_id: doc_id,
       });
-      dispatch(setGreenHeading([]));
+      // dispatch(setGreenHeading([]));
       dispatch(setBreakoutData(res.data));
       setUploadStatus(""); // Stop the analyzing GIF after response
       setFile(null);
@@ -212,7 +212,7 @@ const UploadDialog = () => {
                   <LinearProgress
                     variant="determinate"
                     value={uploadProgress}
-                    sx={{ height: "4px", width: "90%", padding: "5px" , }}
+                    sx={{ height: "4px", width: "90%", padding: "5px" }}
                   />
                 </div>
               )}

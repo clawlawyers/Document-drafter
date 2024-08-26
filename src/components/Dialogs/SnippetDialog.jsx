@@ -1,19 +1,23 @@
 import React, { useEffect, useState } from "react";
 import Markdown from "react-markdown";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom"; // Import useNavigate
 import { twMerge } from "tailwind-merge";
+// import { setGreenHeading } from "../../features/greenHeadingSlice";
 
 const SnippetDialog = () => {
   const navigate = useNavigate(); // Initialize useNavigate
   const breakout = useSelector((state) => state.breakout);
+  const greenHeading = useSelector((state) => state.greenHeading);
   console.log(breakout);
   const [headPoints, setHeadPoints] = useState([]);
   const [details, setDetails] = useState([]);
+  // const dispatch = useDispatch();
+  // dispatch(setGreenHeading([]));
 
   useEffect(() => {
     if (breakout.breakoutData) {
-      console.log(breakout?.greenHeading);
+      // console.log(breakout?.greenHeading);
       setHeadPoints(
         breakout.breakoutData.data.fetchedData.headpoints.map(
           (heading) => heading.replace(/^#+\s*/, "") // Remove leading # symbols
@@ -39,7 +43,8 @@ const SnippetDialog = () => {
           <div
             className={twMerge(
               "flex flex-col rounded-[0.635rem] border-2 px-4 py-2 border-white bg-popup-gradient w-3/4 gap-1",
-              breakout?.greenHeading?.includes(`${i + 1}`) && "border-green-500"
+              greenHeading.greenHeading?.includes(`${i + 1}`) &&
+                "border-green-500"
             )}
           >
             <div className="font-sans text-[1.125rem] font-bold leading-[1.13625rem]">
