@@ -23,12 +23,12 @@ const Snippets = () => {
   const [loading,setLoading] = useState(false);
   const chatContainerRef = useRef(null);
 
-  useEffect(() => {
-    var localnewData = JSON.parse(localStorage.getItem("newdata"));
-    if (localnewData !== null) {
-      setTextBoxData(localnewData);
-    }
-  }, []);
+  // useEffect(() => {
+  //   var localnewData = JSON.parse(localStorage.getItem("newdata"));
+  //   if (localnewData !== null) {
+  //     setTextBoxData(localnewData);
+  //   }
+  // }, []);
 
   useEffect(() => {
     // Scroll to the bottom of the chat container when textBoxData changes

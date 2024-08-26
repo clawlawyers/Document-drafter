@@ -168,12 +168,57 @@ const DrafterArgs = () => {
     }
   };
 
-  const handleGenerate = async () => {
-    if (path === "docType" && !isReqCalled)
-      toast.error("Please fill in your requirements and save it!");
-    else {
+  const handleGenerate = async (e) => {
+    e.preventDefault();
+    setReqLoading(true);
+    // Combine essential and optional inputs into a single object
+    const allInputs = {
+      essential_requirements: essentialInputs,
+      optional_requirements: optionalInputs,
+    };
+
+    // Convert the essential requirements to a JSON string with indentation for readability
+    const essentialJsonString = JSON.stringify(
+      allInputs.essential_requirements,
+      null,
+      4
+    ); // 'null, 4' adds indentation
+
+    // Convert the optional requirements to a JSON string with indentation
+    const optionalJsonString = JSON.stringify(
+      allInputs.optional_requirements,
+      null,
+      4
+    );
+
+    // Final result where the JSON string is encapsulated as a plain string
+    const finalEssentialString = essentialJsonString;
+    const finalOptionalString = optionalJsonString;
+    try {
+      const res1 = await uploadPre(docId, finalEssentialString);
+      console.log(res1);
+      const res2 = await uploadOptional(docId, finalOptionalString);
+      console.log(res2);
+      const res = await generateDocument(docId);
+      console.log(res.data.data.fetchedData.document);
+      setDocText(res.data.data.fetchedData.document);
+      setFallbackText(
+        'Sale Agreement\n\nThis Sale Agreement ("Agreement") is made and entered into on this [DATE] by and between:\n\n1. [SELLER\'S NAME], residing at [SELLER\'S ADDRESS] (hereinafter referred to as the "Seller"); \nand\n2. [BUYER\'S NAME], residing at [BUYER\'S ADDRESS] (hereinafter referred to as the "Buyer").\n\nRecitals:\n\nWHEREAS, the Seller is the legal and beneficial owner of the property described below and desires to sell the same to the Buyer.\n\nWHEREAS, the Buyer is desirous of purchasing the said property from the Seller on the terms and conditions set forth in this Agreement.\n\nNOW, THEREFORE, in consideration of the mutual covenants and agreements hereinafter set forth, the parties hereto agree as follows:\n\n1. Description of Property:\nThe property being sold under this Agreement is described as [PROPERTY DETAILS, INCLUDING ADDRESS, LEGAL DESCRIPTION, AND ANY UNIQUE IDENTIFIERS]. The Seller hereby confirms that the property is free from all encumbrances, claims, and demands whatsoever.\n\n'
+      );
+      dispatch(setUploadDocText(res.data.data.fetchedData.document));
+    } catch (e) {
+      console.log(e);
+    } finally {
+      setReqLoading(false);
+      setIsReqCalled(true);
       navigate("/DocPreview");
     }
+
+    // You can send this final string to your API
+    console.log(finalOptionalString); // Optional requirements in string format
+    console.log(finalEssentialString); // Optional requirements in string format
+
+    toast.success("Requirements saved successfully!");
   };
 
   const handleSaveRequirements = async (e) => {
@@ -226,6 +271,7 @@ const DrafterArgs = () => {
     console.log(finalEssentialString); // Optional requirements in string format
 
     toast.success("Requirements saved successfully!");
+    navigate("/DocEdit");
   };
 
   return (
@@ -260,7 +306,9 @@ const DrafterArgs = () => {
             ) : (
               <div>
                 <Markdown rehypePlugins={[rehypeRaw]}>
-                  {formatText(trimQuotes(uploadDocText.replace(/\u20B9/g, '₹')))}
+                  {formatText(
+                    trimQuotes(uploadDocText.replace(/\u20B9/g, "₹"))
+                  )}
                 </Markdown>
               </div>
             )}
@@ -353,13 +401,14 @@ const DrafterArgs = () => {
             </button>
             <button
               onClick={handleGenerate}
+              disabled={loading || reqLoading}
               className={`${
-                loading
+                loading || reqLoading
                   ? "opacity-75 pointer-events-none cursor-not-allowed"
                   : ""
               }border-white border-2 bg-btn-gradient p-2  rounded-md text-sm`}
             >
-              Generate Document
+              {reqLoading ? "Generating ..." : "Generate Document"}
             </button>
           </div>
         </div>

@@ -10,6 +10,7 @@ import loaderGif from "../../assets/icons/2.gif"
 const SummaryDialog = () => {
   let navigate = useNavigate();
   let location = useLocation();
+  console.log(location.pathname);
   const doc_id = useSelector((state) => state.document.docId);
   const breakoutData = useSelector((state) => state.breakout.breakoutData);
   const headpoints = breakoutData.data.fetchedData.headpoints;
