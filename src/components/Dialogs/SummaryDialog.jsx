@@ -46,6 +46,7 @@ const SummaryDialog = () => {
         <Markdown>{selectedHeadpoint}</Markdown>
       </div>
       <div className="flex flex-row gap-3  text-xs text-nowrap ">
+        
         <button
           className="rounded border-[1px] w-fit p-2 hover:bg-hover-gradient hover:text-black hover:border-0 py-1"
           onClick={() => navigate(`/Snippets/Favour/${index}`)} // Use navigate instead of <a>

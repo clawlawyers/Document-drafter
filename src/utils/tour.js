@@ -21,11 +21,11 @@ export const steps = [
     },
   },
   {
-    element: "#saveReq",
+    element: "#Generate",
     popover: {
-      title: "Save your Requirements ",
+      title: "Generate Document",
       description:
-        "After you've fill in the details Generate document by clicking on Save Requirements button",
+        "After you've fill in the details Generate document by clicking on Generate Document button",
       side: "left",
       align: "start",
     },

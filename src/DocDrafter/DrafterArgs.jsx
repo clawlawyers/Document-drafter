@@ -375,17 +375,7 @@ const DrafterArgs = () => {
                     ))}
                   </div>
                 </div>
-                <button
-                  id="saveReq"
-                  type="submit"
-                  className={`${
-                    reqLoading
-                      ? "opacity-75 pointer-events-none cursor-not-allowed"
-                      : ""
-                  } bg-teal-600 text-white w-full py-2 rounded-md font-medium`}
-                >
-                  {reqLoading ? "Saving..." : "Save Requirements"}
-                </button>
+                
               </form>
             )}
           </div>
@@ -400,6 +390,7 @@ const DrafterArgs = () => {
               Re-enter Prompt
             </button>
             <button
+              id="Generate"
               onClick={handleGenerate}
               disabled={loading || reqLoading}
               className={`${
