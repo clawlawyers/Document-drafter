@@ -60,7 +60,7 @@ console.log(temp);
                   className=" text-sm hide-scrollbar  h-full w-full overflow-y-auto overflow-wrap break-word word-wrap break-word"
                   rehypePlugins={[rehypeRaw]}
                 >
-                  {formatText(text)}
+                  {formatText(text.replace(/\\u20B9/g, '₹'))}
                 </Markdown>
           </div>
         )}

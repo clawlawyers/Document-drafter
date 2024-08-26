@@ -19,6 +19,7 @@ const CustomSelect = ({
         onChange={onChange}
         disabled={loading}
         value={value}
+        required
       >
         <option value="" disabled>
           {placeholder}

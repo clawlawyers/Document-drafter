@@ -9,6 +9,11 @@ import { options } from "./Options";
 import { setPrompt } from "../features/PromptSlice";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
+import { driver } from "driver.js";
+import "driver.js/dist/driver.css";
+import { steps } from "../utils/tour";
+
+
 const DocType = () => {
   let navigate = useNavigate();
   let dispatch = useDispatch();
@@ -16,22 +21,19 @@ const DocType = () => {
   const [loading, setLoading] = useState(false);
 
   const handleSelectChange = (e) => {
-
-    
     setSelectedValue(e.target.value);
   };
 
-  const handleSubmit = async(e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
     // Perform submit action
-    localStorage.setItem("from","docType")
+    localStorage.setItem("from", "docType");
 
-    dispatch(setPrompt(selectedValue.replace(/\s*\(.*?\)\s*/g, '')));
+    dispatch(setPrompt(selectedValue.replace(/\s*\(.*?\)\s*/g, "")));
 
     navigate("/Drafter/DrafterArgs");
     setLoading(false);
-    
   };
 
   return (

@@ -26,14 +26,22 @@ import rehypeRaw from "rehype-raw";
 import rehypeSanitize from "rehype-sanitize";
 import { trimQuotes } from "../utils/utils";
 import { formatText } from "../utils/utils";
+import { driver } from "driver.js";
+import "driver.js/dist/driver.css";
+import { steps } from "../utils/tour";
 const DrafterArgs = () => {
+  const driverObj = driver({
+    showProgress: true,
+    steps: steps,
+  });
 
-  
-  
   let path = localStorage.getItem("from");
+
   let navigate = useNavigate();
   let dispatch = useDispatch();
   const [loading, setIsLoading] = useState(false);
+
+  const [isReqCalled, setIsReqCalled] = useState(false);
   const [reqLoading, setReqLoading] = useState(false);
   const prompt = useSelector((state) => state.prompt.prompt);
   const docId = useSelector((state) => state.document.docId);
@@ -66,12 +74,19 @@ const DrafterArgs = () => {
         });
       } catch (error) {
         console.error("Failed to fetch document ID:", error);
+      } finally {
+        if (path === "docType") {
+          driverObj.drive();
+        }
       }
     };
     fetchDocId();
   }, []);
 
-  useEffect(() => {}, [docId]);
+  useEffect(() => {
+    if (path === "docType")
+      setDocText("Please Set The requirements first to proceed!");
+  }, [docId]);
 
   const fetchReq = async (doc_id) => {
     console.log(docId);
@@ -154,7 +169,11 @@ const DrafterArgs = () => {
   };
 
   const handleGenerate = async () => {
-    navigate("/DocPreview");
+    if (path === "docType" && !isReqCalled)
+      toast.error("Please fill in your requirements and save it!");
+    else {
+      navigate("/DocPreview");
+    }
   };
 
   const handleSaveRequirements = async (e) => {
@@ -199,6 +218,7 @@ const DrafterArgs = () => {
       console.log(e);
     } finally {
       setReqLoading(false);
+      setIsReqCalled(true);
     }
 
     // You can send this final string to your API
@@ -225,7 +245,10 @@ const DrafterArgs = () => {
             </div>
           </div>
           {/* arguments container */}
-          <div className="bg-card-gradient scrollbar-hide overflow-y-auto scroll-smooth rounded-md w-full flex flex-col items-start p-5 h-full">
+          <div
+            id="docText"
+            className="bg-card-gradient  scrollbar-hide overflow-y-auto scroll-smooth rounded-md w-full flex flex-col items-start p-5 h-full"
+          >
             {loading ? (
               <div className="flex flex-col h-full items-center justify-center w-full">
                 <img
@@ -236,10 +259,9 @@ const DrafterArgs = () => {
               </div>
             ) : (
               <div>
-                 <Markdown rehypePlugins={[rehypeRaw, ]}>
-            {formatText(trimQuotes(uploadDocText))}
-          </Markdown>
-               
+                <Markdown rehypePlugins={[rehypeRaw]}>
+                  {formatText(trimQuotes(uploadDocText.replace(/\u20B9/g, '₹')))}
+                </Markdown>
               </div>
             )}
           </div>
@@ -254,65 +276,65 @@ const DrafterArgs = () => {
               />
             ) : (
               <form
+                id="reqPanel"
                 className="space-y-3 p-2 flex flex-col h-full w-full overflow-auto scrollbar-hide text-sm"
                 onSubmit={handleSaveRequirements}
               >
                 <div className="flex flex-col gap-3">
-
-                <div className="text-sm">
-                  <h2 className="underline text-primary-theme-white-50 font-bold">
-                    Essential Requirements
-                  </h2>
-                  {EssentialReq.map((req, index) => (
-                    <div key={index}>
-                      <label
-                        htmlFor={req}
-                        className="text-primary-theme-white-50 text-xs"
-                      >
-                        {req}
-                      </label>
-                      <input
-                        type="text"
-                        name={req}
-                        value={essentialInputs[req]}
-                        onChange={(e) => handleInputChange(e, "essential")}
-                        className="w-full p-0.5 bg-customBlack border-white rounded-md text-primary-theme-white-50"
-                      />
-                    </div>
-                  ))}
-                </div>
-                <div className="w-full h-0.5 bg-white/50 rounded-md" />
-                <div>
-                  <h2 className="underline text-primary-theme-white-50 font-bold">
-                    Optional Requirements
-                  </h2>
-                  {OptionalReq.map((req, index) => (
-                    <div key={index}>
-                      <label
-                        htmlFor={req}
-                        className="text-primary-theme-white-50 text-xs"
-                      >
-                        {req}
-                      </label>
-                      <input
-                        type="text"
-                        name={req}
-                        value={optionalInputs[req]}
-                        onChange={(e) => handleInputChange(e, "optional")}
-                        className="w-full p-2 bg-customBlack border-white rounded-md text-primary-theme-white-50"
-                      />
-                    </div>
-                  ))}
-                </div>
-
+                  <div className="text-sm">
+                    <h2 className="underline text-primary-theme-white-50 font-bold">
+                      Essential Requirements
+                    </h2>
+                    {EssentialReq.map((req, index) => (
+                      <div key={index}>
+                        <label
+                          htmlFor={req}
+                          className="text-primary-theme-white-50 text-xs"
+                        >
+                          {req}
+                        </label>
+                        <input
+                          type="text"
+                          name={req}
+                          value={essentialInputs[req]}
+                          onChange={(e) => handleInputChange(e, "essential")}
+                          className="w-full p-0.5 bg-customBlack border-white rounded-md text-primary-theme-white-50"
+                        />
+                      </div>
+                    ))}
+                  </div>
+                  <div className="w-full h-0.5 bg-white/50 rounded-md" />
+                  <div>
+                    <h2 className="underline text-primary-theme-white-50 font-bold">
+                      Optional Requirements
+                    </h2>
+                    {OptionalReq.map((req, index) => (
+                      <div key={index}>
+                        <label
+                          htmlFor={req}
+                          className="text-primary-theme-white-50 text-xs"
+                        >
+                          {req}
+                        </label>
+                        <input
+                          type="text"
+                          name={req}
+                          value={optionalInputs[req]}
+                          onChange={(e) => handleInputChange(e, "optional")}
+                          className="w-full p-2 bg-customBlack border-white rounded-md text-primary-theme-white-50"
+                        />
+                      </div>
+                    ))}
+                  </div>
                 </div>
                 <button
+                  id="saveReq"
                   type="submit"
                   className={`${
                     reqLoading
-                      ? "opacity-75  pointer-events-none cursor-not-allowed"
+                      ? "opacity-75 pointer-events-none cursor-not-allowed"
                       : ""
-                    }bg-teal-600 text-white w-full py-2 rounded-md font-medium`}
+                  } bg-teal-600 text-white w-full py-2 rounded-md font-medium`}
                 >
                   {reqLoading ? "Saving..." : "Save Requirements"}
                 </button>
@@ -321,14 +343,21 @@ const DrafterArgs = () => {
           </div>
           <div className="flex flex-row w-full  justify-between items-center">
             <button
-              onClick={() => navigate("/Drafter")}
-              className="bg-btn-gradient p-2 rounded-md text-sm"
+              onClick={() => {
+                if (path !== "docType") navigate("/Drafter");
+                else navigate("/DocType");
+              }}
+              className="bg-btn-gradient p-2 rounded-md text-sm border-white border-2"
             >
               Re-enter Prompt
             </button>
             <button
               onClick={handleGenerate}
-              className="bg-btn-gradient p-2  rounded-md text-sm"
+              className={`${
+                loading
+                  ? "opacity-75 pointer-events-none cursor-not-allowed"
+                  : ""
+              }border-white border-2 bg-btn-gradient p-2  rounded-md text-sm`}
             >
               Generate Document
             </button>
