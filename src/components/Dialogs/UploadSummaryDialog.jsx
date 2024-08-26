@@ -5,27 +5,29 @@ import { useNavigate } from "react-router-dom";
 
 const UploadSummary = () => {
   let navigate = useNavigate();
+  let Sumarypath = localStorage.getItem("SummaryPath");
+
   const generatePDF = () => {
     const summaryText = document.getElementById("summary-text").innerText;
-  
+
     const doc = new jsPDF();
-  
+
     const pageHeight = doc.internal.pageSize.height;
     const margin = 10;
     let y = 30; // Starting y position after the heading
-  
+
     const heading = "Document Summary";
     doc.setFontSize(18);
     doc.setFont("helvetica", "bold");
     doc.setTextColor(0, 128, 128);
-  
+
     doc.text(heading, margin, 20);
-  
+
     doc.setFont("helvetica", "normal");
     doc.setTextColor(0, 0, 0);
-  
+
     const lines = doc.splitTextToSize(summaryText, 180);
-  
+
     lines.forEach((line) => {
       if (y + margin > pageHeight) {
         doc.addPage();
@@ -34,10 +36,14 @@ const UploadSummary = () => {
       doc.text(line, margin, y);
       y += 10; // Move y down for the next line
     });
-  
+
     doc.save("document_summary.pdf");
   };
-  
+  const handleNavigate = () => {
+    if (Sumarypath === "/DocPreview") {
+      navigate("/DocPreview");
+    } else navigate("/Snippets");
+  };
 
   return (
     <main className="flex flex-row justify-center rounded-md scale-95 p-4 items-center w-full h-full bg-customBlack">
@@ -55,7 +61,10 @@ const UploadSummary = () => {
         </div>
         {/* buttons */}
         <div className="flex flex-row justify-center scale-90 items-center w-full space-x-5">
-          <button onClick={()=>navigate("/Snippets") } className="bg-card-gradient  text-white font-bold p-3 px-10 rounded-md">
+          <button
+            onClick={ handleNavigate}
+            className="bg-card-gradient  text-white font-bold p-3 px-10 rounded-md"
+          >
             Go Back
           </button>
           <button

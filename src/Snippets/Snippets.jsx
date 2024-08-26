@@ -20,6 +20,7 @@ const Snippets = () => {
   const [showGIF, setShowGif] = useState(false);
   const [query, setquery] = useState("");
   const [textBoxData, setTextBoxData] = useState([]);
+  const [loading,setLoading] = useState(false);
   const chatContainerRef = useRef(null);
 
   useEffect(() => {
@@ -38,7 +39,9 @@ const Snippets = () => {
   }, [textBoxData]);
 
   const handleSend = async (e) => {
+
     e.preventDefault();
+    setLoading(true);
     let data = JSON.stringify({
       doc_id: doc_id,
       query: query,
@@ -78,6 +81,9 @@ const Snippets = () => {
       console.error("Error sending data:", error);
       toast.error("Error fetching");
     }
+    finally{
+      setLoading(false);
+    }
   };
 
   return (
@@ -96,8 +102,17 @@ const Snippets = () => {
               </Route>
             </Routes>
             <div className="flex flex-row  w-full justify-end items-center px-5 font-semibold space-x-5">
+            <button
+                onClick={() => navigate("/")}
+                className="bg-card-gradient p-2 border border-white rounded-md"
+              >
+                New Document
+              </button>
               <button
-                onClick={() => navigate("/summary")}
+                onClick={() => {
+                  localStorage.setItem("SummaryPath", "/Snippets");
+                  navigate("/Summary");
+                }}
                 className="bg-card-gradient p-2 border border-white rounded-md"
               >
                 Generate Summary
@@ -108,6 +123,7 @@ const Snippets = () => {
               >
                 Document Preview
               </button>
+              
             </div>
           </div>
         </div>
@@ -142,10 +158,12 @@ const Snippets = () => {
                 placeholder="Enter Your Question..."
                 value={query}
                 onChange={(e) => setquery(e.target.value)}
+                required
               />
               <button
                 type="submit"
                 className="text-sm text-white bg-[#001616] p-2.5 px-3 rounded"
+                disabled={loading}
               >
                 SEND
               </button>

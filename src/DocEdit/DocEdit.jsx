@@ -41,6 +41,7 @@ const DocEdit = ({ onSave }) => {
   };
 
   const handlePreviewClick = () => {
+    localStorage.setItem("SummaryPath" , "/DocPreview");
     navigate("/summary");
   };
 
@@ -89,7 +90,7 @@ const DocEdit = ({ onSave }) => {
                   className=" text-sm hide-scrollbar p-2 h-full w-full overflow-y-auto overflow-wrap break-word word-wrap break-word"
                   rehypePlugins={[rehypeRaw]}
                 >
-                  {trimQuotes(formatText(text))}
+                  {trimQuotes(formatText(text.replace(/\u20B9/g, '₹')))}
                 </Markdown>
               )}
             </div>
