@@ -7,7 +7,7 @@ const CustomSelect = ({
   onChange,
   onSubmit,
   loading,
-  value
+  value,
 }) => {
   return (
     <form
@@ -25,8 +25,13 @@ const CustomSelect = ({
           {placeholder}
         </option>
         {options.map((option, index) => (
-          <option key={index} value={option.label}>
-            {option.label}
+          <option key={index} value={option}>
+            {option
+              .split(" ")
+              .map((x) => {
+                return x[0].toUpperCase() + x.slice(1);
+              })
+              .join(" ")}
           </option>
         ))}
       </select>
