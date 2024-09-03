@@ -2,12 +2,13 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { NODE_API_ENDPOINT, trimQuotes } from "../../utils/utils";
 import { useSelector } from "react-redux";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import Markdown from "react-markdown";
 import loaderGif from "../../assets/icons/2.gif";
 const DirectionDialog = () => {
   let navigate = useNavigate();
   let location = useLocation();
+  let { id: paramsId } = useParams();
   const doc_id = useSelector((state) => state.document.docId);
   const breakoutData = useSelector((state) => state.breakout.breakoutData);
   const headpoints = breakoutData.data.fetchedData.headpoints;
@@ -16,13 +17,13 @@ const DirectionDialog = () => {
   const [data, setData] = useState("");
   const [selectedHeadpoint, setSlectedHeadpont] = useState("");
 
-  const index = parseInt(location.pathname.slice(-1));
+  // const index = parseInt(location.pathname.slice(-1));
   useEffect(() => {
-    if (index >= 0 && index < headpoints.length) {
-      fetchData(headpoints[index]);
-      setSlectedHeadpont(headpoints[index]);
+    if (paramsId >= 0 && paramsId < headpoints.length) {
+      fetchData(headpoints[paramsId]);
+      setSlectedHeadpont(headpoints[paramsId]);
     }
-  }, [location, headpoints]);
+  }, [paramsId, headpoints]);
 
   const fetchData = async (headpoint) => {
     setisLoading(true);
@@ -45,19 +46,19 @@ const DirectionDialog = () => {
       <div className="flex flex-row gap-3  text-xs text-nowrap ">
         <button
           className="rounded border-[1px] w-fit p-2 hover:bg-hover-gradient hover:text-black hover:border-0 py-1"
-          onClick={() => navigate(`/Snippets/Favour/${index}`)} // Use navigate instead of <a>
+          onClick={() => navigate(`/Snippets/Favour/${paramsId}`)} // Use navigate instead of <a>
         >
           In whose favour
         </button>
         <button
           className="rounded border-[1px] w-fit p-2 hover:bg-hover-gradient hover:text-black hover:border-0 py-1"
-          onClick={() => navigate(`/Snippets/Neutral/${index}`)} // Use navigate instead of <a>
+          onClick={() => navigate(`/Snippets/Neutral/${paramsId}`)} // Use navigate instead of <a>
         >
           How to make Neutral
         </button>
         <button
           className="rounded border-[1px] w-fit p-2 hover:bg-hover-gradient hover:text-black hover:border-0 py-1"
-          onClick={() => navigate(`/Snippets/Summary/${index}`)} // Use navigate instead of <a>
+          onClick={() => navigate(`/Snippets/Summary/${paramsId}`)} // Use navigate instead of <a>
         >
           {" "}
           Summary
@@ -77,7 +78,6 @@ const DirectionDialog = () => {
         </div>
       ) : (
         <div className="flex overflow-y-auto scrollbar-hide justify-center items-center h-full flex-col gap-2 text-justify font-sans text-white m-5 ">
-          
           <img
             className="flex flex-row justify-center items-center w-40 h-40"
             src={loaderGif}
