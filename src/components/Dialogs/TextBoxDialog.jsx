@@ -38,7 +38,7 @@ const TextBoxDialog = ({ responseData }) => {
         <div className="font-sans text-customBlue font-bold">Soumya Banik</div>
       </div>
       <div className=" font-sans text-sm">{responseData.query}</div>
-      <div className=" rounded-[0.625rem] border-[0.1rem] border-customBlue font-sans text-[0.625rem] p-2 px-3 text-justify bg-[#868686] ">
+      <div className=" rounded-[0.625rem] border-[0.1rem] border-white font-sans text-sm p-2 px-3 text-justify bg-customBlue leading-5 ">
         {responseData.response.data.data.fetchedData.answer}
       </div>
       <div className="flex flex-row text-[0.6875rem] font-sans  gap-2">
