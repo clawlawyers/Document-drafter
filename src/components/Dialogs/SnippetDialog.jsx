@@ -36,6 +36,8 @@ const SnippetDialog = () => {
     text: details[index] || "", // Ensure text exists for each heading
   }));
 
+  console.log(combinedData);
+
   return (
     <div className="hide-scrollbar overflow-y-auto flex flex-col gap-5 mx-6 my-5 h-[65vh]">
       {combinedData.map((item, i) => (
@@ -43,7 +45,8 @@ const SnippetDialog = () => {
           <div
             className={twMerge(
               "flex flex-col rounded-[0.635rem] border-2 px-4 py-2 border-white bg-popup-gradient w-3/4 gap-1 h-28", // Added h-64 for fixed height
-              greenHeading.greenHeading?.includes(`${i + 1}`) && "border-green-500"
+              greenHeading.greenHeading?.includes(`${i + 1}`) &&
+                "border-green-500"
             )}
           >
             <div className="font-sans text-[1.125rem] font-bold leading-[1.13625rem] sticky top-0 bg-popup-gradient z-10">
