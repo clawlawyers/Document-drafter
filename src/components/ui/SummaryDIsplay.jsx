@@ -10,6 +10,7 @@ import { formatText, trimQuotes } from "../../utils/utils";
 
 const SummaryDisplay = () => {
   const [text, setText] = useState("");
+  console.log(text);
   const [loading, setLoading] = useState(false);
   const doc_id = useSelector((state) => state.document.docId);
 
@@ -19,9 +20,7 @@ const SummaryDisplay = () => {
       const res = await getSummary(doc_id);
       let temp = String.raw`${res.data.data.fetchedData.summary}`;
 
-
-
-console.log(temp);  
+      // console.log(temp);
 
       setText(trimQuotes(temp));
     } catch (e) {
@@ -56,12 +55,12 @@ console.log(temp);
             id="summary-text"
             className="h-full overflow-y-auto scrollbar-hide p-2"
           >
-              <Markdown
-                  className=" text-sm hide-scrollbar  h-full w-full overflow-y-auto overflow-wrap break-word word-wrap break-word"
-                  rehypePlugins={[rehypeRaw]}
-                >
-                  {formatText(text.replace(/\\u20B9/g, '₹'))}
-                </Markdown>
+            <Markdown
+              className=" text-sm hide-scrollbar  h-full w-full overflow-y-auto overflow-wrap break-word word-wrap break-word"
+              rehypePlugins={[rehypeRaw]}
+            >
+              {formatText(text.replace(/\\u20B9/g, "₹"))}
+            </Markdown>
           </div>
         )}
       </div>
