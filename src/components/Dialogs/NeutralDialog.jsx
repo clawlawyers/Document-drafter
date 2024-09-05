@@ -4,7 +4,7 @@ import { NODE_API_ENDPOINT, trimQuotes } from "../../utils/utils";
 import { useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
 import Markdown from "react-markdown";
-import loaderGif from "../../assets/icons/2.gif"
+import loaderGif from "../../assets/icons/2.gif";
 
 const NeutralDialog = () => {
   let navigate = useNavigate();
@@ -38,23 +38,27 @@ const NeutralDialog = () => {
   return (
     <div className="flex flex-col h-[65vh] font-sans gap-4 p-4 text-white">
       <div className="bg-popup-gradient p-4 text-[1rem] font-bold  rounded-[0.625rem] border-2 border-white">
-      <Markdown>
-        {selectedHeadpoint}
-        </Markdown>
+        <Markdown>{selectedHeadpoint}</Markdown>
       </div>
       <div className="flex flex-row gap-3  text-xs text-nowrap ">
-      <button
-          className="rounded border-[1px] w-fit p-2 hover:bg-hover-gradient hover:text-black hover:border-0 py-1"
-          onClick={() => navigate(`/Snippets/Favour/${index}`)} // Use navigate instead of <a>
-        >
-          In whose favour
-        </button>
         <button
           className="rounded border-[1px] w-fit p-2 hover:bg-hover-gradient hover:text-black hover:border-0 py-1"
           onClick={() => navigate(`/Snippets/Summary/${index}`)} // Use navigate instead of <a>
         >
           {" "}
           Summary
+        </button>
+        <button
+          className="rounded border-[1px] w-fit p-2 hover:bg-hover-gradient hover:text-black hover:border-0 py-1"
+          onClick={() => navigate(`/Snippets/Favour/${index}`)} // Use navigate instead of <a>
+        >
+          In whose favour
+        </button>
+        <button
+          className="rounded border-[1px] w-fit p-2 hover:bg-hover-gradient hover:text-black hover:border-0 py-1 bg-customBlue"
+          onClick={() => navigate(`/Snippets/Neutral/${index}`)} // Use navigate instead of <a>
+        >
+          How to make Neutral
         </button>
         <button
           className="rounded border-[1px] w-fit p-2 hover:bg-hover-gradient hover:text-black hover:border-0 py-1"
@@ -77,7 +81,6 @@ const NeutralDialog = () => {
         </div>
       ) : (
         <div className="flex overflow-y-auto scrollbar-hide justify-center items-center h-full flex-col gap-2 text-justify font-sans text-white m-5 ">
-          
           <img
             className="flex flex-row justify-center items-center w-40 h-40"
             src={loaderGif}

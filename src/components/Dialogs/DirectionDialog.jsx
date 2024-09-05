@@ -45,6 +45,13 @@ const DirectionDialog = () => {
       <div className="flex flex-row gap-3  text-xs text-nowrap ">
         <button
           className="rounded border-[1px] w-fit p-2 hover:bg-hover-gradient hover:text-black hover:border-0 py-1"
+          onClick={() => navigate(`/Snippets/Summary/${index}`)} // Use navigate instead of <a>
+        >
+          {" "}
+          Summary
+        </button>
+        <button
+          className="rounded border-[1px] w-fit p-2 hover:bg-hover-gradient hover:text-black hover:border-0 py-1"
           onClick={() => navigate(`/Snippets/Favour/${index}`)} // Use navigate instead of <a>
         >
           In whose favour
@@ -56,11 +63,10 @@ const DirectionDialog = () => {
           How to make Neutral
         </button>
         <button
-          className="rounded border-[1px] w-fit p-2 hover:bg-hover-gradient hover:text-black hover:border-0 py-1"
-          onClick={() => navigate(`/Snippets/Summary/${index}`)} // Use navigate instead of <a>
+          className="rounded border-[1px] w-fit p-2 hover:bg-hover-gradient hover:text-black hover:border-0 py-1 bg-customBlue"
+          onClick={() => navigate(`/Snippets/Direction/${index}`)} // Use navigate instead of <a>
         >
-          {" "}
-          Summary
+          Bend in Opp. Direction
         </button>
       </div>
       {!isLoading ? (
@@ -77,7 +83,6 @@ const DirectionDialog = () => {
         </div>
       ) : (
         <div className="flex overflow-y-auto scrollbar-hide justify-center items-center h-full flex-col gap-2 text-justify font-sans text-white m-5 ">
-          
           <img
             className="flex flex-row justify-center items-center w-40 h-40"
             src={loaderGif}

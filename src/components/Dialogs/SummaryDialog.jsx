@@ -5,7 +5,7 @@ import { useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
 import Markdown from "react-markdown";
 import { useNavigate } from "react-router-dom";
-import loaderGif from "../../assets/icons/2.gif"
+import loaderGif from "../../assets/icons/2.gif";
 
 const SummaryDialog = () => {
   let navigate = useNavigate();
@@ -29,6 +29,7 @@ const SummaryDialog = () => {
 
   const fetchData = async (headpoint) => {
     setisLoading(true);
+    console.log(headpoint);
     const res = await axios.post(
       `${NODE_API_ENDPOINT}/ai-drafter/summary_headings`,
       {
@@ -36,6 +37,7 @@ const SummaryDialog = () => {
         headpoint_to_find: headpoint,
       }
     );
+    console.log(res);
     const temp = res.data.data.fetchedData.summary;
     setData(temp);
     setisLoading(false);
@@ -46,7 +48,12 @@ const SummaryDialog = () => {
         <Markdown>{selectedHeadpoint}</Markdown>
       </div>
       <div className="flex flex-row gap-3  text-xs text-nowrap ">
-        
+        <button
+          className="rounded border-[1px] w-fit p-2 hover:bg-hover-gradient hover:text-black hover:border-0 py-1 bg-customBlue"
+          // Use navigate instead of <a>
+        >
+          Summary
+        </button>
         <button
           className="rounded border-[1px] w-fit p-2 hover:bg-hover-gradient hover:text-black hover:border-0 py-1"
           onClick={() => navigate(`/Snippets/Favour/${index}`)} // Use navigate instead of <a>
@@ -80,7 +87,6 @@ const SummaryDialog = () => {
         </div>
       ) : (
         <div className="flex overflow-y-auto scrollbar-hide justify-center items-center h-full flex-col gap-2 text-justify font-sans text-white m-5 ">
-          
           <img
             className="flex flex-row justify-center items-center w-40 h-40"
             src={loaderGif}
