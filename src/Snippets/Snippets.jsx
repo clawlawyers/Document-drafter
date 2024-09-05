@@ -20,7 +20,7 @@ const Snippets = () => {
   const [showGIF, setShowGif] = useState(false);
   const [query, setquery] = useState("");
   const [textBoxData, setTextBoxData] = useState([]);
-  const [loading,setLoading] = useState(false);
+  const [loading, setLoading] = useState(false);
   const chatContainerRef = useRef(null);
 
   // useEffect(() => {
@@ -39,7 +39,6 @@ const Snippets = () => {
   }, [textBoxData]);
 
   const handleSend = async (e) => {
-
     e.preventDefault();
     setLoading(true);
     let data = JSON.stringify({
@@ -80,8 +79,7 @@ const Snippets = () => {
     } catch (error) {
       console.error("Error sending data:", error);
       toast.error("Error fetching");
-    }
-    finally{
+    } finally {
       setLoading(false);
     }
   };
@@ -102,7 +100,13 @@ const Snippets = () => {
               </Route>
             </Routes>
             <div className="flex flex-row  w-full justify-end items-center px-5 font-semibold space-x-5">
-            <button
+              <button
+                // onClick={() => navigate("/")}
+                className="bg-card-gradient p-2 border border-white rounded-md"
+              >
+                Download Document
+              </button>
+              <button
                 onClick={() => navigate("/")}
                 className="bg-card-gradient p-2 border border-white rounded-md"
               >
@@ -123,7 +127,6 @@ const Snippets = () => {
               >
                 Document Preview
               </button>
-              
             </div>
           </div>
         </div>
