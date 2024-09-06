@@ -99,7 +99,7 @@ const Snippets = () => {
                 <Route path="/Direction/:id" element={<DirectionDialog />} />
               </Route>
             </Routes>
-            <div className="flex flex-row  w-full justify-end items-center px-5 font-semibold space-x-5">
+            {/* <div className="flex flex-row  w-full justify-end items-center px-5 font-semibold space-x-5">
               <button
                 // onClick={() => navigate("/")}
                 className="bg-card-gradient p-2 border border-white rounded-md"
@@ -127,7 +127,7 @@ const Snippets = () => {
               >
                 Document Preview
               </button>
-            </div>
+            </div> */}
           </div>
         </div>
         <div className="flex flex-col  h-full w-full md:w-1/4">

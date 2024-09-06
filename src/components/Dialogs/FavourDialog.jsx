@@ -18,7 +18,7 @@ const FavourDialog = () => {
   const [data, setData] = useState("");
   const [selectedHeadpoint, setSlectedHeadpont] = useState("");
 
-  // const index = parseInt(location.pathname.slice(-1));
+  const index = parseInt(location.pathname.slice(-1));
   useEffect(() => {
     if (paramsId >= 0 && paramsId < headpoints.length) {
       fetchData(headpoints[paramsId]);

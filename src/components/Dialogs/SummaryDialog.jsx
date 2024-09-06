@@ -6,7 +6,6 @@ import { useLocation, useParams } from "react-router-dom";
 import Markdown from "react-markdown";
 import { useNavigate } from "react-router-dom";
 import loaderGif from "../../assets/icons/2.gif";
-import loaderGif from "../../assets/icons/2.gif";
 
 const SummaryDialog = () => {
   let navigate = useNavigate();
@@ -24,7 +23,7 @@ const SummaryDialog = () => {
   const [data, setData] = useState("");
   const [selectedHeadpoint, setSlectedHeadpont] = useState("");
 
-  // const index = parseInt(location.pathname.slice(-1));
+  const index = parseInt(location.pathname.slice(-1));
   // console.log(location);
   // console.log(index);
   useEffect(() => {

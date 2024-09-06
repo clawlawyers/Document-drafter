@@ -17,7 +17,7 @@ const DirectionDialog = () => {
   const [data, setData] = useState("");
   const [selectedHeadpoint, setSlectedHeadpont] = useState("");
 
-  // const index = parseInt(location.pathname.slice(-1));
+  const index = parseInt(location.pathname.slice(-1));
   useEffect(() => {
     if (paramsId >= 0 && paramsId < headpoints.length) {
       fetchData(headpoints[paramsId]);
@@ -39,59 +39,69 @@ const DirectionDialog = () => {
     setisLoading(false);
   };
   return (
-    <div className="flex flex-col h-[65vh] font-sans gap-4 p-4 text-white ">
-      <div className="bg-popup-gradient p-4 text-[1rem] font-bold  rounded-[0.625rem] border-2 border-white">
-        <Markdown>{selectedHeadpoint}</Markdown>
-      </div>
-      <div className="flex flex-row gap-3  text-xs text-nowrap ">
-        <button
-          className="rounded border-[1px] w-fit p-2 hover:bg-hover-gradient hover:text-black hover:border-0 py-1"
-          onClick={() => navigate(`/Snippets/Summary/${index}`)} // Use navigate instead of <a>
-        >
-          {" "}
-          Summary
-        </button>
-        <button
-          className="rounded border-[1px] w-fit p-2 hover:bg-hover-gradient hover:text-black hover:border-0 py-1"
-          onClick={() => navigate(`/Snippets/Favour/${index}`)} // Use navigate instead of <a>
-        >
-          In whose favour
-        </button>
-        <button
-          className="rounded border-[1px] w-fit p-2 hover:bg-hover-gradient hover:text-black hover:border-0 py-1"
-          onClick={() => navigate(`/Snippets/Neutral/${paramsId}`)} // Use navigate instead of <a>
-        >
-          How to make Neutral
-        </button>
-        <button
-          className="rounded border-[1px] w-fit p-2 hover:bg-hover-gradient hover:text-black hover:border-0 py-1 bg-customBlue"
-          onClick={() => navigate(`/Snippets/Direction/${index}`)} // Use navigate instead of <a>
-        >
-          Bend in Opp. Direction
-        </button>
-      </div>
-      {!isLoading ? (
-        <div className="flex overflow-y-auto scrollbar-hide h-full flex-col gap-2 text-justify font-sans text-white m-5 ">
-          <Markdown>
-            {trimQuotes(
-              data
-                .replace(/\\n/g, "\n\n")
-                .replace(/\\t/g, "\t")
-                .replace(/\\"/g, '"')
-                .replace(/1\n"/g, "\n")
-            )}
-          </Markdown>
+    <>
+      <div className="flex flex-col h-[65vh] font-sans gap-4 p-4 text-white ">
+        <div className="bg-popup-gradient p-4 text-[1rem] font-bold  rounded-[0.625rem] border-2 border-white">
+          <Markdown>{selectedHeadpoint}</Markdown>
         </div>
-      ) : (
-        <div className="flex overflow-y-auto scrollbar-hide justify-center items-center h-full flex-col gap-2 text-justify font-sans text-white m-5 ">
-          <img
-            className="flex flex-row justify-center items-center w-40 h-40"
-            src={loaderGif}
-            alt="Loading..."
-          />
+        <div className="flex flex-row gap-3  text-xs text-nowrap ">
+          <button
+            className="rounded border-[1px] w-fit p-2 hover:bg-hover-gradient hover:text-black hover:border-0 py-1"
+            onClick={() => navigate(`/Snippets/Summary/${index}`)} // Use navigate instead of <a>
+          >
+            {" "}
+            Summary
+          </button>
+          <button
+            className="rounded border-[1px] w-fit p-2 hover:bg-hover-gradient hover:text-black hover:border-0 py-1"
+            onClick={() => navigate(`/Snippets/Favour/${index}`)} // Use navigate instead of <a>
+          >
+            In whose favour
+          </button>
+          <button
+            className="rounded border-[1px] w-fit p-2 hover:bg-hover-gradient hover:text-black hover:border-0 py-1"
+            onClick={() => navigate(`/Snippets/Neutral/${paramsId}`)} // Use navigate instead of <a>
+          >
+            How to make Neutral
+          </button>
+          <button
+            className="rounded border-[1px] w-fit p-2 hover:bg-hover-gradient hover:text-black hover:border-0 py-1 bg-customBlue"
+            onClick={() => navigate(`/Snippets/Direction/${index}`)} // Use navigate instead of <a>
+          >
+            Bend in Opp. Direction
+          </button>
         </div>
-      )}
-    </div>
+        {!isLoading ? (
+          <div className="flex overflow-y-auto scrollbar-hide h-full flex-col gap-2 text-justify font-sans text-white m-5 ">
+            <Markdown>
+              {trimQuotes(
+                data
+                  .replace(/\\n/g, "\n\n")
+                  .replace(/\\t/g, "\t")
+                  .replace(/\\"/g, '"')
+                  .replace(/1\n"/g, "\n")
+              )}
+            </Markdown>
+          </div>
+        ) : (
+          <div className="flex overflow-y-auto scrollbar-hide justify-center items-center h-full flex-col gap-2 text-justify font-sans text-white m-5 ">
+            <img
+              className="flex flex-row justify-center items-center w-40 h-40"
+              src={loaderGif}
+              alt="Loading..."
+            />
+          </div>
+        )}
+      </div>
+      <div className="flex flex-row  w-full justify-end items-center px-5 font-semibold space-x-5">
+        <button
+          onClick={() => navigate("/DocPreview")}
+          className="bg-card-gradient p-2 border border-white rounded-md"
+        >
+          Rephrase
+        </button>
+      </div>
+    </>
   );
 };
 
