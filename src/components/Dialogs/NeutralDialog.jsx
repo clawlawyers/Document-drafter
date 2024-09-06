@@ -41,14 +41,13 @@ const NeutralDialog = () => {
       <div className="flex flex-col h-[65vh] font-sans gap-4 p-4 text-white">
         <div className="bg-popup-gradient p-4 text-[1rem] font-bold  rounded-[0.625rem] border-2 border-white">
           <Markdown>{selectedHeadpoint}</Markdown>
-          <Markdown>{selectedHeadpoint}</Markdown>
         </div>
         <div className="flex flex-row gap-3  text-xs text-nowrap ">
           <button
             className="rounded border-[1px] w-fit p-2 hover:bg-hover-gradient hover:text-black hover:border-0 py-1"
             onClick={() => navigate(`/Snippets/Summary/${index}`)} // Use navigate instead of <a>
           >
-            How to make Neutral
+            Summary
           </button>
           <button
             className="rounded border-[1px] w-fit p-2 hover:bg-hover-gradient hover:text-black hover:border-0 py-1"
