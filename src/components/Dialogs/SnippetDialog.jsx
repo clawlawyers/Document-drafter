@@ -91,12 +91,6 @@ const SnippetDialog = () => {
         ))}
       </div>
       <div className="flex flex-row  w-full justify-end items-center px-5 font-semibold space-x-5">
-        <button
-          // onClick={() => navigate("/")}
-          className="bg-card-gradient p-2 border border-white rounded-md"
-        >
-          Download Document
-        </button>
         {/* <button
           onClick={() => navigate("/")}
           className="bg-card-gradient p-2 border border-white rounded-md"

@@ -42,42 +42,24 @@ const styles = StyleSheet.create({
   },
 });
 
-// const splitTextIntoPages = (text, linesPerPage) => {
-//   const lines = text.split("  ");
-//   //   console.log(lines);
-//   const pages = [];
-
-//   for (let i = 0; i < lines.length; i += linesPerPage) {
-//     const pageLines = lines.slice(i, i + linesPerPage);
-//     pages.push(pageLines.join("\n\n"));
-//   }
-//   //   console.log(pages);
-//   return pages;
-// };
-
-// const LINES_PER_PAGE = 25;
-
-const splitTextIntoPages = (text, wordsPerPage) => {
-  // Split the text into words
-  const words = text.split(/\s+/); // Split by any whitespace
+const splitTextIntoPages = (text, linesPerPage) => {
+  const lines = text.split("  ");
+  //   console.log(lines);
   const pages = [];
 
-  // Iterate through words and split into pages
-  for (let i = 0; i < words.length; i += wordsPerPage) {
-    const pageWords = words.slice(i, i + wordsPerPage);
-    pages.push(pageWords.join(" ")); // Join words into a single string
+  for (let i = 0; i < lines.length; i += linesPerPage) {
+    const pageLines = lines.slice(i, i + linesPerPage);
+    pages.push(pageLines.join("\n\n"));
   }
-
+  //   console.log(pages);
   return pages;
 };
 
-// Example usage
-const text = `Your long text goes here. It should be sufficiently long to demonstrate the splitting into pages with 160 words per page. Repeat this content or use a larger block of text to see the effect.`;
-const wordsPerPage = 900;
+const LINES_PER_PAGE = 25;
 
 const MyDocument = ({ pdfDownloadText }) => {
   //   console.log(pdfDownloadText);
-  const pages = splitTextIntoPages(pdfDownloadText, wordsPerPage);
+  const pages = splitTextIntoPages(pdfDownloadText, LINES_PER_PAGE);
 
   return (
     <Document>

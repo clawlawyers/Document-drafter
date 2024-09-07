@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import loaderGif from "../assets/icons/2.gif";
 import EditSidebar from "../components/ui/EditSidebar";
 import { useNavigate } from "react-router-dom";
-import { trimQuotes } from "../utils/utils";
+import { formatPdfText, trimQuotes } from "../utils/utils";
 import Markdown from "react-markdown";
 import { breakout } from "../actions/createDoc";
 import { setBreakoutData } from "../features/breakoutSlice";
@@ -16,16 +16,21 @@ import { NODE_API_ENDPOINT } from "../utils/utils";
 import { formatText } from "../utils/utils";
 import rehypeRaw from "rehype-raw";
 import rehypeSanitize from "rehype-sanitize";
+import PDFDownloadButton from "../PdfDownloader/PdfDoc";
 
 const DocEdit = ({ onSave }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const ediText = useSelector((state) => state.document.uploadDocText);
+  // console.log(ediText);
   const texteditable = useSelector((state) => state.document.uploadDocText);
   const doc_id = useSelector((state) => state.document.docId);
-  const [text, setText] = useState(ediText);
+  const [text, setText] = useState("");
   const [loading, setLoading] = useState(true);
   const [activeSidebar, setActiveSidebar] = useState("preview");
+  const [readyDownload, setReadyDownload] = useState(false);
+  const [downlaodText, setDownloadText] = useState(ediText);
+
   console.log(doc_id);
   let count = 0;
   useEffect(() => {
@@ -41,7 +46,7 @@ const DocEdit = ({ onSave }) => {
   };
 
   const handlePreviewClick = () => {
-    localStorage.setItem("SummaryPath" , "/DocPreview");
+    localStorage.setItem("SummaryPath", "/DocPreview");
     navigate("/summary");
   };
 
@@ -90,11 +95,26 @@ const DocEdit = ({ onSave }) => {
                   className=" text-sm hide-scrollbar p-2 h-full w-full overflow-y-auto overflow-wrap break-word word-wrap break-word"
                   rehypePlugins={[rehypeRaw]}
                 >
-                  {trimQuotes(formatText(text.replace(/\u20B9/g, '₹')))}
+                  {trimQuotes(formatText(text.replace(/\u20B9/g, "₹")))}
                 </Markdown>
               )}
             </div>
             <div className="flex flex-row justify-end items-center gap-5">
+              {/* <button
+                onClick={setReadyDownload(true)}
+                className="bg-card-gradient p-2 border border-white rounded-md"
+              >
+                Download Document
+              </button>
+              {readyDownload ? ( */}
+              {!loading ? (
+                <PDFDownloadButton pdfDownloadText={formatPdfText(ediText)} />
+              ) : (
+                ""
+              )}
+              {/* // ) : (
+              //   ""
+              // )} */}
               <button
                 className="rounded-md p-2 bg-card-gradient text-white font-semibold"
                 onClick={handleEditClick}

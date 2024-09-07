@@ -11,7 +11,7 @@ import loaderGif from "../../assets/icons/2.gif";
 import toast from "react-hot-toast";
 import Markdown from "react-markdown";
 import { formatPdfText, formatText, trimQuotes } from "../../utils/utils";
-import PDFDownloadButton from "../../PdfDownloader/PdfDoc";
+import PDFDownloadButton from "../../PdfDownloader/SummaryPdfDoc";
 
 const UploadSummary = () => {
   const [text, setText] = useState("");
@@ -140,7 +140,11 @@ const UploadSummary = () => {
           >
             Download PDF
           </button> */}
-          <PDFDownloadButton pdfDownloadText={formatPdfText(text)} />
+          {!loading ? (
+            <PDFDownloadButton pdfDownloadText={formatPdfText(text)} />
+          ) : (
+            ""
+          )}
         </div>
       </section>
     </main>
