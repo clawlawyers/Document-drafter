@@ -5,6 +5,7 @@ import { useSelector } from "react-redux";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import Markdown from "react-markdown";
 import loaderGif from "../../assets/icons/2.gif";
+import Snackbar, { SnackbarCloseReason } from "@mui/material/Snackbar";
 const DirectionDialog = () => {
   let navigate = useNavigate();
   let location = useLocation();
@@ -15,6 +16,7 @@ const DirectionDialog = () => {
 
   const [isLoading, setisLoading] = useState(false);
   const [data, setData] = useState("");
+  const [open, setOpen] = useState(false);
   const [selectedHeadpoint, setSlectedHeadpont] = useState("");
 
   const index = parseInt(location.pathname.slice(-1));
@@ -37,6 +39,30 @@ const DirectionDialog = () => {
     const temp = res.data.data.fetchedData.counter_favourable;
     setData(temp);
     setisLoading(false);
+  };
+  const handleClose = (
+    event: React.SyntheticEvent | Event,
+    reason?: SnackbarCloseReason
+  ) => {
+    if (reason === "clickaway") {
+      return;
+    }
+
+    setOpen(false);
+  };
+  const handleRepharse = async () => {
+    try {
+      var config = {
+        method: "post",
+        url: `${NODE_API_ENDPOINT}/ai-drafter/api/get_modified_doc`,
+        data: {
+          doc_id: doc_id,
+        },
+      };
+      const res = await axios.request(config);
+      setOpen(true);
+      console.log(res);
+    } catch (e) {}
   };
   return (
     <>
@@ -95,11 +121,20 @@ const DirectionDialog = () => {
       </div>
       <div className="flex flex-row  w-full justify-end items-center px-5 font-semibold space-x-5">
         <button
-          onClick={() => navigate("/DocPreview")}
+          onClick={handleRepharse}
           className="bg-card-gradient p-2 border border-white rounded-md"
         >
           Rephrase
         </button>
+      </div>
+      <div className="w-10 h-10">
+        <Snackbar
+          open={open}
+          autoHideDuration={5000}
+          onClose={handleClose}
+          anchorOrigin={{ vertical: "top", horizontal: "center" }}
+          message="YOUR DOCUMENT HAS BEEN UPADTED"
+        ></Snackbar>
       </div>
     </>
   );
