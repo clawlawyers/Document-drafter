@@ -17,6 +17,7 @@ import { formatText } from "../utils/utils";
 import rehypeRaw from "rehype-raw";
 import rehypeSanitize from "rehype-sanitize";
 import PDFDownloadButton from "../PdfDownloader/PdfDoc";
+import { Edit } from "@mui/icons-material";
 
 const DocEdit = ({ onSave }) => {
   const dispatch = useDispatch();
@@ -34,7 +35,16 @@ const DocEdit = ({ onSave }) => {
   console.log(doc_id);
   let count = 0;
   useEffect(() => {
-    setText(ediText);
+    console.log(ediText);
+
+    var data = ediText.replace(/\\\\n/g, "<br></br>");
+    // .replace(/\\n\\n/, "<br></br><br></br>");
+    // .replace(/\\\\\\/g, "")
+    // .replace(/\\/g, "")
+    // .replace(/\\/g, "")
+    // .replace(/\\/g, " ");
+    console.log(data);
+    setText(data);
   });
 
   useEffect(() => {
@@ -95,7 +105,15 @@ const DocEdit = ({ onSave }) => {
                   className=" text-sm hide-scrollbar p-2 h-full w-full overflow-y-auto overflow-wrap break-word word-wrap break-word"
                   rehypePlugins={[rehypeRaw]}
                 >
-                  {trimQuotes(formatText(text.replace(/\u20B9/g, "₹")))}
+                  {trimQuotes(
+                    formatText(
+                      text
+                        .replace(/\u20B9/g, "₹")
+                        .replace(/\\n/, "<br></br>")
+                        .replace(/\\n\\n/, "<br></br><br></br>")
+                      // .replace(/\\/g, "")
+                    )
+                  )}
                 </Markdown>
               )}
             </div>
