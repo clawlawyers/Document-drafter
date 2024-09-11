@@ -170,9 +170,16 @@ const DocEdit = ({ onSave }) => {
               {readyDownload ? ( */}
               {!loading ? (
                 // <PDFDownloadButton pdfDownloadText={formatPdfText(ediText)} />
-                <button onClick={handlepdfdownload}>Downlaod</button>
+                <button
+                  className="p-2 rounded-md px-10 border-2 border-teal-700"
+                  onClick={handlepdfdownload}
+                >
+                  Downlaod
+                </button>
               ) : (
-                "downloading"
+                <div className="p-2 rounded-md px-10 border-2 border-teal-700">
+                  downloading
+                </div>
               )}
               {/* // ) : (
               //   ""
