@@ -23,6 +23,7 @@ const styles = StyleSheet.create({
   },
   text: {
     fontSize: 12,
+
     // marginBottom: 10,
   },
   imageContainer: {
@@ -56,6 +57,10 @@ const styles = StyleSheet.create({
 // };
 
 // const LINES_PER_PAGE = 25;
+const splitTextByNewline = (text) => {
+  console.log(text.split("\\n"));
+  return text.split("\\n"); // Split text by \n for rendering new lines
+};
 
 const splitTextIntoPages = (text, wordsPerPage) => {
   // Split the text into words
@@ -91,7 +96,13 @@ const MyDocument = ({ pdfDownloadText }) => {
           </View>
 
           <View>
-            <Text style={styles.text}>{pageContent}</Text>
+            {splitTextByNewline(pageContent).map((line, lineIndex) => {
+              return (
+                <Text key={lineIndex} style={styles.text}>
+                  {line}
+                </Text>
+              );
+            })}
           </View>
         </Page>
       ))}

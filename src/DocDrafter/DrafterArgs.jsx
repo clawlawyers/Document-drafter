@@ -126,7 +126,7 @@ const DrafterArgs = () => {
         const processedText = docText;
         setDocText(trimQuotes(processedText));
         // setDocText(docText);
-        console.log(docText);
+        console.log(trimQuotes(processedText));
         setFallbackText(
           'Sale Agreement\n\nThis Sale Agreement ("Agreement") is made and entered into on this [DATE] by and between:\n\n1. [SELLER\'S NAME], residing at [SELLER\'S ADDRESS] (hereinafter referred to as the "Seller"); \nand\n2. [BUYER\'S NAME], residing at [BUYER\'S ADDRESS] (hereinafter referred to as the "Buyer").\n\nRecitals:\n\nWHEREAS, the Seller is the legal and beneficial owner of the property described below and desires to sell the same to the Buyer.\n\nWHEREAS, the Buyer is desirous of purchasing the said property from the Seller on the terms and conditions set forth in this Agreement.\n\nNOW, THEREFORE, in consideration of the mutual covenants and agreements hereinafter set forth, the parties hereto agree as follows:\n\n1. Description of Property:\nThe property being sold under this Agreement is described as [PROPERTY DETAILS, INCLUDING ADDRESS, LEGAL DESCRIPTION, AND ANY UNIQUE IDENTIFIERS]. The Seller hereby confirms that the property is free from all encumbrances, claims, and demands whatsoever.\n\n'
         );
@@ -375,7 +375,6 @@ const DrafterArgs = () => {
                     ))}
                   </div>
                 </div>
-                
               </form>
             )}
           </div>

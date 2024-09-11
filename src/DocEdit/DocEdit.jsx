@@ -37,8 +37,14 @@ const DocEdit = ({ onSave }) => {
   useEffect(() => {
     console.log(ediText);
 
-    var data = ediText.replace(/\\\\n/g, "<br></br>");
-    // .replace(/\\n\\n/, "<br></br><br></br>");
+    var data = ediText
+      .replaceAll("\\\\n\\\\n", "<br></br>")
+      .replaceAll("\\n\\n", "<br></br>")
+      .replaceAll("\\\\n", "<br></br>")
+      .replaceAll("\\n\\n", "<br></br>")
+      .replaceAll("\\n", "<br></br>")
+      .replaceAll("\\", "");
+
     // .replace(/\\\\\\/g, "")
     // .replace(/\\/g, "")
     // .replace(/\\/g, "")
@@ -75,6 +81,43 @@ const DocEdit = ({ onSave }) => {
       });
     } catch (e) {
       console.log("breakout failed", e);
+    } finally {
+      setLoading(false);
+    }
+  };
+  const handlepdfdownload = async () => {
+    setLoading(true);
+    try {
+      const response = await fetch(
+        `${NODE_API_ENDPOINT}/ai-drafter/api/get_pdf`,
+        {
+          // Replace with your backend URL
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ document: ediText }),
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("Failed to generate PDF");
+      }
+
+      // Assuming the backend sends the PDF as a blob
+      const blob = await response.blob();
+      const url = window.URL.createObjectURL(blob);
+
+      // Create a link to download the PDF
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "Rent_Agreement.pdf";
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      window.URL.revokeObjectURL(url);
+    } catch (error) {
+      console.error("Error generating PDF:", error);
     } finally {
       setLoading(false);
     }
@@ -126,9 +169,10 @@ const DocEdit = ({ onSave }) => {
               </button>
               {readyDownload ? ( */}
               {!loading ? (
-                <PDFDownloadButton pdfDownloadText={formatPdfText(ediText)} />
+                // <PDFDownloadButton pdfDownloadText={formatPdfText(ediText)} />
+                <button onClick={handlepdfdownload}>Downlaod</button>
               ) : (
-                ""
+                "downloading"
               )}
               {/* // ) : (
               //   ""

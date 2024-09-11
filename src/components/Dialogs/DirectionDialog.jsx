@@ -1,12 +1,15 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { NODE_API_ENDPOINT, trimQuotes } from "../../utils/utils";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import Markdown from "react-markdown";
 import loaderGif from "../../assets/icons/2.gif";
 import Snackbar, { SnackbarCloseReason } from "@mui/material/Snackbar";
+import { setBreakoutData } from "../../features/breakoutSlice";
 const DirectionDialog = () => {
+  const dispatch = useDispatch();
+
   let navigate = useNavigate();
   let location = useLocation();
   let { id: paramsId } = useParams();
@@ -60,6 +63,8 @@ const DirectionDialog = () => {
         },
       };
       const res = await axios.request(config);
+      dispatch(setBreakoutData(res.data));
+
       setOpen(true);
       console.log(res);
     } catch (e) {}

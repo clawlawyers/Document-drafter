@@ -43,8 +43,10 @@ export const formatText = (text) => {
 };
 
 export const formatPdfText = (text) => {
-  return text
-    .replace(/\\n\\n/g, "  ") // Ensure two \n result in a new paragraph
-    .replace(/\\n/g, " ")
-    .replace(/\u20B9/g, "₹"); // Ensure single \n is treated as a line break
+  return (
+    text
+      // .replace(/\\n\\n/g, "  ") // Ensure two \n result in a new paragraph
+      // .replace(/\\n/g, " ")
+      .replace(/\u20B9/g, "₹")
+  ); // Ensure single \n is treated as a line break
 };

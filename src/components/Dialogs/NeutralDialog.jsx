@@ -1,16 +1,18 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { NODE_API_ENDPOINT, trimQuotes } from "../../utils/utils";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import Markdown from "react-markdown";
 import loaderGif from "../../assets/icons/2.gif";
 import { sync } from "framer-motion";
 import Snackbar, { SnackbarCloseReason } from "@mui/material/Snackbar";
+import { setBreakoutData } from "../../features/breakoutSlice";
 
 const NeutralDialog = () => {
   let navigate = useNavigate();
   let location = useLocation();
+  const dispatch = useDispatch();
   let { id: paramsId } = useParams();
   const doc_id = useSelector((state) => state.document.docId);
   const breakoutData = useSelector((state) => state.breakout.breakoutData);
@@ -20,6 +22,7 @@ const NeutralDialog = () => {
   const [data, setData] = useState("");
   const [selectedHeadpoint, setSlectedHeadpont] = useState("");
   const [open, setOpen] = useState(false);
+
   // const { vertical, horizontal, open } = state;
   const index = parseInt(location.pathname.slice(-1));
   useEffect(() => {
@@ -60,6 +63,7 @@ const NeutralDialog = () => {
         },
       };
       const res = await axios.request(config);
+      dispatch(setBreakoutData(res.data));
       setOpen(true);
       console.log(res);
     } catch (e) {}
