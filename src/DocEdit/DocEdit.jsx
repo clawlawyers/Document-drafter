@@ -71,7 +71,7 @@ const DocEdit = ({ onSave }) => {
   };
 
   const breakoutFunc = async () => {
-    setLoading(true);
+    setLoading(false);
     try {
       const res = await breakout(doc_id);
       console.log(res.data);
@@ -171,34 +171,34 @@ const DocEdit = ({ onSave }) => {
               {!loading ? (
                 // <PDFDownloadButton pdfDownloadText={formatPdfText(ediText)} />
                 <button
-                  className="p-2 rounded-md px-10 border-2 border-teal-700"
+                  className=" transition ease-in-out duration-1000  hover:scale-110 p-2 rounded-md px-10 border-2 border-teal-700"
                   onClick={handlepdfdownload}
                 >
                   Downlaod
                 </button>
               ) : (
                 <div className="p-2 rounded-md px-10 border-2 border-teal-700">
-                  downloading
+                  Downloading
                 </div>
               )}
               {/* // ) : (
               //   ""
               // )} */}
               <button
-                className="rounded-md p-2 bg-card-gradient text-white font-semibold"
+                className="transition ease-in-out duration-1000  hover:scale-110 rounded-md p-2 bg-card-gradient text-white font-semibold"
                 onClick={handleEditClick}
               >
                 Edit Document With AI
               </button>
               <button
-                className="p-2 px-5 rounded-md border-2 border-teal-700"
+                className="transition ease-in-out duration-1000  hover:scale-110 p-2 px-5 rounded-md border-2 border-teal-700"
                 onClick={handlePreviewClick}
               >
                 Summary
               </button>
               <button
                 onClick={handleSave}
-                className="p-2 rounded-md px-10 border-2 border-teal-700"
+                className="transition ease-in-out duration-1000  hover:scale-110 p-2 rounded-md px-10 border-2 border-teal-700"
               >
                 Save
               </button>

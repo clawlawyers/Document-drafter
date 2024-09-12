@@ -3,6 +3,7 @@ import Markdown from "react-markdown";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom"; // Import useNavigate
 import { twMerge } from "tailwind-merge";
+import { motion } from "framer-motion";
 // import { setGreenHeading } from "../../features/greenHeadingSlice";
 
 const SnippetDialog = () => {
@@ -40,12 +41,15 @@ const SnippetDialog = () => {
 
   return (
     <>
-      <div className="hide-scrollbar overflow-y-auto flex flex-col gap-5 mx-6 my-5 h-[65vh]">
+      <div className="hide-scrollbar overflow-y-auto flex flex-col gap-5 mx-6 my-5 ">
         {combinedData.map((item, i) => (
-          <div key={i} className="flex flex-row items-start gap-3">
-            <div
+          <div key={i} className="flex flex-row items-start gap-3 ">
+            <motion.div
+              initial={{ x: -100 }} // Start off-screen (left)
+              animate={{ x: 0 }} // End at original position
+              transition={{ duration: 1, ease: "easeInOut" }}
               className={twMerge(
-                "flex flex-col rounded-[0.635rem] border-2 px-4 py-2 border-white bg-popup-gradient w-3/4 gap-1 h-28", // Added h-64 for fixed height
+                "flex flex-col rounded-[0.635rem] border-2 px-4 py-2 border-white bg-popup-gradient w-3/4 gap-1 h-full", // Added h-64 for fixed height
                 greenHeading.greenHeading?.includes(`${i + 1}`) &&
                   "border-green-500"
               )}
@@ -56,37 +60,142 @@ const SnippetDialog = () => {
               <div className="font-sans text-[0.625rem] scrollbar-hide w-fit break-words overflow-wrap break-word word-wrap break-word overflow-y-auto flex-1">
                 <Markdown>{item.text}</Markdown>
               </div>
-            </div>
-            <div className="w-1/4 flex gap-4 flex-col h-28 text-[0.6875rem] font-sans">
+            </motion.div>
+            <motion.div
+              initial={{ x: 100 }} // Start off-screen (left)
+              animate={{ x: 0 }} // End at original position
+              transition={{ duration: 1, ease: "easeInOut" }}
+              className="w-1/4 text-clip flex gap-4 flex-col text-[0.6875rem] font-sans"
+            >
               <div className="flex gap-3 text-xs">
-                <button
-                  className="rounded border-[1px] text-center w-1/2 hover:bg-hover-gradient hover:text-black hover:border-0 p-2 pb-5 text-[0.6875rem]"
+                <motion.button
+                  whileHover="hover"
+                  className="rounded relative border-[1px]  w-1/2 bg-hover-gradient hover:text-black hover:border-0 p-2  text-[0.6875rem]"
                   onClick={() => navigate(`/Snippets/Summary/${i}`)} // Use navigate instead of <a>
                 >
-                  Summary
-                </button>
-                <button
-                  className="rounded border-[1px] w-1/2 hover:bg-hover-gradient hover:text-black hover:border-0 pb-5 p-2 text-[0.6875rem]"
+                  <motion.div
+                    variants={{
+                      hover: { x: "100%" },
+                    }}
+                    initial={{ x: "0%" }}
+                    transition={{ type: "tween", duration: 0.5 }}
+                    style={{
+                      position: "absolute",
+                      top: 0,
+                      left: 0,
+                      width: "100%",
+                      height: "100%",
+                      // background: "#0E1118",
+                      zIndex: 0,
+                    }}
+                    className="bg-customBlack"
+                  />
+                  <span
+                    style={{
+                      position: "relative",
+                      zIndex: 2,
+                    }}
+                  >
+                    Summary
+                  </span>
+                </motion.button>
+                <motion.button
+                  whileHover="hover"
+                  className="rounded relative border-[1px] w-1/2 bg-hover-gradient hover:text-black hover:border-0  p-2 text-[0.6875rem]"
                   onClick={() => navigate(`/Snippets/Favour/${i}`)} // Use navigate instead of <a>
                 >
-                  In whose favour
-                </button>
+                  <motion.div
+                    variants={{
+                      hover: { x: "100%" },
+                    }}
+                    initial={{ x: "0%" }}
+                    transition={{ type: "tween", duration: 0.5 }}
+                    style={{
+                      position: "absolute",
+                      top: 0,
+                      left: 0,
+                      width: "100%",
+                      height: "100%",
+                      // background: "#0E1118",
+                      zIndex: 0,
+                    }}
+                    className="bg-customBlack"
+                  />
+                  <span
+                    style={{
+                      position: "relative",
+                      zIndex: 2,
+                    }}
+                  >
+                    In whose favour
+                  </span>
+                </motion.button>
               </div>
-              <div className="flex text-[0.6875rem] gap-3">
-                <button
-                  className="rounded border-[1px] w-1/2 hover:bg-hover-gradient hover:text-black hover:border-0 p-2 text-[0.6875rem]"
+              <div className="flex  text-[0.6875rem] gap-3">
+                <motion.button
+                  whileHover="hover"
+                  className="rounded relative border-[1px] w-1/2  bg-hover-gradient hover:text-black hover:border-0 p-2 text-[0.6875rem]"
                   onClick={() => navigate(`/Snippets/Neutral/${i}`)} // Use navigate instead of <a>
                 >
-                  How to make neutral
-                </button>
-                <button
-                  className="rounded border-[1px] w-1/2 hover:bg-hover-gradient hover:text-black hover:border-0 p-2 text-[0.6875rem]"
+                  <motion.div
+                    variants={{
+                      hover: { x: "100%" },
+                    }}
+                    initial={{ x: "0%" }}
+                    transition={{ type: "tween", duration: 0.5 }}
+                    style={{
+                      position: "absolute",
+                      top: 0,
+                      left: 0,
+                      width: "100%",
+                      height: "100%",
+                      // background: "#0E1118",
+                      zIndex: 0,
+                    }}
+                    className="bg-customBlack"
+                  />
+                  <span
+                    style={{
+                      position: "relative",
+                      zIndex: 2,
+                    }}
+                  >
+                    How to make neutral
+                  </span>
+                </motion.button>
+                <motion.button
+                  whileHover="hover"
+                  className="rounded relative border-[1px] bg-hover-gradient  w-1/2 hover:text-black hover:border-0 p-2  text-[0.6875rem]"
                   onClick={() => navigate(`/Snippets/Direction/${i}`)} // Use navigate instead of <a>
                 >
-                  Bend in Opp. Direction
-                </button>
+                  <motion.div
+                    variants={{
+                      hover: { x: "100%" },
+                    }}
+                    initial={{ x: "0%" }}
+                    transition={{ type: "tween", duration: 0.5 }}
+                    style={{
+                      position: "absolute",
+                      top: 0,
+                      left: 0,
+                      width: "100%",
+                      height: "100%",
+                      // background: "#0E1118",
+                      zIndex: 0,
+                    }}
+                    className="bg-customBlack"
+                  />
+                  <span
+                    style={{
+                      position: "relative",
+                      zIndex: 2,
+                    }}
+                  >
+                    Bend in Opp. Direction
+                  </span>
+                </motion.button>
               </div>
-            </div>
+            </motion.div>
           </div>
         ))}
       </div>
@@ -102,13 +211,13 @@ const SnippetDialog = () => {
             localStorage.setItem("SummaryPath", "/Snippets");
             navigate("/Summary");
           }}
-          className="bg-card-gradient p-2 border border-white rounded-md"
+          className="transition ease-in-out duration-1000  hover:scale-110 bg-card-gradient p-2 border border-white rounded-md"
         >
           Generate Summary
         </button>
         <button
           onClick={() => navigate("/DocPreview")}
-          className="bg-card-gradient p-2 border border-white rounded-md"
+          className="transition ease-in-out duration-1000  hover:scale-110  bg-card-gradient p-2 border border-white rounded-md"
         >
           Document Preview
         </button>

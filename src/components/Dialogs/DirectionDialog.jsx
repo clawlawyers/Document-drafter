@@ -127,7 +127,7 @@ const DirectionDialog = () => {
       <div className="flex flex-row  w-full justify-end items-center px-5 font-semibold space-x-5">
         <button
           onClick={handleRepharse}
-          className="bg-card-gradient p-2 border border-white rounded-md"
+          className="transition ease-in-out duration-1000  hover:scale-110  bg-card-gradient p-2 border border-white rounded-md"
         >
           Rephrase
         </button>

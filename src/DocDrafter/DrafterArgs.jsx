@@ -384,7 +384,7 @@ const DrafterArgs = () => {
                 if (path !== "docType") navigate("/Drafter");
                 else navigate("/DocType");
               }}
-              className="bg-btn-gradient p-2 rounded-md text-sm border-white border-2"
+              className="transition ease-in-out duration-1000  hover:scale-110  bg-btn-gradient p-2 rounded-md text-sm border-white border-2"
             >
               Re-enter Prompt
             </button>
@@ -396,7 +396,7 @@ const DrafterArgs = () => {
                 loading || reqLoading
                   ? "opacity-75 pointer-events-none cursor-not-allowed"
                   : ""
-              }border-white border-2 bg-btn-gradient p-2  rounded-md text-sm`}
+              }border-white border-2 transition ease-in-out duration-1000  hover:scale-110  bg-btn-gradient p-2  rounded-md text-sm`}
             >
               {reqLoading ? "Generating ..." : "Generate Document"}
             </button>

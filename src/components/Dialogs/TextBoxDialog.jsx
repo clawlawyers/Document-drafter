@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { setGreenHeading } from "../../features/greenHeadingSlice";
+import { motion } from "framer-motion";
 
 const TextBoxDialog = ({ responseData }) => {
   const [isLoading, setisLoading] = useState(false);
@@ -41,19 +42,71 @@ const TextBoxDialog = ({ responseData }) => {
       <div className=" rounded-[0.625rem] border-[0.1rem] border-white font-sans text-sm p-2 px-3 text-justify bg-customBlue leading-5 ">
         {responseData.response.data.data.fetchedData.answer}
       </div>
-      <div className="flex flex-row text-[0.6875rem] font-sans  gap-2">
-        <button
-          className="rounded border-[1px]  w-1/2 hover:bg-hover-gradient hover:text-black hover:border-0   py-1 "
+      <div
+         className="flex flex-row text-[0.6875rem] font-sans  gap-2"
+      >
+        <motion.button
+          whileHover={"hover"}
+          className="rounded relative border-[1px]  w-1/2 bg-hover-gradient hover:text-black hover:border-0   py-1 "
           onClick={handleDraft}
         >
-          Find in Drafter
-        </button>
-        <button
+          <motion.div
+            variants={{
+              hover: { x: "100%" },
+            }}
+            initial={{ x: "0%" }}
+            transition={{ type: "tween", duration: 0.5 }}
+            style={{
+              position: "absolute",
+              top: 0,
+              left: 0,
+              width: "100%",
+              height: "100%",
+              // background: "#0E1118",
+              zIndex: 0,
+            }}
+            className="bg-customBlack"
+          />
+          <span
+            style={{
+              position: "relative",
+              zIndex: 2,
+            }}
+          >
+            Find in Drafter
+          </span>
+        </motion.button>
+        <motion.button
+          whileHover={"hover"}
           onClick={() => setshowDocument(true)}
-          className="rounded border-[1px] w-1/2 hover:bg-hover-gradient hover:text-black hover:border-0   py-1 "
+          className="rounded relative border-[1px] w-1/2 bg-hover-gradient hover:text-black hover:border-0   py-1 "
         >
-          Find in Document
-        </button>
+          <motion.div
+            variants={{
+              hover: { x: "100%" },
+            }}
+            initial={{ x: "0%" }}
+            transition={{ type: "tween", duration: 0.5 }}
+            style={{
+              position: "absolute",
+              top: 0,
+              left: 0,
+              width: "100%",
+              height: "100%",
+              // background: "#0E1118",
+              zIndex: 0,
+            }}
+            className="bg-customBlack"
+          />
+          <span
+            style={{
+              position: "relative",
+              zIndex: 2,
+            }}
+          >
+            Find in Document
+          </span>
+        </motion.button>
       </div>
       {showDocument && (
         <div className="flex flex-col gap-3 rounded-[0.625rem] border-[0.1rem] border-white font-sans text-[0.625rem] p-2 px-3 text-justify bg-customBlue ">
