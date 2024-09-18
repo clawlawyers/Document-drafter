@@ -78,17 +78,33 @@ const UploadDialog = () => {
 
   const handleFileChange = useCallback(
     async (event) => {
-      const file = event.target.files[0];
+      var file = event.target.files[0];
       if (file) {
         setFile(file);
         setUploadStatus("uploading");
 
         try {
           const formData = new FormData();
+          const response = await axios.get(
+            `${NODE_API_ENDPOINT}/ai-drafter/create_document`
+          );
+          const doc_id = response.data.data.fetchedData.doc_id;
+          console.log(doc_id);
+          console.log("hi");
+
+          // dispatch(setDocId(doc_id));
+          file.originalname = doc_id + ".docx";
           formData.append("file", file);
+
+          formData.append("doc_id", doc_id);
           const res = await axios.post(
             `${NODE_API_ENDPOINT}/ai-drafter/upload_document`,
             formData
+            // {
+            //   headers: {
+            //     "Content-Type": "multipart/form-data",
+            //   },
+            // }
           );
           const data = res.data.data.fetchedData;
           console.log(data);

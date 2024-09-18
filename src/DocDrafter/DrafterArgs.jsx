@@ -346,7 +346,7 @@ const DrafterArgs = () => {
                           name={req}
                           value={essentialInputs[req]}
                           onChange={(e) => handleInputChange(e, "essential")}
-                          className="w-full p-0.5 bg-customBlack border-white rounded-md text-primary-theme-white-50"
+                          className="w-full p-0.5 bg-customBlack border-white rounded-md text-primary-theme-white-50 "
                         />
                       </div>
                     ))}
@@ -386,7 +386,7 @@ const DrafterArgs = () => {
               }}
               className="transition ease-in-out duration-1000  hover:scale-110  bg-btn-gradient p-2 rounded-md text-sm border-white border-2"
             >
-              Re-enter Prompt
+              {path !== "docType" ? "Re-enter Prompt" : "Re-select doctype"}
             </button>
             <button
               id="Generate"

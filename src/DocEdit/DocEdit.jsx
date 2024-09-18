@@ -31,6 +31,7 @@ const DocEdit = ({ onSave }) => {
   const [activeSidebar, setActiveSidebar] = useState("preview");
   const [readyDownload, setReadyDownload] = useState(false);
   const [downlaodText, setDownloadText] = useState(ediText);
+  const [savebutton, setsavebutton] = useState(false);
 
   console.log(doc_id);
   let count = 0;
@@ -71,10 +72,13 @@ const DocEdit = ({ onSave }) => {
   };
 
   const breakoutFunc = async () => {
-    setLoading(false);
+    setsavebutton(false);
     try {
       const res = await breakout(doc_id);
-      console.log(res.data);
+
+      if ((res.status = 204)) {
+        setsavebutton(true);
+      }
       dispatch(setBreakoutData(res.data));
       await axios.post(`${NODE_API_ENDPOINT}/ai-drafter/generate_db`, {
         doc_id: doc_id,
@@ -86,7 +90,7 @@ const DocEdit = ({ onSave }) => {
     }
   };
   const handlepdfdownload = async () => {
-    setLoading(true);
+    // setLoading(true);
     try {
       const response = await fetch(
         `${NODE_API_ENDPOINT}/ai-drafter/api/get_pdf`,
@@ -196,12 +200,18 @@ const DocEdit = ({ onSave }) => {
               >
                 Summary
               </button>
-              <button
-                onClick={handleSave}
-                className="transition ease-in-out duration-1000  hover:scale-110 p-2 rounded-md px-10 border-2 border-teal-700"
-              >
-                Save
-              </button>
+              {savebutton ? (
+                <button
+                  onClick={handleSave}
+                  className="transition ease-in-out duration-1000  hover:scale-110 p-2 rounded-md px-10 border-2 border-teal-700"
+                >
+                  Save
+                </button>
+              ) : (
+                <div className="p-2 rounded-md px-10 border-2 border-teal-700">
+                  Loading...
+                </div>
+              )}
             </div>
           </div>
 
