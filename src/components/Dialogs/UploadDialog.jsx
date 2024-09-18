@@ -93,12 +93,17 @@ const UploadDialog = () => {
           console.log("hi");
 
           // dispatch(setDocId(doc_id));
-          file.originalname = doc_id + ".docx";
-          formData.append("file", file);
+          // file.originalname = doc_id + ".docx";
+          // file.name = doc_id + ".docx";
+          console.log(file);
+          const renamedFile = new File([file], doc_id + ".docx", {
+            type: file.type,
+          });
+          formData.append("file", renamedFile);
 
           formData.append("doc_id", doc_id);
           const res = await axios.post(
-            `https://claw-app-dev.onrender.com/api/v1/ai-drafter/upload_document`,
+            `${NODE_API_ENDPOINT}/ai-drafter/upload_document`,
             formData
             // {
             //   headers: {
