@@ -98,7 +98,7 @@ const UploadDialog = () => {
 
           formData.append("doc_id", doc_id);
           const res = await axios.post(
-            `${NODE_API_ENDPOINT}/ai-drafter/upload_document`,
+            `https://claw-app-dev.onrender.com/api/v1/ai-drafter/upload_document`,
             formData
             // {
             //   headers: {
