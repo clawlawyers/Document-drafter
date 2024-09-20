@@ -13,6 +13,7 @@ import { driver } from "driver.js";
 import "driver.js/dist/driver.css";
 import { steps } from "../utils/tour";
 import { NODE_API_ENDPOINT } from "../utils/utils";
+import { setIsThisBypromptFalse } from "../features/DocumentSlice";
 
 const DocType = () => {
   let navigate = useNavigate();
@@ -26,6 +27,10 @@ const DocType = () => {
   const handleSelectChange = (e) => {
     setSelectedValue(e.target.value);
   };
+
+  useEffect(() => {
+    dispatch(setIsThisBypromptFalse());
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();

@@ -63,3 +63,17 @@ export const generateDocument = async (doc_id) => {
     console.error(e.value);
   }
 };
+
+export const generateDocumentbyPrompt = async (doc_id) => {
+  try {
+    const res = await axios.post(
+      `${NODE_API_ENDPOINT}/ai-drafter/get_document_prompt_requirements`,
+      {
+        doc_id,
+      }
+    );
+    return res;
+  } catch (e) {
+    console.error(e.value);
+  }
+};

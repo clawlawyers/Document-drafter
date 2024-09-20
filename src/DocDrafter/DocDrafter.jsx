@@ -9,6 +9,10 @@ import { useDispatch, useSelector } from "react-redux";
 
 import { setPrompt } from "../features/PromptSlice";
 import { useNavigate } from "react-router-dom";
+import {
+  setIsThisBypromptFalse,
+  setIsThisBypromptTrue,
+} from "../features/DocumentSlice";
 
 const DocDrafter = () => {
   const navigate = useNavigate();
@@ -27,6 +31,10 @@ const DocDrafter = () => {
     dispatch(setPrompt(prompt));
     navigate("/Drafter/DrafterArgs");
   };
+
+  useEffect(() => {
+    dispatch(setIsThisBypromptTrue());
+  }, []);
 
   return (
     <div className="flex flex-col h-screen w-full p-5">
@@ -50,7 +58,7 @@ const DocDrafter = () => {
             <CustomInput
               onSubmit={handleSubmit}
               btn={true}
-              placeholder="Select the type of Document to be created"
+              placeholder="Type prompt to generate a new document"
               onChange={onChange}
               loading={loading}
               value={prompt}

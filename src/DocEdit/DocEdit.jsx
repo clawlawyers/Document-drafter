@@ -18,20 +18,24 @@ import rehypeRaw from "rehype-raw";
 import rehypeSanitize from "rehype-sanitize";
 import PDFDownloadButton from "../PdfDownloader/PdfDoc";
 import { Edit } from "@mui/icons-material";
+import { setIsGenerateDocCalledFalse } from "../features/DocumentSlice";
 
 const DocEdit = ({ onSave }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const ediText = useSelector((state) => state.document.uploadDocText);
+  const isGenerateDocCall = useSelector(
+    (state) => state.document.IsGenerateDocCalled
+  );
   // console.log(ediText);
   const texteditable = useSelector((state) => state.document.uploadDocText);
   const doc_id = useSelector((state) => state.document.docId);
   const [text, setText] = useState("");
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [activeSidebar, setActiveSidebar] = useState("preview");
   const [readyDownload, setReadyDownload] = useState(false);
   const [downlaodText, setDownloadText] = useState(ediText);
-  const [savebutton, setsavebutton] = useState(false);
+  const [savebutton, setsavebutton] = useState(true);
 
   console.log(doc_id);
   let count = 0;
@@ -55,7 +59,9 @@ const DocEdit = ({ onSave }) => {
   });
 
   useEffect(() => {
-    breakoutFunc();
+    if (isGenerateDocCall) {
+      breakoutFunc();
+    }
   }, []);
 
   const handleEditClick = () => {
@@ -72,6 +78,7 @@ const DocEdit = ({ onSave }) => {
   };
 
   const breakoutFunc = async () => {
+    setLoading(true);
     setsavebutton(false);
     try {
       const res = await breakout(doc_id);
@@ -87,6 +94,7 @@ const DocEdit = ({ onSave }) => {
       console.log("breakout failed", e);
     } finally {
       setLoading(false);
+      dispatch(setIsGenerateDocCalledFalse());
     }
   };
   const handlepdfdownload = async () => {

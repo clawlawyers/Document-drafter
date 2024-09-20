@@ -8,13 +8,27 @@ const documentSlice = createSlice({
     // uploadDocText: null,
     essentialRequirements: [], // Storing the list of essential requirements
     optionalRequirements: [], // Storing the list of optional requirements
+    IsGenerateDocCalled: false,
+    IsThisByprompt: false,
   },
   reducers: {
+    setIsGenerateDocCalledTrue: (state) => {
+      state.IsGenerateDocCalled = true;
+    },
+    setIsGenerateDocCalledFalse: (state) => {
+      state.IsGenerateDocCalled = false;
+    },
+    setIsThisBypromptTrue: (state) => {
+      state.IsThisByprompt = true;
+    },
+    setIsThisBypromptFalse: (state) => {
+      state.IsThisByprompt = false;
+    },
     setDocId: (state, action) => {
       state.docId = action.payload;
     },
     // setUploadDocText: (state, action) => {
-      
+
     //   state.uploadDocText = action.payload;
     // },
     setUploadDocText: (state, action) => {
@@ -45,6 +59,10 @@ export const {
   setOptionalRequirements,
   clearDocId,
   clearDocumentState,
+  setIsGenerateDocCalledTrue,
+  setIsGenerateDocCalledFalse,
+  setIsThisBypromptTrue,
+  setIsThisBypromptFalse,
 } = documentSlice.actions;
 
 export default documentSlice.reducer;

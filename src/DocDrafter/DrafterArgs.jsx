@@ -15,11 +15,17 @@ import {
   setEssentialRequirements,
   setOptionalRequirements,
   clearDocumentState,
+  setIsGenerateDocCalledTrue,
 } from "../features/DocumentSlice";
 import { createDoc, getDocFromPrompt } from "../actions/createDoc";
 import { useNavigate, useParams } from "react-router-dom";
 import toast from "react-hot-toast";
-import { getRequirements, uploadOptional, uploadPre } from "../actions/DocType";
+import {
+  generateDocumentbyPrompt,
+  getRequirements,
+  uploadOptional,
+  uploadPre,
+} from "../actions/DocType";
 import { generateDocument } from "../actions/DocType";
 import Markdown from "react-markdown";
 import rehypeRaw from "rehype-raw";
@@ -46,6 +52,7 @@ const DrafterArgs = () => {
   const prompt = useSelector((state) => state.prompt.prompt);
   const docId = useSelector((state) => state.document.docId);
   const docuText = useSelector((state) => state.document.uploadDocText);
+  const isThisByprompt = useSelector((state) => state.document.IsThisByprompt);
   const [uploadDocText, setDocText] = useState("");
   const [fallbackText, setFallbackText] = useState();
   const [EssentialReq, setEssentialReq] = useState([]);
@@ -199,7 +206,13 @@ const DrafterArgs = () => {
       console.log(res1);
       const res2 = await uploadOptional(docId, finalOptionalString);
       console.log(res2);
-      const res = await generateDocument(docId);
+      let res;
+      if (isThisByprompt) {
+        res = await generateDocumentbyPrompt(docId);
+      } else {
+        res = await generateDocument(docId);
+      }
+      dispatch(setIsGenerateDocCalledTrue());
       console.log(res.data.data.fetchedData.document);
       setDocText(res.data.data.fetchedData.document);
       setFallbackText(
@@ -252,7 +265,13 @@ const DrafterArgs = () => {
       console.log(res1);
       const res2 = await uploadOptional(docId, finalOptionalString);
       console.log(res2);
-      const res = await generateDocument(docId);
+      let res;
+      if (isThisByprompt) {
+        res = await generateDocumentbyPrompt(docId);
+      } else {
+        res = await generateDocument(docId);
+      }
+      dispatch(setIsGenerateDocCalledTrue());
       console.log(res.data.data.fetchedData.document);
       setDocText(res.data.data.fetchedData.document);
       setFallbackText(
