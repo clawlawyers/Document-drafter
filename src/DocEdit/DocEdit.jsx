@@ -156,11 +156,18 @@ const DocEdit = ({ onSave }) => {
                   alt="Loading..."
                 />
               ) : (
-                <Markdown
+                <p
                   className=" text-sm hide-scrollbar p-2 h-full w-full overflow-y-auto overflow-wrap break-word word-wrap break-word"
-                  rehypePlugins={[rehypeRaw]}
+                  // rehypePlugins={[rehypeRaw]}
+                  dangerouslySetInnerHTML={{
+                    __html: text
+                      .replace(/\u20B9/g, "₹")
+                      .replace(/\\n/, "<br></br>")
+                      .replace(/\\n\\n/, "<br></br><br></br>"),
+                    // .replace(/\\/g, "") ,
+                  }}
                 >
-                  {trimQuotes(
+                  {/* {trimQuotes(
                     formatText(
                       text
                         .replace(/\u20B9/g, "₹")
@@ -168,8 +175,8 @@ const DocEdit = ({ onSave }) => {
                         .replace(/\\n\\n/, "<br></br><br></br>")
                       // .replace(/\\/g, "")
                     )
-                  )}
-                </Markdown>
+                  )} */}
+                </p>
               )}
             </div>
             <div className="flex flex-row justify-end items-center gap-5">

@@ -12,11 +12,13 @@ import toast from "react-hot-toast";
 import Markdown from "react-markdown";
 import { formatPdfText, formatText, trimQuotes } from "../../utils/utils";
 import PDFDownloadButton from "../../PdfDownloader/SummaryPdfDoc";
+import { NODE_API_ENDPOINT } from "../../utils/utils";
 
 const UploadSummary = () => {
   const [text, setText] = useState("");
   // console.log(text);
   const [loading, setLoading] = useState(false);
+  const [downloading, setdownLoading] = useState(true);
   const doc_id = useSelector((state) => state.document.docId);
 
   let navigate = useNavigate();
@@ -68,7 +70,7 @@ const UploadSummary = () => {
       // console.log(res);
       let temp = String.raw`${res.data.data.fetchedData.summary}`;
 
-      // console.log(temp);
+      console.log(temp);
 
       setText(trimQuotes(temp));
     } catch (e) {
@@ -82,6 +84,44 @@ const UploadSummary = () => {
   useEffect(() => {
     fetchSummary();
   }, [doc_id]);
+
+  const handlepdfdownload = async () => {
+    setdownLoading(false);
+    try {
+      const response = await fetch(
+        `${NODE_API_ENDPOINT}/ai-drafter/api/get_pdf`,
+        {
+          // Replace with your backend URL
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ document: text }),
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("Failed to generate PDF");
+      }
+
+      // Assuming the backend sends the PDF as a blob
+      const blob = await response.blob();
+      const url = window.URL.createObjectURL(blob);
+
+      // Create a link to download the PDF
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "Rent_Agreement.pdf";
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      window.URL.revokeObjectURL(url);
+    } catch (error) {
+      console.error("Error generating PDF:", error);
+    } finally {
+      setdownLoading(true);
+    }
+  };
 
   return (
     <main className="flex flex-row justify-center rounded-md scale-95 p-4 items-center w-full h-full bg-customBlack">
@@ -140,10 +180,18 @@ const UploadSummary = () => {
           >
             Download PDF
           </button> */}
-          {!loading ? (
-            <PDFDownloadButton pdfDownloadText={formatPdfText(text)} />
+          {downloading ? (
+            // <PDFDownloadButton pdfDownloadText={formatPdfText(ediText)} />
+            <button
+              className=" transition ease-in-out duration-1000  hover:scale-110 p-2 rounded-md px-10 border-2 border-teal-700"
+              onClick={handlepdfdownload}
+            >
+              Downlaod
+            </button>
           ) : (
-            ""
+            <div className="p-2 rounded-md px-10 border-2 border-teal-700">
+              Downloading
+            </div>
           )}
         </div>
       </section>

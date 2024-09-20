@@ -43,7 +43,7 @@ const SnippetDialog = () => {
     <>
       <div className="hide-scrollbar overflow-y-auto flex flex-col gap-5 mx-6 my-5 ">
         {combinedData.map((item, i) => (
-          <div key={i} className="flex flex-row items-start gap-3 ">
+          <div   key={i} className="flex flex-row items-start gap-3 ">
             <motion.div
               initial={{ x: -100 }} // Start off-screen (left)
               animate={{ x: 0 }} // End at original position
