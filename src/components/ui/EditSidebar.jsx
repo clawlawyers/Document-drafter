@@ -208,7 +208,7 @@ const EditSidebar = () => {
           </div>
         )}
 
-        <button
+        {/* <button
           className="w-full p-2 rounded-md bg-[#00A9AB]"
           onClick={() => {
             setToggleTextbox(!toggleTextbox);
@@ -219,7 +219,7 @@ const EditSidebar = () => {
           }}
         >
           {!toggleTextbox ? "Add Clause" : "Add Query"}
-        </button>
+        </button> */}
       </div>
     </main>
   );
