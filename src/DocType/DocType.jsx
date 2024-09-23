@@ -14,56 +14,26 @@ import "driver.js/dist/driver.css";
 import { steps } from "../utils/tour";
 import { NODE_API_ENDPOINT } from "../utils/utils";
 
-const optionTypesArr = {
-  type: {
-    "business and commercial agreements": [
-      "agency agreement",
-      "broker agreement",
-      "consultancy agreement",
-      "distribution agreement",
-      "franchise agreement",
-      "joint venture agreement",
-      "license agreement",
-      "partenership deed",
-      "service agreement",
-      "shareholder agreement",
-      "supply agreement",
-    ],
-    "employment and labor contracts": ["employement contract"],
-    "financial and loan documents": ["loan agreement", "promissory note"],
-    "legal authority and confidentiality": [
-      "indemnity bond",
-      "nondisclosure agreement",
-      "power of attorney",
-    ],
-    "miscellaneous legal documents": [
-      "gift deed",
-      "memorandum of understanding",
-      "will agreement",
-    ],
-    "real estate and property agreements": [
-      "construction contract",
-      "development agreement",
-      "lease agreement",
-      "master development agreement",
-      "mortgage deed",
-      "property management agreement",
-      "rent agreement",
-      "sale agreement",
-      "sale deed",
-      "title deed",
-    ],
-  },
-};
-
 const DocType = () => {
   let navigate = useNavigate();
   let dispatch = useDispatch();
+
   const [selectedValue, setSelectedValue] = useState("");
+  const [selectedSubType, setSelectedSubType] = useState("");
   const [loading, setLoading] = useState(false);
-  console.log(loading);
 
   const [optionTypes, setOptionTypes] = useState({});
+  const [subOption, setSubOptions] = useState([]);
+
+  useEffect(() => {
+    if (selectedValue !== "") {
+      setSelectedSubType("");
+      const findSelectedValueArr = Object.values(
+        optionTypes?.type[selectedValue] || {}
+      );
+      setSubOptions(findSelectedValueArr);
+    }
+  }, [selectedValue]);
 
   const handleSelectChange = (e) => {
     setSelectedValue(e.target.value);
@@ -75,7 +45,7 @@ const DocType = () => {
     // Perform submit action
     localStorage.setItem("from", "docType");
 
-    dispatch(setPrompt(selectedValue.replace(/\s*\(.*?\)\s*/g, "")));
+    dispatch(setPrompt(selectedSubType.replace(/\s*\(.*?\)\s*/g, "")));
 
     navigate("/Drafter/DrafterArgs");
     setLoading(false);
@@ -100,7 +70,7 @@ const DocType = () => {
     }
 
     const parsedType = await type.json();
-    console.log(parsedType);
+    // console.log(parsedType);
     setOptionTypes(parsedType.data.fetchedData);
     setLoading(false);
   };
@@ -131,33 +101,44 @@ const DocType = () => {
               <option value="" disabled selected>
                 Select an Option
               </option>
-              {Object?.keys(optionTypes?.type || {}).map((x, index) => (
-                <optgroup
-                  key={index}
-                  label={x
+              {Object?.keys(optionTypes?.type || {}).map((item, index) => (
+                <option key={index} value={item}>
+                  {item
                     .split(" ")
                     .map((x) => {
                       return x[0].toUpperCase() + x.slice(1);
                     })
                     .join(" ")}
-                >
-                  {Object?.values(optionTypes?.type[x] || {}).map(
-                    (item, index) => (
-                      <option key={index} value={item}>
-                        {item
-                          .split(" ")
-                          .map((x) => {
-                            return x[0].toUpperCase() + x.slice(1);
-                          })
-                          .join(" ")}
-                      </option>
-                    )
-                  )}
-                </optgroup>
+                </option>
               ))}
+              {/* </optgroup>
+              ))} */}
+            </select>
+            <select
+              className="p-2 w-full bg-slate-200 rounded-md text-neutral-800 border-2 outline-none border-teal-500 text-sm"
+              value={selectedSubType}
+              onChange={(e) => setSelectedSubType(e.target.value)}
+              required
+              disabled={loading || selectedValue === ""}
+            >
+              <option value="" disabled selected>
+                Select a Type
+              </option>
+              {subOption.map((item, index) => (
+                <option key={index} value={item}>
+                  {item
+                    .split(" ")
+                    .map((x) => {
+                      return x[0].toUpperCase() + x.slice(1);
+                    })
+                    .join(" ")}
+                </option>
+              ))}
+              {/* </optgroup>
+              ))} */}
             </select>
             <button
-              disabled={selectedValue === ""}
+              disabled={selectedValue === "" && selectedSubType === ""}
               className="bg-btn-gradient  p-2 px-9 rounded-md"
               type="submit"
             >
