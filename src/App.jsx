@@ -18,11 +18,16 @@ import DrafterArgs from "./DocDrafter/DrafterArgs";
 import DocType from "./DocType/DocType";
 import DocEdit from "./DocEdit/DocEdit";
 import Summary from "./Summary/Summary";
+import ManageDoc from "./components/ManageDocs/ManageDoc";
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <Hero></Hero>,
+  },
+  {
+    path: "/manageDoc",
+    element: <ManageDoc />,
   },
   {
     path: "/upload",

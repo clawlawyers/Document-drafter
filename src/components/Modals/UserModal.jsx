@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Avatar } from "@mui/material";
 import KeyboardArrowDownOutlinedIcon from "@mui/icons-material/KeyboardArrowDownOutlined";
 import { CurrencyRupeeSharp } from "@mui/icons-material";
+import { Link } from "react-router-dom";
 const UserModal = () => {
   const [showDetails, setshowDetails] = useState(false);
   const [showHistroy, setshowHistroy] = useState(false);
@@ -42,15 +43,20 @@ const UserModal = () => {
                 </div>
               </div>
               <div className="flex flex-col justify- items-center gap-3 w-full">
-              <div className="flex space-x-2 flex-row w-full bg-customBlue p-4  text-white font-bold py-1 border border-black rounded-lg justify-start">
-                <div> Plan: </div>
-                <div className="">Free Tier</div>
+                <div className="flex space-x-2 flex-row w-full bg-customBlue p-4  text-white font-bold py-1 border border-black rounded-lg justify-start">
+                  <div> Plan: </div>
+                  <div className="">Free Tier</div>
+                </div>
+                <div className="flex space-x-2 flex-row bg-customBlue p-4  text-white font-bold py-1 border border-black rounded-lg justify-between">
+                  <div>Phone Number: </div>
+                  <div className="">+91 XXXXXXXXXX </div>
+                </div>
               </div>
-              <div className="flex space-x-2 flex-row bg-customBlue p-4  text-white font-bold py-1 border border-black rounded-lg justify-between">
-                <div>Phone Number: </div>
-                <div className="">+91 XXXXXXXXXX </div>
-              </div>
-              </div>
+            </div>
+            <div>
+              <p className="text-customBlue font-bold border-b border-customBlue pb-1">
+                <Link to={"/manageDoc"}>Your Folders</Link>
+              </p>
             </div>
             {/* <div className="flex flex-col font-sans text-customBlue font-bold gap-2 text-lg">
               <div className="hover:cursor-pointer" onClick={()=>setshowHistroy(false)}>History Search</div>
