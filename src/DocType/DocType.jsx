@@ -13,6 +13,7 @@ import { driver } from "driver.js";
 import "driver.js/dist/driver.css";
 import { steps } from "../utils/tour";
 import { NODE_API_ENDPOINT } from "../utils/utils";
+import { Autocomplete, TextField } from "@mui/material";
 
 const DocType = () => {
   let navigate = useNavigate();
@@ -90,8 +91,9 @@ const DocType = () => {
             loading={loading}
             value={selectedValue}
           /> */}
+          <Banner />
           <form onSubmit={handleSubmit} className="flex w-full gap-2">
-            <select
+            {/* <select
               className="p-2 w-full bg-slate-200 rounded-md text-neutral-800 border-2 outline-none border-teal-500 text-sm"
               value={selectedValue}
               onChange={handleSelectChange}
@@ -111,10 +113,71 @@ const DocType = () => {
                     .join(" ")}
                 </option>
               ))}
-              {/* </optgroup>
-              ))} */}
-            </select>
-            <select
+            </select> */}
+            <Autocomplete
+              size="small"
+              disablePortal
+              options={Object?.keys(optionTypes?.type || {})}
+              // sx={{ width: 300 }}
+              fullWidth
+              disableClearable
+              value={selectedValue}
+              onChange={(event, newValue) => {
+                setSelectedValue(newValue);
+              }}
+              getOptionLabel={(option) => {
+                return option
+                  ? option
+                      .split(" ")
+                      .map((x) => {
+                        return x[0].toUpperCase() + x.slice(1);
+                      })
+                      .join(" ")
+                  : "";
+              }}
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  label="Select an Option"
+                  sx={{
+                    backgroundColor: "white",
+                  }}
+                />
+              )}
+            />
+            <Autocomplete
+              size="small"
+              disabled={loading || selectedValue === ""}
+              disablePortal
+              options={subOption}
+              fullWidth
+              disableClearable
+              // sx={{ width: 300 }}
+              value={selectedSubType}
+              onChange={(event, newValue) => {
+                setSelectedSubType(newValue);
+              }}
+              getOptionLabel={(option) => {
+                return option
+                  ? option
+                      .split(" ")
+                      .map((x) => {
+                        return x[0].toUpperCase() + x.slice(1);
+                      })
+                      .join(" ")
+                  : "";
+              }}
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  label="Select a Type"
+                  sx={{
+                    backgroundColor: "white",
+                  }}
+                />
+              )}
+            />
+            {/* <select
               className="p-2 w-full bg-slate-200 rounded-md text-neutral-800 border-2 outline-none border-teal-500 text-sm"
               value={selectedSubType}
               onChange={(e) => setSelectedSubType(e.target.value)}
@@ -134,19 +197,15 @@ const DocType = () => {
                     .join(" ")}
                 </option>
               ))}
-              {/* </optgroup>
-              ))} */}
-            </select>
+            </select> */}
             <button
-              disabled={selectedValue === "" && selectedSubType === ""}
+              disabled={selectedSubType === ""}
               className="bg-btn-gradient  p-2 px-9 rounded-md"
               type="submit"
             >
               Send
             </button>
           </form>
-
-          <Banner />
         </div>
         <Footer className="w-full" />
       </section>

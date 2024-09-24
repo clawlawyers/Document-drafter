@@ -24,6 +24,7 @@ const DocEdit = ({ onSave }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const ediText = useSelector((state) => state.document.uploadDocText);
+  console.log(ediText);
   const isGenerateDocCall = useSelector(
     (state) => state.document.IsGenerateDocCalled
   );
@@ -40,21 +41,21 @@ const DocEdit = ({ onSave }) => {
   console.log(doc_id);
   let count = 0;
   useEffect(() => {
-    console.log(ediText);
+    // console.log(ediText);
 
     var data = ediText
-      .replaceAll("\\\\n\\\\n", "<br></br>")
-      .replaceAll("\\n\\n", "<br></br>")
-      .replaceAll("\\\\n", "<br></br>")
-      .replaceAll("\\n\\n", "<br></br>")
-      .replaceAll("\\n", "<br></br>")
+      .replaceAll("\\\\n\\\\n", "<br/>")
+      .replaceAll("\\n\\n", "<br/>")
+      .replaceAll("\\\\n", "<br/><br/>")
+      .replaceAll("\\n\\n", "<br/><br/>")
+      .replaceAll("\\n", "<br/><br/>")
       .replaceAll("\\", "");
 
     // .replace(/\\\\\\/g, "")
     // .replace(/\\/g, "")
     // .replace(/\\/g, "")
     // .replace(/\\/g, " ");
-    console.log(data);
+    // console.log(data);
     setText(data);
   });
 
@@ -146,9 +147,9 @@ const DocEdit = ({ onSave }) => {
           <NavbarLeft />
         </div>
 
-        <div className="flex flex-row w-full space-x-5  rounded-md h-[88%] justify-center items-start">
+        <div className="flex flex-row w-full space-x-5  rounded-md h-[90%] justify-center items-start">
           <div className="flex flex-col bg-customBlack rounded-md w-[70%] h-full space-y-5 justify-between p-5">
-            <div className="border-white bg-card-gradient flex flex-col justify-center  items-center border-2 rounded-md w-full h-[80%]">
+            <div className="flex-1 h-full overflow-auto border-white bg-card-gradient flex flex-col justify-center  items-center border-2 rounded-md w-full">
               {loading ? (
                 <img
                   className="flex flex-row justify-center items-center w-40 h-40"
@@ -193,7 +194,7 @@ const DocEdit = ({ onSave }) => {
                   className=" transition ease-in-out duration-1000  hover:scale-110 p-2 rounded-md px-10 border-2 border-teal-700"
                   onClick={handlepdfdownload}
                 >
-                  Downlaod
+                  Download
                 </button>
               ) : (
                 <div className="p-2 rounded-md px-10 border-2 border-teal-700">

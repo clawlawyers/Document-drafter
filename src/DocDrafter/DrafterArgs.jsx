@@ -92,7 +92,7 @@ const DrafterArgs = () => {
 
   useEffect(() => {
     if (path === "docType")
-      setDocText("Please Set The requirements first to proceed!");
+      setDocText("Please set the requirements to proceed!");
   }, [docId]);
 
   const fetchReq = async (doc_id) => {

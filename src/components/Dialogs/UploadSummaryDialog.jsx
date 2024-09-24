@@ -186,7 +186,7 @@ const UploadSummary = () => {
               className=" transition ease-in-out duration-1000  hover:scale-110 p-2 rounded-md px-10 border-2 border-teal-700"
               onClick={handlepdfdownload}
             >
-              Downlaod
+              Download
             </button>
           ) : (
             <div className="p-2 rounded-md px-10 border-2 border-teal-700">

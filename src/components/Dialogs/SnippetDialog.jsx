@@ -43,7 +43,7 @@ const SnippetDialog = () => {
     <>
       <div className="hide-scrollbar overflow-y-auto flex flex-col gap-5 mx-6 my-5 ">
         {combinedData.map((item, i) => (
-          <div   key={i} className="flex flex-row items-start gap-3 ">
+          <div key={i} className="flex flex-row items-start gap-3 ">
             <motion.div
               initial={{ x: -100 }} // Start off-screen (left)
               animate={{ x: 0 }} // End at original position
@@ -58,7 +58,13 @@ const SnippetDialog = () => {
                 <Markdown>{item.heading}</Markdown>
               </div>
               <div className="font-sans text-[0.625rem] scrollbar-hide w-fit break-words overflow-wrap break-word word-wrap break-word overflow-y-auto flex-1">
-                <Markdown>{item.text}</Markdown>
+                <Markdown>
+                  {item.text
+                    .replace(/\\n/g, "\n\n")
+                    .replace(/\\t/g, "\t")
+                    .replace(/\\"/g, '"')
+                    .replace(/1\n"/g, "\n")}
+                </Markdown>
               </div>
             </motion.div>
             <motion.div

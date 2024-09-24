@@ -8,6 +8,7 @@ import axios from "axios";
 import { NODE_API_ENDPOINT } from "../../utils/utils";
 import { breakout } from "../../actions/createDoc";
 import { setBreakoutData } from "../../features/breakoutSlice";
+import { TextField } from "@mui/material";
 
 const EditSidebar = () => {
   const dispatch = useDispatch();
@@ -153,7 +154,7 @@ const EditSidebar = () => {
             // onSubmit={handleQuerySubmit}
             className="w-full space-x-3 flex gap-2 justify-center items-center"
           >
-            <input
+            {/* <input
               className="bg-white text-neutral-700 text-base font-semibold w-full rounded-md p-2"
               type="text"
               placeholder="Enter your query"
@@ -161,6 +162,19 @@ const EditSidebar = () => {
               readOnly={queryLoading}
               value={promptQuery}
               required
+            /> */}
+            <TextField
+              fullWidth
+              id="outlined-multiline-flexible"
+              size="small"
+              sx={{ backgroundColor: "white" }}
+              // label="Multiline Placeholder"
+              placeholder="Enter your Query"
+              multiline
+              maxRows={4}
+              readOnly={queryLoading}
+              value={promptQuery}
+              onChange={onQueryChange}
             />
             <button
               onClick={() => {

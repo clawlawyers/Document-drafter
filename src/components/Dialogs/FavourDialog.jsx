@@ -13,10 +13,12 @@ const FavourDialog = () => {
   const doc_id = useSelector((state) => state.document.docId);
   const breakoutData = useSelector((state) => state.breakout.breakoutData);
   const headpoints = breakoutData.data.fetchedData.headpoints;
+  const details = breakoutData.data.fetchedData.details;
 
   const [isLoading, setisLoading] = useState(false);
   const [data, setData] = useState("");
   const [selectedHeadpoint, setSlectedHeadpont] = useState("");
+  const [selectedDetails, setSelectedDetails] = useState("");
 
   const index = parseInt(location.pathname.slice(-1));
   useEffect(() => {
@@ -25,6 +27,12 @@ const FavourDialog = () => {
       setSlectedHeadpont(headpoints[paramsId]);
     }
   }, [paramsId, headpoints]);
+
+  useEffect(() => {
+    if (paramsId >= 0 && paramsId < details.length) {
+      setSelectedDetails(details[paramsId]);
+    }
+  }, [paramsId, details]);
 
   const fetchData = async (headpoint) => {
     setisLoading(true);
@@ -37,9 +45,20 @@ const FavourDialog = () => {
     setisLoading(false);
   };
   return (
-    <div className="flex flex-col h-[65vh]  font-sans gap-4 p-4 text-white">
-      <div className="bg-popup-gradient p-4 text-[1rem] font-bold  rounded-[0.625rem] border-2 border-white">
-        <Markdown>{selectedHeadpoint}</Markdown>
+    <div className="h-full flex flex-col  font-sans gap-4 p-4 text-white">
+      <div className="h-[25vh] bg-popup-gradient p-4 text-[1rem] font-bold  rounded-[0.625rem] border-2 border-white flex flex-col gap-2">
+        <p className="text-lg">
+          <Markdown>{selectedHeadpoint}</Markdown>
+        </p>
+        <p className="flex-1 h-full overflow-auto scrollbar-hide text-xs font-normal">
+          <Markdown>
+            {selectedDetails
+              .replaceAll(/\\n/g, "\n\n")
+              .replaceAll(/\\t/g, "\t")
+              .replaceAll(/\\"/g, '"')
+              .replaceAll(/1\n"/g, "\n")}
+          </Markdown>
+        </p>
       </div>
       <div className="flex flex-row gap-3  text-xs text-nowrap ">
         <button
@@ -68,27 +87,29 @@ const FavourDialog = () => {
           Bend in Opp. Direction
         </button>
       </div>
-      {!isLoading ? (
-        <div className="flex  overflow-y-auto  scrollbar-hide h-full flex-col gap-2 text-justify font-sans text-white m-5 ">
-          <Markdown>
-            {trimQuotes(
-              data
-                .replace(/\\n/g, "\n\n")
-                .replace(/\\t/g, "\t")
-                .replace(/\\"/g, '"')
-                .replace(/1\n"/g, "\n")
-            )}
-          </Markdown>
-        </div>
-      ) : (
-        <div className="flex overflow-y-auto scrollbar-hide justify-center items-center h-full flex-col gap-2 text-justify font-sans text-white m-5 ">
-          <img
-            className="flex flex-row justify-center items-center w-40 h-40"
-            src={loaderGif}
-            alt="Loading..."
-          />
-        </div>
-      )}
+      <div className="flex-1 h-full overflow-auto scrollbar-hide">
+        {!isLoading ? (
+          <div className="flex text-sm flex-col gap-2 text-justify font-sans text-white  ">
+            <Markdown>
+              {trimQuotes(
+                data
+                  .replaceAll(/\\n/g, "\n\n")
+                  .replaceAll(/\\t/g, "\t")
+                  .replaceAll(/\\"/g, '"')
+                  .replaceAll(/1\n"/g, "\n")
+              )}
+            </Markdown>
+          </div>
+        ) : (
+          <div className="flex overflow-y-auto scrollbar-hide justify-center items-center h-full flex-col gap-2 text-justify font-sans text-white m-5 ">
+            <img
+              className="flex flex-row justify-center items-center w-40 h-40"
+              src={loaderGif}
+              alt="Loading..."
+            />
+          </div>
+        )}
+      </div>
     </div>
   );
 };
