@@ -14,6 +14,7 @@ import QueryGIF from "../components/ui/QueryGIF";
 import giff from "../assets/icons/2.gif";
 import { NODE_API_ENDPOINT } from "../utils/utils";
 import toast from "react-hot-toast";
+
 const Snippets = () => {
   let navigate = useNavigate();
   const doc_id = useSelector((state) => state.document.docId);

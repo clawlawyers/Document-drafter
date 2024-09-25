@@ -7,6 +7,11 @@ import Markdown from "react-markdown";
 import loaderGif from "../../assets/icons/2.gif";
 import Snackbar, { SnackbarCloseReason } from "@mui/material/Snackbar";
 import { setBreakoutData } from "../../features/breakoutSlice";
+import { setUploadDocText } from "../../features/DocumentSlice";
+import { CircularProgress } from "@mui/material";
+import { motion } from "framer-motion";
+import toast from "react-hot-toast";
+
 const DirectionDialog = () => {
   const dispatch = useDispatch();
 
@@ -19,6 +24,7 @@ const DirectionDialog = () => {
   const details = breakoutData.data.fetchedData.details;
 
   const [isLoading, setisLoading] = useState(false);
+  const [rephraseLoading, setRephraseLoading] = useState(false);
   const [data, setData] = useState("");
   const [open, setOpen] = useState(false);
   const [selectedHeadpoint, setSlectedHeadpont] = useState("");
@@ -53,14 +59,15 @@ const DirectionDialog = () => {
     setisLoading(false);
   };
 
-  const handleClose = (event, reason) => {
-    if (reason === "clickaway") {
-      return;
-    }
+  // const handleClose = (event, reason) => {
+  //   if (reason === "clickaway") {
+  //     return;
+  //   }
 
-    setOpen(false);
-  };
+  //   setOpen(false);
+  // };
   const handleRepharse = async () => {
+    setRephraseLoading(true);
     try {
       var config = {
         method: "post",
@@ -71,10 +78,14 @@ const DirectionDialog = () => {
       };
       const res = await axios.request(config);
       dispatch(setBreakoutData(res.data));
-
-      setOpen(true);
-      console.log(res);
-    } catch (e) {}
+      dispatch(setUploadDocText(res.data.data.fetchedData.updated_document));
+      // setOpen(true);
+      // console.log(res);
+      setRephraseLoading(false);
+      toast.success("Your document has been updated!");
+    } catch (e) {
+      setRephraseLoading(false);
+    }
   };
   return (
     <>
@@ -86,6 +97,8 @@ const DirectionDialog = () => {
           <p className="flex-1 h-full overflow-auto scrollbar-hide text-xs font-normal">
             <Markdown>
               {selectedDetails
+                .replaceAll(/\u20b9/g, "₹")
+                .replaceAll(/\\u20b9/g, "₹")
                 .replaceAll(/\\n/g, "\n\n")
                 .replaceAll(/\\t/g, "\t")
                 .replaceAll(/\\"/g, '"')
@@ -125,6 +138,8 @@ const DirectionDialog = () => {
               <Markdown>
                 {trimQuotes(
                   data
+                    .replaceAll(/\u20b9/g, "₹")
+                    .replaceAll(/\\u20b9/g, "₹")
                     .replaceAll(/\\n/g, "\n\n")
                     .replaceAll(/\\t/g, "\t")
                     .replaceAll(/\\"/g, '"')
@@ -143,22 +158,30 @@ const DirectionDialog = () => {
           )}
         </div>
         <div className="flex flex-row  w-full justify-end items-center px-5 font-semibold space-x-5">
-          <button
-            onClick={handleRepharse}
-            className="transition ease-in-out duration-1000  hover:scale-110  bg-card-gradient p-2 border border-white rounded-md"
-          >
-            Rephrase
-          </button>
+          {rephraseLoading ? (
+            <motion.div className="flex gap-2 items-center bg-card-gradient p-2 border border-white rounded-md">
+              <CircularProgress size={10} color="inherit" />
+              <p>Rephrasing...</p>
+            </motion.div>
+          ) : (
+            <motion.button
+              whileTap={{ scale: "0.95" }}
+              onClick={handleRepharse}
+              className="bg-card-gradient p-2 border border-white rounded-md"
+            >
+              Rephrase
+            </motion.button>
+          )}
         </div>
       </div>
       {/* <div className="w-10 h-10"> */}
-      <Snackbar
+      {/* <Snackbar
         open={open}
         autoHideDuration={5000}
         onClose={handleClose}
         anchorOrigin={{ vertical: "top", horizontal: "center" }}
         message="YOUR DOCUMENT HAS BEEN UPADTED"
-      ></Snackbar>
+      ></Snackbar> */}
       {/* </div> */}
     </>
   );

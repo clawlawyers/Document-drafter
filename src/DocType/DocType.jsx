@@ -117,6 +117,7 @@ const DocType = () => {
             <Autocomplete
               size="small"
               disablePortal
+              disabled={loading}
               options={Object?.keys(optionTypes?.type || {})}
               // sx={{ width: 300 }}
               fullWidth
@@ -138,7 +139,8 @@ const DocType = () => {
               renderInput={(params) => (
                 <TextField
                   {...params}
-                  label="Select an Option"
+                  placeholder="Select an Option"
+                  // label="Select an Option"
                   sx={{
                     backgroundColor: "white",
                   }}
@@ -170,7 +172,7 @@ const DocType = () => {
               renderInput={(params) => (
                 <TextField
                   {...params}
-                  label="Select a Type"
+                  placeholder="Select a Type"
                   sx={{
                     backgroundColor: "white",
                   }}

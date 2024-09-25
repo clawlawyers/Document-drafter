@@ -7,7 +7,7 @@ const NavbarRight = ({ showMeu }) => {
         <div className=" font-bold font-sans leading-8 text-customDrakBlue text-4xl">
           Adira AI
         </div>
-        <div className="text-sm  leading-5 font-sans ">by CLAW</div>
+        <div className="text-sm  leading-5 font-sans ">by Claw</div>
       </div>
       {showMeu && (
         <div>

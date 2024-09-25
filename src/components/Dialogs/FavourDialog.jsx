@@ -53,6 +53,8 @@ const FavourDialog = () => {
         <p className="flex-1 h-full overflow-auto scrollbar-hide text-xs font-normal">
           <Markdown>
             {selectedDetails
+              .replaceAll(/\u20b9/g, "₹")
+              .replaceAll(/\\u20b9/g, "₹")
               .replaceAll(/\\n/g, "\n\n")
               .replaceAll(/\\t/g, "\t")
               .replaceAll(/\\"/g, '"')
@@ -93,6 +95,8 @@ const FavourDialog = () => {
             <Markdown>
               {trimQuotes(
                 data
+                  .replaceAll(/\u20b9/g, "₹")
+                  .replaceAll(/\\u20b9/g, "₹")
                   .replaceAll(/\\n/g, "\n\n")
                   .replaceAll(/\\t/g, "\t")
                   .replaceAll(/\\"/g, '"')

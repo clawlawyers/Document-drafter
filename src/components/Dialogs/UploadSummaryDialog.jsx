@@ -111,7 +111,7 @@ const UploadSummary = () => {
       // Create a link to download the PDF
       const a = document.createElement("a");
       a.href = url;
-      a.download = "Rent_Agreement.pdf";
+      a.download = "Document.pdf";
       document.body.appendChild(a);
       a.click();
       a.remove();
@@ -150,7 +150,12 @@ const UploadSummary = () => {
                   className=" text-sm hide-scrollbar  h-full w-full overflow-y-auto overflow-wrap break-word word-wrap break-word"
                   rehypePlugins={[rehypeRaw]}
                 >
-                  {formatText(text.replace(/\\u20B9/g, "₹"))}
+                  {formatText(
+                    text
+                      .replace(/\\u20b9/g, "₹")
+                      .replace(/\u20b9/g, "₹")
+                      .replaceAll("u20B9", "₹")
+                  )}
                 </Markdown>
               </div>
             )}

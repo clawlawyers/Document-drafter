@@ -45,11 +45,14 @@ const DocEdit = ({ onSave }) => {
 
     var data = ediText
       .replaceAll("\\\\n\\\\n", "<br/>")
+      .replaceAll("\\\\n", "<br/>")
       .replaceAll("\\n\\n", "<br/>")
-      .replaceAll("\\\\n", "<br/><br/>")
-      .replaceAll("\\n\\n", "<br/><br/>")
-      .replaceAll("\\n", "<br/><br/>")
-      .replaceAll("\\", "");
+      .replaceAll("\\n", "<br/>")
+      .replaceAll("\n", "<br/>")
+      .replaceAll("\\", "")
+      .replaceAll('"', "")
+      .replaceAll(":", " :")
+      .replaceAll("#", "");
 
     // .replace(/\\\\\\/g, "")
     // .replace(/\\/g, "")
@@ -57,7 +60,7 @@ const DocEdit = ({ onSave }) => {
     // .replace(/\\/g, " ");
     // console.log(data);
     setText(data);
-  });
+  }, [ediText]);
 
   useEffect(() => {
     if (isGenerateDocCall) {
@@ -124,7 +127,7 @@ const DocEdit = ({ onSave }) => {
       // Create a link to download the PDF
       const a = document.createElement("a");
       a.href = url;
-      a.download = "Rent_Agreement.pdf";
+      a.download = "Document.pdf";
       document.body.appendChild(a);
       a.click();
       a.remove();
@@ -162,9 +165,11 @@ const DocEdit = ({ onSave }) => {
                   // rehypePlugins={[rehypeRaw]}
                   dangerouslySetInnerHTML={{
                     __html: text
-                      .replace(/\u20B9/g, "₹")
-                      .replace(/\\n/, "<br></br>")
-                      .replace(/\\n\\n/, "<br></br><br></br>"),
+                      .replaceAll("u20b9", "₹")
+                      .replace(/\\u20B9/g, "₹")
+                      .replace(/\u20B9/g, "₹"),
+                    // .replace(/\\n/, "<br></br>")
+                    // .replace(/\\n\\n/, "<br></br><br></br>"),
                     // .replace(/\\/g, "") ,
                   }}
                 >

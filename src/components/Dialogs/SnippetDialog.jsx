@@ -60,10 +60,12 @@ const SnippetDialog = () => {
               <div className="font-sans text-[0.625rem] scrollbar-hide w-fit break-words overflow-wrap break-word word-wrap break-word overflow-y-auto flex-1">
                 <Markdown>
                   {item.text
-                    .replace(/\\n/g, "\n\n")
-                    .replace(/\\t/g, "\t")
-                    .replace(/\\"/g, '"')
-                    .replace(/1\n"/g, "\n")}
+                    .replaceAll(/\u20b9/g, "₹")
+                    .replaceAll(/\\u20b9/g, "₹")
+                    .replaceAll(/\\n/g, "\n\n")
+                    .replaceAll(/\\t/g, "\t")
+                    .replaceAll(/\\"/g, '"')
+                    .replaceAll(/1\n"/g, "\n")}
                 </Markdown>
               </div>
             </motion.div>

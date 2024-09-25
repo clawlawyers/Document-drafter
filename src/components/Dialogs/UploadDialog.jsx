@@ -33,6 +33,7 @@ const UploadDialog = () => {
   const dispatch = useDispatch();
   const { fileBlob } = useSelector((state) => state.auth);
   const doc_id = useSelector((state) => state.document.docId);
+  const breakoutData = useSelector((state) => state.breakout.breakoutData);
 
   const breakoutCalledRef = useRef(false); // Use ref to avoid re-render on change
 
@@ -53,6 +54,8 @@ const UploadDialog = () => {
       });
       // dispatch(setGreenHeading([]));
       dispatch(setBreakoutData(res.data));
+      console.log(res.data);
+      dispatch(setUploadDocText(res.data.data.fetchedData.document));
       setUploadStatus(""); // Stop the analyzing GIF after response
       setFile(null);
       // setOpenResponseDialog(true); // Open the response dialog
