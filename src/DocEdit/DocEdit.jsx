@@ -53,12 +53,6 @@ const DocEdit = ({ onSave }) => {
       .replaceAll('"', "")
       .replaceAll(":", " :")
       .replaceAll("#", "");
-
-    // .replace(/\\\\\\/g, "")
-    // .replace(/\\/g, "")
-    // .replace(/\\/g, "")
-    // .replace(/\\/g, " ");
-    // console.log(data);
     setText(data);
   }, [ediText]);
 
