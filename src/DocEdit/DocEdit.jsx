@@ -98,6 +98,18 @@ const DocEdit = ({ onSave }) => {
   const handlepdfdownload = async () => {
     // setLoading(true);
     try {
+
+      const sendableDoc=  ediText
+      .replaceAll("\\\\n\\\\n", "\n  \n")
+      .replaceAll("\\\\n", "\n")
+      .replaceAll("\\n\\n", "\n \n")
+      .replaceAll("\\n", "\n")
+      .replaceAll("\n", "\n")
+      .replaceAll("\\", "")
+      .replaceAll('"', "")
+      .replaceAll(":", " :")
+      .replaceAll("#", "")
+      .replaceAll("\"", "");
       const response = await fetch(
         `${NODE_API_ENDPOINT}/ai-drafter/api/get_pdf`,
         {
@@ -106,7 +118,7 @@ const DocEdit = ({ onSave }) => {
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ document: ediText }),
+          body: JSON.stringify({ document: sendableDoc }),
         }
       );
 
