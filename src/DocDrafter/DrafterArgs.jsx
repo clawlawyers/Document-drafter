@@ -67,8 +67,8 @@ const DrafterArgs = () => {
       try {
         const data = await createDoc().then((data) => {
           const doc_id = data.data.data.fetchedData.doc_id;
-          console.log(doc_id);
-          console.log(data);
+          // console.log(doc_id);
+          // console.log(data);
           dispatch(setDocId(doc_id));
           setDocID(doc_id);
           if (doc_id && prompt) {
@@ -144,13 +144,13 @@ const DrafterArgs = () => {
         );
 
         dispatch(setUploadDocText(trimQuotes(processedText)));
-        // console.log(data.data.data.fetchedData);
+        console.log(data.data.data.fetchedData);
 
         const essentialRequirements =
-          data.data.data.fetchedData.essential_requirements[0];
+          data.data.data.fetchedData.essential_requirements;
         setEssentialReq(essentialRequirements);
         const initialEssentialInputs = {};
-        Object.keys(essentialRequirements).forEach((req) => {
+        Object.keys(essentialRequirements || {}).forEach((req) => {
           initialEssentialInputs[req] = essentialRequirements[req]
             ? essentialRequirements[req]
             : "";
@@ -163,7 +163,7 @@ const DrafterArgs = () => {
           data.data.data.fetchedData.optional_requirements;
         setOptionalReq(optionalRequirements);
         const initialOptionalInputs = {};
-        Object.keys(optionalRequirements).forEach((req) => {
+        Object.keys(optionalRequirements || {}).forEach((req) => {
           initialOptionalInputs[req] = optionalRequirements[req]
             ? optionalRequirements[req]
             : "";
