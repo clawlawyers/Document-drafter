@@ -103,19 +103,24 @@ const DrafterArgs = () => {
       const data = await getRequirements(doc_id, prompt);
       const res = data.data.data.fetchedData;
 
+      console.log(res);
       setEssentialReq(res.essential_requirements);
       setOptionalReq(res.optional_requirements);
 
       // Initialize input state
       const initialEssentialInputs = {};
-      res.essential_requirements.forEach((req) => {
-        initialEssentialInputs[req] = "";
+      Object.keys(res.essential_requirements).forEach((req) => {
+        initialEssentialInputs[req] = res.essential_requirements[req]
+          ? res.essential_requirements[req]
+          : "";
       });
       setEssentialInputs(initialEssentialInputs);
 
       const initialOptionalInputs = {};
-      res.optional_requirements.forEach((req) => {
-        initialOptionalInputs[req] = "";
+      Object.keys(res.optional_requirements).forEach((req) => {
+        initialOptionalInputs[req] = res.optional_requirements[req]
+          ? res.optional_requirements[req]
+          : "";
       });
       setOptionalInputs(initialOptionalInputs);
     } catch (e) {
@@ -133,23 +138,40 @@ const DrafterArgs = () => {
         const processedText = docText;
         setDocText(trimQuotes(processedText));
         // setDocText(docText);
-        console.log(trimQuotes(processedText));
+        // console.log(trimQuotes(processedText));
         setFallbackText(
           'Sale Agreement\n\nThis Sale Agreement ("Agreement") is made and entered into on this [DATE] by and between:\n\n1. [SELLER\'S NAME], residing at [SELLER\'S ADDRESS] (hereinafter referred to as the "Seller"); \nand\n2. [BUYER\'S NAME], residing at [BUYER\'S ADDRESS] (hereinafter referred to as the "Buyer").\n\nRecitals:\n\nWHEREAS, the Seller is the legal and beneficial owner of the property described below and desires to sell the same to the Buyer.\n\nWHEREAS, the Buyer is desirous of purchasing the said property from the Seller on the terms and conditions set forth in this Agreement.\n\nNOW, THEREFORE, in consideration of the mutual covenants and agreements hereinafter set forth, the parties hereto agree as follows:\n\n1. Description of Property:\nThe property being sold under this Agreement is described as [PROPERTY DETAILS, INCLUDING ADDRESS, LEGAL DESCRIPTION, AND ANY UNIQUE IDENTIFIERS]. The Seller hereby confirms that the property is free from all encumbrances, claims, and demands whatsoever.\n\n'
         );
 
         dispatch(setUploadDocText(trimQuotes(processedText)));
+        // console.log(data.data.data.fetchedData);
 
         const essentialRequirements =
-          data.data.data.fetchedData.essential_requirements;
+          data.data.data.fetchedData.essential_requirements[0];
         setEssentialReq(essentialRequirements);
+        const initialEssentialInputs = {};
+        Object.keys(essentialRequirements).forEach((req) => {
+          initialEssentialInputs[req] = essentialRequirements[req]
+            ? essentialRequirements[req]
+            : "";
+        });
+        // console.log(initialEssentialInputs);
+        setEssentialInputs(initialEssentialInputs);
         dispatch(setEssentialRequirements(essentialRequirements));
+
         const optionalRequirements =
           data.data.data.fetchedData.optional_requirements;
         setOptionalReq(optionalRequirements);
+        const initialOptionalInputs = {};
+        Object.keys(optionalRequirements).forEach((req) => {
+          initialOptionalInputs[req] = optionalRequirements[req]
+            ? optionalRequirements[req]
+            : "";
+        });
+        setOptionalInputs(initialOptionalInputs);
         dispatch(setOptionalRequirements(optionalRequirements));
       });
-      console.log(uploadDocText);
+      // console.log(uploadDocText);
     } catch (e) {
       setDocText("");
       toast.error("Failed to fetch data");
@@ -352,7 +374,7 @@ const DrafterArgs = () => {
                     <h2 className="underline text-primary-theme-white-50 font-bold">
                       Essential Requirements
                     </h2>
-                    {EssentialReq.map((req, index) => (
+                    {Object.keys(EssentialReq || {}).map((req, index) => (
                       <div key={index}>
                         <label
                           htmlFor={req}
@@ -375,7 +397,7 @@ const DrafterArgs = () => {
                     <h2 className="underline text-primary-theme-white-50 font-bold">
                       Optional Requirements
                     </h2>
-                    {OptionalReq.map((req, index) => (
+                    {Object.keys(OptionalReq || {}).map((req, index) => (
                       <div key={index}>
                         <label
                           htmlFor={req}

@@ -15,13 +15,14 @@ const Hero = () => {
 
   return (
     <div className="flex flex-col justify-center items-center w-full h-screen p-3">
-      <div className="flex flex-col h-[90vh] w-full   p-2 gap-3 rounded-[0.625rem]   bg-customBlack">
+      <div
+        className="flex flex-col h-screen w-full  z-20 p-2 gap-3 bg-black bg-opacity-80 rounded-lg"
+        style={{ boxShadow: "0 0 5px white, 0 0 10px white, 0 0 10px white" }}
+      >
         <div className="h-[10%] w-full ">
-
-        <HomeNav isLoggedIn={isLoggedIn} setLoginPopup={setLoginPopup} />
+          <HomeNav isLoggedIn={isLoggedIn} setLoginPopup={setLoginPopup} />
         </div>
         <div className="flex flex-col justify-between w-full h-full  ">
-          
           <HeroPage></HeroPage>
 
           <Footer />

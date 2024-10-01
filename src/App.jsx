@@ -19,11 +19,16 @@ import DocType from "./DocType/DocType";
 import DocEdit from "./DocEdit/DocEdit";
 import Summary from "./Summary/Summary";
 import ManageDoc from "./components/ManageDocs/ManageDoc";
+import Login from "./Login/Login";
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <Hero></Hero>,
+  },
+  {
+    path: "/login",
+    element: <Login />,
   },
   {
     path: "/manageDoc",
