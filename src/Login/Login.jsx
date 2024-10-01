@@ -4,9 +4,17 @@ import Footer from "../components/ui/Footer";
 import LoginHome from "./LoginHome";
 import aiIcon from "../assets/icons/back2.gif";
 
+
 const Login = () => {
   const [loginPopup, setLoginPopup] = useState(false);
   const [isLoggedIn, setisLoggedIn] = useState(false);
+
+
+
+
+
+
+
   return (
     <div className="flex flex-col justify-center items-center w-full h-screen relative p-4">
       {/* <div className="w-full h-full flex justify-center absolute py-2">

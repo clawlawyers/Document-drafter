@@ -3,6 +3,15 @@ import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import { setFormData, setOtpVerified } from "../../features/authSlice";
 import CloseIcon from "../../assets/svg/CloseIcon";
+import {
+  auth,
+  PhoneAuthProvider,
+  RecaptchaVerifier,
+  signInWithCredential,
+  signInWithPhoneNumber,
+} from "../../utils/firebase";
+import { useNavigate } from "react-router-dom";
+import { NODE_API_ENDPOINT } from "../../utils/utils";
 
 const LoginDialog = ({ setLoginPopup }) => {
   const dispatch = useDispatch();
@@ -13,14 +22,138 @@ const LoginDialog = ({ setLoginPopup }) => {
   const [localOtp, setLocalOtp] = useState("");
   const [showOtpDialog, setShowOtpDialog] = useState(false);
 
-  const handleSubmit = (e) => {
+
+
+
+
+
+
+
+
+
+
+  // const [phoneNumber, setPhoneNumber] = useState();
+  const [getOtp, setGetOtp] = useState(false);
+  const [verificationId, setVerificationId] = useState("");
+
+  const navigate = useNavigate();
+
+  // Function to clear children of an element
+  function clearRecaptchaChildren() {
+    const recaptchaElement = document.getElementById("recaptcha");
+
+    if (recaptchaElement) {
+      while (recaptchaElement.firstChild) {
+        recaptchaElement.removeChild(recaptchaElement.firstChild);
+      }
+    } else {
+      console.warn('Element with ID "recaptcha" not found.');
+    }
+  }
+
+  const handleSubmit = async (e) => {
+
+
     e.preventDefault();
-    setShowOtpDialog(true);
+    // Example usage
+    clearRecaptchaChildren();
+    // check ether mobile number is registered or not
+    const fetchedResp = await fetch(
+      `${NODE_API_ENDPOINT}/clientAdira/clientAdiraValidation`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ phoneNumber }),
+      }
+    );
+
+    if (!fetchedResp.ok) {
+      alert("This number is not registered!");
+      return;
+    }
+
+    // handleDisableButton();
+    console.log("sendOTP");
+
+    const recaptchaVerifier = new RecaptchaVerifier(auth, "recaptcha", {
+      size: "invisible",
+      callback: (response) => {
+        // reCAPTCHA solved, allow signInWithPhoneNumber.
+        console.log(response);
+      },
+      auth,
+    });
+
+    console.log("I am here");
+    console.log(phoneNumber);
+
+    signInWithPhoneNumber(auth, "+91" + phoneNumber, recaptchaVerifier)
+      .then((confirmationResult) => {
+        setVerificationId(confirmationResult.verificationId);
+        alert("OTP sent!");
+        setGetOtp(true);
+        setShowOtpDialog(true);
+
+      })
+      .catch((error) => {
+        alert("Error during OTP request");
+        console.error("Error during OTP request:", error);
+        setGetOtp(false);
+      });
   };
 
-  const handleVerifyOtp = () => {
-    // Simulate OTP verification logic
+  const handleVerifyOtp = async () => {
+    const credential = PhoneAuthProvider.credential(verificationId, localOtp);
+    localStorage.setItem("loginOtp", localOtp);
+
+    signInWithCredential(auth, credential)
+      .then(async (userCredential) => {
+        const user = userCredential.user;
+        alert("Phone number verified successfully!");
+
+        const props = await fetch(
+          `${NODE_API_ENDPOINT}/clientAdira/getuser`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              // Authorization: `Bearer ${parsedUser.token}`,
+            },
+          }
+        );
+
+        if (!props.ok) {
+          alert("User not found!");
+          return;
+        }
+        const parsedProps = await props.json();
+        console.log(parsedProps.data);
+        // dispatch(login({ user: parsedProps.data }));
+        // navigate("/courtroom-ai");
+      })
+
+      .catch((error) => {
+        console.error("Error during OTP verification:", error);
+        // setProceedToPayment(false);
+      });
   };
+
+
+
+
+
+
+
+  // const handleSubmit = (e) => {
+  //   e.preventDefault();
+  //   setShowOtpDialog(true);
+  // };
+
+  // const handleVerifyOtp = () => {
+  //   // Simulate OTP verification logic
+  // };
 
   const handleOtpVerification = (e) => {
     setLocalOtp(e.target.value);
@@ -112,6 +245,8 @@ const LoginDialog = ({ setLoginPopup }) => {
             </div>
           )}
         </div>
+        <div id="recaptcha"></div>
+
       </div>
     </div>
   );
