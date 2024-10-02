@@ -85,7 +85,7 @@ const ManageDoc = () => {
 
       const json = await response.json();
       console.log(json);
-      json.shift();
+      // json.shift();
       setAllFiles(json);
       setSearchableFiles(json);
       setIsLoading(false);
@@ -434,7 +434,7 @@ const ManageDoc = () => {
         >
           <div className="bg-[#D2D2D2] w-2/6 rounded p-3 flex flex-col gap-3 justify-center">
             <div className="flex justify-between items-center">
-              <p className="text-[#004343] text-xl font-bold">Folder Name</p>
+              <p className="text-[#004343] text-xl font-bold">File Name</p>
               <Close
                 onClick={() => {
                   setEditNameDialog(false);
@@ -446,7 +446,7 @@ const ManageDoc = () => {
             </div>
             <input
               className="w-full rounded py-2 px-1 text-xs text-black"
-              placeholder="Enter New Folder Name"
+              placeholder="Enter New File Name"
               value={editName}
               onChange={(e) => setEditName(e.target.value)}
             />

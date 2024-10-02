@@ -7,6 +7,7 @@ import {
   auth,
   PhoneAuthProvider,
   RecaptchaVerifier,
+  // RecaptchaVerifier,
   signInWithCredential,
   signInWithPhoneNumber,
 } from "../../utils/firebase";
@@ -21,16 +22,6 @@ const LoginDialog = ({ setLoginPopup }) => {
   const [phoneNumber, setPhoneNumber] = useState("");
   const [localOtp, setLocalOtp] = useState("");
   const [showOtpDialog, setShowOtpDialog] = useState(false);
-
-
-
-
-
-
-
-
-
-
 
   // const [phoneNumber, setPhoneNumber] = useState();
   const [getOtp, setGetOtp] = useState(false);
@@ -52,8 +43,6 @@ const LoginDialog = ({ setLoginPopup }) => {
   }
 
   const handleSubmit = async (e) => {
-
-
     e.preventDefault();
     // Example usage
     clearRecaptchaChildren();
@@ -95,7 +84,6 @@ const LoginDialog = ({ setLoginPopup }) => {
         alert("OTP sent!");
         setGetOtp(true);
         setShowOtpDialog(true);
-
       })
       .catch((error) => {
         alert("Error during OTP request");
@@ -113,16 +101,13 @@ const LoginDialog = ({ setLoginPopup }) => {
         const user = userCredential.user;
         alert("Phone number verified successfully!");
 
-        const props = await fetch(
-          `${NODE_API_ENDPOINT}/clientAdira/getuser`,
-          {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-              // Authorization: `Bearer ${parsedUser.token}`,
-            },
-          }
-        );
+        const props = await fetch(`${NODE_API_ENDPOINT}/clientAdira/getuser`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            // Authorization: `Bearer ${parsedUser.token}`,
+          },
+        });
 
         if (!props.ok) {
           alert("User not found!");
@@ -139,12 +124,6 @@ const LoginDialog = ({ setLoginPopup }) => {
         // setProceedToPayment(false);
       });
   };
-
-
-
-
-
-
 
   // const handleSubmit = (e) => {
   //   e.preventDefault();
@@ -246,7 +225,6 @@ const LoginDialog = ({ setLoginPopup }) => {
           )}
         </div>
         <div id="recaptcha"></div>
-
       </div>
     </div>
   );
