@@ -1,17 +1,42 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Avatar } from "@mui/material";
 import KeyboardArrowDownOutlinedIcon from "@mui/icons-material/KeyboardArrowDownOutlined";
 import { CurrencyRupeeSharp } from "@mui/icons-material";
 import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
+
 const UserModal = () => {
   const [showDetails, setshowDetails] = useState(false);
-  const [showHistroy, setshowHistroy] = useState(false);
+
+  const currentUser = useSelector((state) => state.auth.user);
+
   const handlepopup = () => {
     setshowDetails(!showDetails);
   };
+
+  const dialogRef = useRef(null);
+
+  const handleClickOutside = (event) => {
+    if (dialogRef.current && !dialogRef.current.contains(event.target)) {
+      setshowDetails(false);
+    }
+  };
+
+  useEffect(() => {
+    if (showDetails) {
+      document.addEventListener("mousedown", handleClickOutside);
+    } else {
+      document.removeEventListener("mousedown", handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [showDetails]);
+
   return (
     <>
-      <div className="relative">
+      <div className="relative" ref={dialogRef}>
         <div onClick={handlepopup}>
           <Avatar
             sx={{ bgcolor: "#018081" }}
@@ -19,17 +44,22 @@ const UserModal = () => {
             src="/broken-image.jpg"
             className="z-20"
           >
-            S
+            {currentUser?.name[0].toUpperCase()}
           </Avatar>
         </div>
         {showDetails && (
-          <div className="absolute z-10 bg-white  text-black font-sans p-3 pl-4 pb-4 pt-[5rem] -right-2  rounded-[0.625rem] text-nowrap -top-2 gap-7  flex flex-col">
-            <div className="flex flex-col shadow-lg rounded-[0.625rem] border-2 border-black p-4 gap-8 justify-between">
-              <div className="flex gap-2 flex-row ">
+          <div
+            className="absolute z-10  text-black font-sans p-3 pl-4 pb-4 pt-[5rem] -right-2  rounded-[0.625rem] text-nowrap -top-2 gap-7  flex flex-col"
+            style={{
+              background: "linear-gradient(90deg, #FFFFFF, #B4B4B4)",
+            }}
+          >
+            <div className="flex flex-col shadow-lg rounded-[0.625rem] border-2 border-customBlue p-4 gap-8 justify-between">
+              <div className="flex gap-2 flex-row items-center ">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
-                  width="20"
-                  height="20"
+                  width="24"
+                  height="24"
                   viewBox="0 0 20 20"
                   fill="none"
                 >
@@ -39,17 +69,17 @@ const UserModal = () => {
                   />
                 </svg>
                 <div className="font-sans text-customBlue font-bold">
-                  Soumya Banik
+                  {currentUser?.name}
                 </div>
               </div>
               <div className="flex flex-col justify- items-center gap-3 w-full">
-                <div className="flex space-x-2 flex-row w-full bg-customBlue p-4  text-white font-bold py-1 border border-black rounded-lg justify-start">
+                <div className="flex space-x-2 flex-row w-full bg-customBlue p-4  text-white font-bold py-1 border rounded-lg justify-start">
                   <div> Plan: </div>
                   <div className="">Free Tier</div>
                 </div>
-                <div className="flex space-x-2 flex-row bg-customBlue p-4  text-white font-bold py-1 border border-black rounded-lg justify-between">
+                <div className="flex space-x-2 flex-row bg-customBlue p-4  text-white font-bold py-1 border rounded-lg justify-between">
                   <div>Phone Number: </div>
-                  <div className="">+91 XXXXXXXXXX </div>
+                  <div className="">+91 {currentUser?.phoneNumber}</div>
                 </div>
               </div>
             </div>
