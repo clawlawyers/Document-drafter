@@ -13,12 +13,12 @@ const HomeNav = ({ className }) => {
       >
         Home
       </button>
-      <button
+      {/* <button
         className="px-5 py-2 border-customBlue rounded-full border-[2px]"
         onClick={() => navigation("/manageDoc")}
       >
         My Files
-      </button>
+      </button> */}
       {/* <UserModal /> */}
     </div>
   );
