@@ -28,6 +28,7 @@ const initialState = {
   fileBlob: false,
   status: "unfullfilled",
   userLoading: false,
+  props:null
 };
 
 const authSlice = createSlice({
@@ -35,7 +36,9 @@ const authSlice = createSlice({
   initialState,
   reducers: {
     setUser: (state, action) => {
-      state.user = action.payload;
+      const {user, props}=action.payload
+      state.user = user;
+      state.props = props;
       state.status = "success";
       localStorage.setItem("drafter-auth", JSON.stringify(action.payload));
     },

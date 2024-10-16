@@ -1,10 +1,40 @@
-import React from "react";
+import React, {useEffect} from "react";
 import Footer from "../../components/ui/Footer";
 import HomeNav from "../../components/Navbar/HomeNav";
 import HeroPage from "../../components/ui/HeroPage";
 import aiIcon from "../../assets/icons/back.gif";
+import { useDispatch } from "react-redux";
+import  { setUser } from "../../features/authSlice"
+import { LEGAL_GPT_ENDPOINT } from "../../utils/utils";
 
 const Hero = () => {
+  const dispatch =useDispatch()
+  useEffect(() => {
+    const handleMessage = (event) => {
+      console.log("hi")
+      // Ensure the message is from the expected origin
+      if (event.origin === LEGAL_GPT_ENDPOINT) {
+        if (event.data.msg === 'set-localstorage') {
+          // Set the localStorage data
+          const { token, user } = event.data.data;
+          console.log("hello")  
+          localStorage.setItem(token, user);
+          dispatch(setUser(user))
+          
+          // localStorage.setItem('username', user);
+          console.log('LocalStorage set:', { token, user });
+        }
+      }
+    };
+
+    // Add the message event listener
+    window.addEventListener("message", handleMessage, false);
+
+    // Clean up the event listener on component unmount
+    return () => {
+      window.removeEventListener("message", handleMessage, false);
+    };
+  }, []);
   return (
     <div className="flex flex-col justify-center items-center w-full h-screen p-2 relative">
       <div

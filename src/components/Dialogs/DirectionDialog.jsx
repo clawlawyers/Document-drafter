@@ -109,19 +109,19 @@ const DirectionDialog = () => {
         <div className="flex flex-row gap-3  text-xs text-nowrap ">
           <button
             className="rounded border-[1px] w-fit p-2 hover:bg-hover-gradient hover:text-black hover:border-0 py-1"
-            onClick={() => navigate(`/Snippets/Summary/${index}`)} // Use navigate instead of <a>
+            onClick={() => navigate(`/Snippets/Summary/${paramsId}`)} // Use navigate instead of <a>
           >
             Summary
           </button>
           <button
             className="rounded border-[1px] w-fit p-2 hover:bg-hover-gradient hover:text-black hover:border-0 py-1"
-            onClick={() => navigate(`/Snippets/Favour/${index}`)} // Use navigate instead of <a>
+            onClick={() => navigate(`/Snippets/Favour/${paramsId}`)} // Use navigate instead of <a>
           >
             In whose favour
           </button>
           <button
             className="rounded border-[1px] w-fit p-2 hover:bg-hover-gradient hover:text-black hover:border-0 py-1"
-            onClick={() => navigate(`/Snippets/Neutral/${index}`)} // Use navigate instead of <a>
+            onClick={() => navigate(`/Snippets/Neutral/${paramsId}`)} // Use navigate instead of <a>
           >
             How to make Neutral
           </button>

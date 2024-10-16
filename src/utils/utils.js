@@ -2,6 +2,10 @@ export const NODE_API_ENDPOINT =
   process.env.NODE_ENV === "production"
     ? "https://claw-backend.onrender.com/api/v1"
     : "http://localhost:8000/api/v1";
+export const LEGAL_GPT_ENDPOINT =
+  process.env.NODE_ENV === "production"
+    ? "https://clawlaw-dev.netlify.app/"
+    : "http://localhost:4000";
 
 export function formatAgreementText(text) {
   return (

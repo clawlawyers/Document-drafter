@@ -9,6 +9,7 @@ import { NODE_API_ENDPOINT } from "../../utils/utils";
 import { breakout } from "../../actions/createDoc";
 import { setBreakoutData } from "../../features/breakoutSlice";
 import { TextField } from "@mui/material";
+import CircularProgress from '@mui/material/CircularProgress';
 
 const EditSidebar = () => {
   const dispatch = useDispatch();
@@ -23,6 +24,8 @@ const EditSidebar = () => {
   const [showClauseTextbox, setShowClauseTextbox] = useState(false);
 
   const [toggleTextbox, setToggleTextbox] = useState(false);
+  const [circularProgressLoading, setcircularProgressLoading] = useState(false);
+  const [progressValue, setprogressValue] = useState(0);
 
   const onQueryChange = (e) => {
     setPromptQuery(e.target.value);
@@ -36,7 +39,30 @@ const EditSidebar = () => {
     e.preventDefault();
     setQueryLoading(true);
     try {
-      const res = await getAnswer(doc_id, promptQuery);
+      setcircularProgressLoading(true)
+      const res=await getAnswer(doc_id, promptQuery)
+      //  getAnswer(doc_id, promptQuery).then( (res)=>{
+        
+      // console.log(res);
+      // const doc = res.data.data.fetchedData.updated_document;
+      // console.log(JSON.stringify(doc));
+      // dispatch(setUploadDocText(JSON.stringify(doc)));
+      // // setQueryLoading(false);
+      // setPromptQuery("");
+      // setShowQueryTextbox(false);
+
+      // const res2 = await breakout(doc_id);
+      // console.log(res2.data);
+      // dispatch(setBreakoutData(res2.data));
+      // await axios.post(`${NODE_API_ENDPOINT}/ai-drafter/generate_db`, {
+      //   doc_id: doc_id,
+      // });
+      // });
+      // while(progressValue<100){
+        
+      //   setprogressValue(progressValue+1)
+      // }
+  
       console.log(res);
       const doc = res.data.data.fetchedData.updated_document;
       console.log(JSON.stringify(doc));
@@ -100,9 +126,11 @@ const EditSidebar = () => {
               <button
                 className="px-5 py-1 border border-white rounded"
                 onClick={handleQuerySubmit}
+                disabled={queryLoading}
               >
-                {/* Proceed */}
                 {queryLoading ? "Loading..." : "Proceed"}
+                {/* Proceed */}
+                {/* {queryLoading ? (circularProgressLoading ? <CircularProgress variant="determinate" value={progressValue} />:"Loading...") : "Proceed"} */}
               </button>
               <button
                 className="px-5 py-1 border border-white rounded"

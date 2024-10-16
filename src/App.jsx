@@ -98,6 +98,8 @@ import { CircularProgress, Modal } from "@mui/material";
 // ]);
 
 function AuthGuard() {
+  console.log("hi")
+
   const navigate = useNavigate();
   const currentUser = useSelector((state) => state.auth.user);
   const currentStatus = useSelector((state) => state.auth.status);
@@ -122,6 +124,7 @@ function AuthGuard() {
     // Dispatch the action to retrieve drafter auth
     store.dispatch(retrieveDrafterAuth());
   }, []);
+ 
 
   return (
     <>
