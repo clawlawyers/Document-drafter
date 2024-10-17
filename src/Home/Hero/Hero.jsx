@@ -6,6 +6,7 @@ import aiIcon from "../../assets/icons/back.gif";
 import { useDispatch } from "react-redux";
 import  { setUser } from "../../features/authSlice"
 import { LEGAL_GPT_ENDPOINT } from "../../utils/utils";
+import { Link } from "react-router-dom";
 
 const Hero = () => {
   const dispatch =useDispatch()
@@ -49,7 +50,13 @@ const Hero = () => {
         className="flex flex-col h-screen w-full  z-20 gap-3 bg-black bg-opacity-20 rounded-lg p-4"
         style={{ boxShadow: "0 0 5px white, 0 0 10px white, 0 0 5px white" }}
       >
-        <div className="h-[10%] w-full ">
+        <div className="h-[10%] flex justify-between w-full ">
+        <a href="http://clawlaw-dev.netlify.app/"
+        className="px-5 py-2 border-customBlue rounded-full border-[2px]"
+      
+      >
+        CLAW HOME
+      </a>
           <HomeNav />
         </div>
         <div className="flex flex-col justify-between w-full h-full  ">
