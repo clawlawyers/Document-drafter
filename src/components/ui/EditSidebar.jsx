@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useCallback } from "react";
 import { getAnswer } from "../../actions/UploadAction";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -10,6 +10,10 @@ import { breakout } from "../../actions/createDoc";
 import { setBreakoutData } from "../../features/breakoutSlice";
 import { TextField } from "@mui/material";
 import CircularProgress from '@mui/material/CircularProgress';
+
+// import CircularProgress from '@mui/joy/CircularProgress';
+
+
 
 const EditSidebar = () => {
   const dispatch = useDispatch();
@@ -34,35 +38,38 @@ const EditSidebar = () => {
   const onClauseChange = (e) => {
     setClauseQuery(e.target.value);
   };
+  const simulateUpload = useCallback(() => {
+    let progress = 0;
+    const interval = setInterval(() => {
+      progress += 1;
+      setprogressValue(progress);
+
+      if (progress >= 100) {
+        clearInterval(interval);
+        setcircularProgressLoading(false)
+        // setUploadStatus("complete");
+        // dispatch(setFileBlob(true));
+        // setUploadStatus("analyzing");
+      }
+    }, 500);
+  },);
 
   const handleQuerySubmit = async (e) => {
     e.preventDefault();
     setQueryLoading(true);
     try {
       setcircularProgressLoading(true)
-      const res=await getAnswer(doc_id, promptQuery)
-      //  getAnswer(doc_id, promptQuery).then( (res)=>{
-        
-      // console.log(res);
-      // const doc = res.data.data.fetchedData.updated_document;
-      // console.log(JSON.stringify(doc));
-      // dispatch(setUploadDocText(JSON.stringify(doc)));
-      // // setQueryLoading(false);
-      // setPromptQuery("");
-      // setShowQueryTextbox(false);
+      // const res= getAnswer(doc_id, promptQuery)
+     axios.post(
+        `${NODE_API_ENDPOINT}/ai-drafter/edit_document`,
+        {
+          doc_id: doc_id,
+          edit_query: promptQuery,
+        }
+      ).then(async(res)=>{
 
-      // const res2 = await breakout(doc_id);
-      // console.log(res2.data);
-      // dispatch(setBreakoutData(res2.data));
-      // await axios.post(`${NODE_API_ENDPOINT}/ai-drafter/generate_db`, {
-      //   doc_id: doc_id,
-      // });
-      // });
-      // while(progressValue<100){
+     
         
-      //   setprogressValue(progressValue+1)
-      // }
-  
       console.log(res);
       const doc = res.data.data.fetchedData.updated_document;
       console.log(JSON.stringify(doc));
@@ -77,6 +84,27 @@ const EditSidebar = () => {
       await axios.post(`${NODE_API_ENDPOINT}/ai-drafter/generate_db`, {
         doc_id: doc_id,
       });
+      });
+      // while(progressValue<100){
+        
+      //   setprogressValue(progressValue+1)
+      // }
+      simulateUpload()
+  
+      // console.log(res);
+      // const doc = res.data.data.fetchedData.updated_document;
+      // console.log(JSON.stringify(doc));
+      // dispatch(setUploadDocText(JSON.stringify(doc)));
+      // setQueryLoading(false);
+      // setPromptQuery("");
+      // setShowQueryTextbox(false);
+
+      // const res2 = await breakout(doc_id);
+      // console.log(res2.data);
+      // dispatch(setBreakoutData(res2.data));
+      // await axios.post(`${NODE_API_ENDPOINT}/ai-drafter/generate_db`, {
+      //   doc_id: doc_id,
+      // });
     } catch (error) {
       console.error("Error fetching answer:", error);
       setQueryLoading(false);
@@ -128,9 +156,9 @@ const EditSidebar = () => {
                 onClick={handleQuerySubmit}
                 disabled={queryLoading}
               >
-                {queryLoading ? "Loading..." : "Proceed"}
+                {/* {queryLoading ? "Loading..." : "Proceed"} */}
                 {/* Proceed */}
-                {/* {queryLoading ? (circularProgressLoading ? <CircularProgress variant="determinate" value={progressValue} />:"Loading...") : "Proceed"} */}
+                {queryLoading ? (circularProgressLoading ? <CircularProgress variant="determinate" value={progressValue} />:<CircularProgress />) : "Proceed"}
               </button>
               <button
                 className="px-5 py-1 border border-white rounded"

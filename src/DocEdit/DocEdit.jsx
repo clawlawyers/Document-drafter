@@ -76,7 +76,7 @@ const DocEdit = ({ onSave }) => {
   };
 
   const breakoutFunc = async () => {
-    setLoading(true);
+    // setLoading(true);  
     setsavebutton(false);
     try {
       const res = await breakout(doc_id);
