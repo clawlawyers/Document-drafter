@@ -52,7 +52,8 @@ const DocEdit = ({ onSave }) => {
       .replaceAll("\\", "")
       .replaceAll('"', "")
       .replaceAll(":", " :")
-      .replaceAll("#", "");
+      .replaceAll("#", "")
+      .replaceAll(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
     setText(data);
   }, [ediText]);
 

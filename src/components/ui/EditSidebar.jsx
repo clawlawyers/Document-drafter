@@ -31,6 +31,10 @@ const EditSidebar = () => {
   const [circularProgressLoading, setcircularProgressLoading] = useState(false);
   const [progressValue, setprogressValue] = useState(0);
 
+  // const procedButtonStyle = {
+
+  // }
+
   const onQueryChange = (e) => {
     setPromptQuery(e.target.value);
   };
@@ -151,15 +155,32 @@ const EditSidebar = () => {
             <h1 className="text-2xl m-0 text-[#00A9AB]">Query</h1>
             <p className="flex-1 m-0 h-full overflow-auto">{promptQuery}</p>
             <div className="flex gap-3">
+              {
+                queryLoading ?
+            <button
+            className="px-5 py-1 send-button border border-white rounded"
+            onClick={handleQuerySubmit}
+            disabled={queryLoading}
+            
+            >Proceed
+                </button>:
               <button
-                className="px-5 py-1 border border-white rounded"
-                onClick={handleQuerySubmit}
-                disabled={queryLoading}
+              className="px-5 py-1  border border-white rounded"
+              onClick={handleQuerySubmit}
+              disabled={queryLoading}
+              
               >
+                 Proceed
                 {/* {queryLoading ? "Loading..." : "Proceed"} */}
                 {/* Proceed */}
-                {queryLoading ? (circularProgressLoading ? <CircularProgress variant="determinate" value={progressValue} />:<CircularProgress />) : "Proceed"}
+
+                {/* {queryLoading ? (circularProgressLoading ? (
+                  <div className=" send-button relative">
+                  
+                  </div>
+                  ) :<CircularProgress />) : "Proceed"} */}
               </button>
+                  }
               <button
                 className="px-5 py-1 border border-white rounded"
                 onClick={() => {

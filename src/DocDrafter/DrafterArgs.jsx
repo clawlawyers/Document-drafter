@@ -83,7 +83,12 @@ const DrafterArgs = () => {
         console.error("Failed to fetch document ID:", error);
       } finally {
         if (path === "docType") {
-          driverObj.drive();
+          if(localStorage.getItem("tut")==null){
+
+            driverObj.drive();
+            localStorage.setItem("tut",false)
+          }
+
         }
       }
     };

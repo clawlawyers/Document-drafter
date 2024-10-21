@@ -12,11 +12,11 @@ const NavbarLeft = () => {
 
   return (
     <div className="flex flex-row justify-end items-start gap-2">
-      {isSnippetPath && (
-        <div className="cursor-pointer" onClick={() => navigate("/Snippets")}>
+     
+        <div className="cursor-pointer" onClick={() => navigate(-1)}>
           <img src={Back} alt="back" />
         </div>
-      )}
+      
       <HomeIcon
         className="cursor-pointer hover:scale-105 duration-200 "
         onClick={() => navigate("/")}

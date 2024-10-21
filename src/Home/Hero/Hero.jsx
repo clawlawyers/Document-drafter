@@ -6,10 +6,13 @@ import aiIcon from "../../assets/icons/back.gif";
 import { useDispatch } from "react-redux";
 import  { setUser } from "../../features/authSlice"
 import { LEGAL_GPT_ENDPOINT } from "../../utils/utils";
-import { Link } from "react-router-dom";
+import { Link , useNavigate, useLocation  } from "react-router-dom";
 
 const Hero = () => {
   const dispatch =useDispatch()
+  const navigation = useNavigate();
+
+
   useEffect(() => {
     const handleMessage = (event) => {
       console.log("hi")
@@ -51,16 +54,30 @@ const Hero = () => {
         style={{ boxShadow: "0 0 5px white, 0 0 10px white, 0 0 5px white" }}
       >
         <div className="h-[10%] flex justify-between w-full ">
-        <a href="http://clawlaw-dev.netlify.app/"
+        <div className={` flex flex-row justify-end gap-3`}>
+       
+      {/* <a
+      href="https://clawlaw-dev.netlify.app/"
         className="px-5 py-2 border-customBlue rounded-full border-[2px]"
-      
+        onClick={() => navigation("/")}
       >
         CLAW HOME
-      </a>
+      </a> */}
+      {/* <button
+        className="px-5 py-2 border-customBlue rounded-full border-[2px]"
+        onClick={() => navigation("/manageDoc")}
+      >
+        My Files
+      </button> */}
+      {/* <UserModal /> */}
+    </div>
           <HomeNav />
         </div>
         <div className="flex flex-col justify-between w-full h-full  ">
           <HeroPage></HeroPage>
+           <div className="w-full max-w-md">
+       
+      </div>
 
           <Footer />
         </div>

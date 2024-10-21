@@ -28,6 +28,31 @@
   color: #61dafb;
 }
 
+.send-button {
+animation-name: mymove ;
+animation-duration: 100s ;
+background: linear-gradient(to right, lightblue, transparent);
+  background-size: 1% 100%;
+  background-repeat: no-repeat;
+}
+/* 
+.send-button::before {
+  border-radius: 35%;
+  background-color: red;
+}
+.send-button::after {
+  border-radius: 35%;
+  background-color: red;
+} */
+@keyframes mymove {
+  0% {
+    background-size: 1% 100%;
+  }
+  100% {
+    background-size: 100% 100%;
+  }
+}
+
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);

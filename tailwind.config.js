@@ -3,6 +3,15 @@ export default {
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
     extend: {
+      keyframes: {
+        'progress-wave': {
+          '0%': { transform: 'translateX(-100%)' },
+          '100%': { transform: 'translateX(0)' },
+        },
+      },
+      animation: {
+        'progress-wave': 'progress-wave 2s ease-in-out infinite',
+      },
       backgroundImage: {
         "custom-gradient": "linear-gradient(180deg, #0E1118 0%, #1D2330 100%)",
         "card-gradient":
