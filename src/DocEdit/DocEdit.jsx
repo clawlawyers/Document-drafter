@@ -42,18 +42,23 @@ const DocEdit = ({ onSave }) => {
   let count = 0;
   useEffect(() => {
     // console.log(ediText);
+ if(ediText!=null){
 
-    var data = ediText
-      .replaceAll("\\\\n\\\\n", "<br/>")
-      .replaceAll("\\\\n", "<br/>")
-      .replaceAll("\\n\\n", "<br/>")
-      .replaceAll("\\n", "<br/>")
-      .replaceAll("\n", "<br/>")
-      .replaceAll("\\", "")
-      .replaceAll('"', "")
-      .replaceAll(":", " :")
-      .replaceAll("#", "")
-      .replaceAll(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+   var data = ediText
+   .replaceAll("\\\\n\\\\n", "<br/>")
+   .replaceAll("\\\\n", "<br/>")
+   .replaceAll("\\n\\n", "<br/>")
+   .replaceAll("\\n", "<br/>")
+   .replaceAll("\n", "<br/>")
+   .replaceAll("\\", "")
+   .replaceAll('"', "")
+   .replaceAll(":", " :")
+   .replaceAll("#", "")
+   .replaceAll(/\*\*(.*?)\*\*/g, '<strong>$1</strong>').replaceAll("u20b9", "₹")
+   .replaceAll(/\*([^*]+)\*/g, '<strong>$1</strong>')
+   .replace(/\\u20B9/g, "₹")
+   .replace(/\u20B9/g, "₹");
+  }
     setText(data);
   }, [ediText]);
 
@@ -172,9 +177,7 @@ const DocEdit = ({ onSave }) => {
                   // rehypePlugins={[rehypeRaw]}
                   dangerouslySetInnerHTML={{
                     __html: text
-                      .replaceAll("u20b9", "₹")
-                      .replace(/\\u20B9/g, "₹")
-                      .replace(/\u20B9/g, "₹"),
+                     
                     // .replace(/\\n/, "<br></br>")
                     // .replace(/\\n\\n/, "<br></br><br></br>"),
                     // .replace(/\\/g, "") ,
