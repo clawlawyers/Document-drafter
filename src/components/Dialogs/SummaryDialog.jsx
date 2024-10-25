@@ -14,6 +14,7 @@ const SummaryDialog = () => {
   console.log(paramsId);
   // console.log(location.pathname);
   const doc_id = useSelector((state) => state.document.docId);
+  const currentUser = useSelector((state) => state.auth.user);
   const breakoutData = useSelector((state) => state.breakout.breakoutData);
   const headpoints = breakoutData.data.fetchedData.headpoints;
   const details = breakoutData.data.fetchedData.details;
@@ -50,7 +51,12 @@ const SummaryDialog = () => {
       {
         doc_id,
         headpoint_to_find: headpoint,
-      }
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${currentUser.jwt}`,
+          "Content-Type": "application/json",
+        },}
     );
     console.log(res);
     const temp = res.data.data.fetchedData.summary;

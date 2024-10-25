@@ -35,6 +35,13 @@ background: linear-gradient(to right, lightblue, transparent);
   background-size: 1% 100%;
   background-repeat: no-repeat;
 }
+.genarate-button {
+  animation-name: mymove ;
+  animation-duration: 30s ;
+  background: linear-gradient(to right, lightblue, transparent);
+    background-size: 1% 100%;
+    background-repeat: no-repeat;
+  }
 /* 
 .send-button::before {
   border-radius: 35%;

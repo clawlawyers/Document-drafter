@@ -1,14 +1,19 @@
 import axios from "axios";
 import { NODE_API_ENDPOINT } from "../utils/utils";
 
-export const getRequirements = async (doc_id, type) => {
+export const getRequirements = async (doc_id, type, jwt) => {
   try {
     const res = await axios.post(
       `${NODE_API_ENDPOINT}/ai-drafter/get_requirements`,
       {
         doc_id,
         type,
-      }
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${jwt}`,
+          "Content-Type": "application/json",
+        },}
     );
     return res;
   } catch (e) {
@@ -16,7 +21,7 @@ export const getRequirements = async (doc_id, type) => {
   }
 };
 
-export const uploadPre = async (doc_id, req) => {
+export const uploadPre = async (doc_id, req, jwt) => {
   console.log(req);
   try {
     const res = await axios.post(
@@ -26,14 +31,19 @@ export const uploadPre = async (doc_id, req) => {
           doc_id: doc_id,
           essential_requirements: req,
         },
-      }
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${jwt}`,
+          "Content-Type": "application/json",
+        },}
     );
     return res;
   } catch (e) {
     throw new Error(e.value);
   }
 };
-export const uploadOptional = async (doc_id, req) => {
+export const uploadOptional = async (doc_id, req, jwt) => {
   try {
     const res = axios.post(
       `${NODE_API_ENDPOINT}/ai-drafter/upload_optional_parameters`,
@@ -42,7 +52,12 @@ export const uploadOptional = async (doc_id, req) => {
           doc_id: doc_id,
           optional_requirements: req,
         },
-      }
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${jwt}`,
+          "Content-Type": "application/json",
+        },}
     );
     return res;
   } catch (e) {
@@ -50,13 +65,18 @@ export const uploadOptional = async (doc_id, req) => {
   }
 };
 
-export const generateDocument = async (doc_id) => {
+export const generateDocument = async (doc_id , jwt) => {
   try {
     const res = await axios.post(
       `${NODE_API_ENDPOINT}/ai-drafter/generate_document`,
       {
         doc_id,
-      }
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${jwt}`,
+          "Content-Type": "application/json",
+        },}
     );
     return res;
   } catch (e) {
@@ -64,13 +84,18 @@ export const generateDocument = async (doc_id) => {
   }
 };
 
-export const generateDocumentbyPrompt = async (doc_id) => {
+export const generateDocumentbyPrompt = async (doc_id, jwt) => {
   try {
     const res = await axios.post(
       `${NODE_API_ENDPOINT}/ai-drafter/get_document_prompt_requirements`,
       {
         doc_id,
-      }
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${jwt}`,
+          "Content-Type": "application/json",
+        },}
     );
     return res;
   } catch (e) {

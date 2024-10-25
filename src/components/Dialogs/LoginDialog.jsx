@@ -31,6 +31,8 @@ const LoginDialog = ({ setLoginPopup, setIsOpen }) => {
 
   const navigate = useNavigate();
 
+  const currentUser = useSelector((state)=>state.auth.user)
+
   // Function to clear children of an element
   function clearRecaptchaChildren() {
     const recaptchaElement = document.getElementById("recaptcha");
@@ -55,8 +57,10 @@ const LoginDialog = ({ setLoginPopup, setIsOpen }) => {
       {
         method: "POST",
         headers: {
+          Authorization: `Bearer ${currentUser.jwt}`,
           "Content-Type": "application/json",
         },
+     
         body: JSON.stringify({ phoneNumber }),
       }
     );

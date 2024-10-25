@@ -53,6 +53,7 @@ const DrafterArgs = () => {
   const docId = useSelector((state) => state.document.docId);
   const docuText = useSelector((state) => state.document.uploadDocText);
   const isThisByprompt = useSelector((state) => state.document.IsThisByprompt);
+  const currentUser = useSelector((state)=>state.auth.user)
   const [uploadDocText, setDocText] = useState("");
   const [fallbackText, setFallbackText] = useState();
   const [EssentialReq, setEssentialReq] = useState([]);
@@ -65,7 +66,7 @@ const DrafterArgs = () => {
 
     const fetchDocId = async () => {
       try {
-        const data = await createDoc().then((data) => {
+        const data = await createDoc(currentUser.jwt).then((data) => {
           const doc_id = data.data.data.fetchedData.doc_id;
           // console.log(doc_id);
           // console.log(data);
@@ -105,7 +106,7 @@ const DrafterArgs = () => {
 
     try {
       setIsLoading(true);
-      const data = await getRequirements(doc_id, prompt);
+      const data = await getRequirements(doc_id, prompt, currentUser.jwt);
       const res = data.data.data.fetchedData;
 
       console.log(res);
@@ -138,7 +139,7 @@ const DrafterArgs = () => {
   const fetchData = async (doc_id) => {
     setIsLoading(true);
     try {
-      await getDocFromPrompt(doc_id, prompt).then((data) => {
+      await getDocFromPrompt(doc_id, prompt , currentUser.jwt).then((data) => {
         const docText = data.data.data.fetchedData.document;
         const processedText = docText;
         setDocText(trimQuotes(processedText));
@@ -229,15 +230,15 @@ const DrafterArgs = () => {
     const finalEssentialString = essentialJsonString;
     const finalOptionalString = optionalJsonString;
     try {
-      const res1 = await uploadPre(docId, finalEssentialString);
+      const res1 = await uploadPre(docId, finalEssentialString, currentUser.jwt);
       console.log(res1);
-      const res2 = await uploadOptional(docId, finalOptionalString);
+      const res2 = await uploadOptional(docId, finalOptionalString, currentUser.jwt);
       console.log(res2);
       let res;
       if (isThisByprompt) {
-        res = await generateDocumentbyPrompt(docId);
+        res = await generateDocumentbyPrompt(docId , currentUser.jwt);
       } else {
-        res = await generateDocument(docId);
+        res = await generateDocument(docId, currentUser.jwt);
       }
       dispatch(setIsGenerateDocCalledTrue());
       console.log(res.data.data.fetchedData.document);
@@ -439,18 +440,32 @@ const DrafterArgs = () => {
             >
               {path !== "docType" ? "Re-enter Prompt" : "Re-select doctype"}
             </button>
+            {reqLoading ?
             <button
-              id="Generate"
+            id="Generate"
+            onClick={handleGenerate}
+            disabled={loading || reqLoading}
+            className={`${
+              loading || reqLoading
+              ? " pointer-events-none genarate-button cursor-not-allowed"
+              : ""
+              }border-white border-2 transition ease-in-out duration-1000  hover:scale-110  bg-btn-gradient p-2  rounded-md text-sm`}
+              >
+              {reqLoading ? "Generating ..." : "Generate Document"}
+            </button>:
+            <button
+            id="Generate"
               onClick={handleGenerate}
               disabled={loading || reqLoading}
               className={`${
                 loading || reqLoading
-                  ? "opacity-75 pointer-events-none cursor-not-allowed"
-                  : ""
+                ? "opacity-75 pointer-events-none cursor-not-allowed"
+                : ""
               }border-white border-2 transition ease-in-out duration-1000  hover:scale-110  bg-btn-gradient p-2  rounded-md text-sm`}
-            >
+              >
               {reqLoading ? "Generating ..." : "Generate Document"}
             </button>
+            }
           </div>
         </div>
       </div>

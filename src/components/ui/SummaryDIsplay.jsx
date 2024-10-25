@@ -13,11 +13,12 @@ const SummaryDisplay = () => {
   console.log(text);
   const [loading, setLoading] = useState(false);
   const doc_id = useSelector((state) => state.document.docId);
+  const currentUser = useSelector((state)=>state.auth.user)
 
   const fetchSummary = async () => {
     setLoading(true);
     try {
-      const res = await getSummary(doc_id);
+      const res = await getSummary(doc_id, currentUser.jwt);
       let temp = String.raw`${res.data.data.fetchedData.summary}`;
 
       // console.log(temp);

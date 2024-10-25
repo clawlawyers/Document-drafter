@@ -23,6 +23,7 @@ const Snippets = () => {
   const [textBoxData, setTextBoxData] = useState([]);
   const [loading, setLoading] = useState(false);
   const chatContainerRef = useRef(null);
+  const currentUser = useSelector((state) => state.auth.user);
 
   // useEffect(() => {
   //   var localnewData = JSON.parse(localStorage.getItem("newdata"));
@@ -51,9 +52,11 @@ const Snippets = () => {
       method: "post",
       maxBodyLength: Infinity,
       url: `${NODE_API_ENDPOINT}/ai-drafter/ask_question`,
-      headers: {
-        "Content-Type": "application/json",
-      },
+      
+        headers: {
+          Authorization: `Bearer ${currentUser.jwt}`,
+          "Content-Type": "application/json",
+        },
       data: data,
     };
     var newdata = textBoxData;

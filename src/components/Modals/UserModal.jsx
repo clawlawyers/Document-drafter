@@ -44,7 +44,7 @@ const UserModal = () => {
             src="/broken-image.jpg"
             className="z-20"
           >
-            {currentUser?.name[0].toUpperCase()}
+            {/* {currentUser?.name[0].toUpperCase()} */}
           </Avatar>
         </div>
         {showDetails && (

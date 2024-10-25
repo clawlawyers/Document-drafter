@@ -20,6 +20,7 @@ const UploadSummary = () => {
   const [loading, setLoading] = useState(false);
   const [downloading, setdownLoading] = useState(true);
   const doc_id = useSelector((state) => state.document.docId);
+  const currentUser = useSelector((state)=> state.auth.user)
 
   let navigate = useNavigate();
   let Sumarypath = localStorage.getItem("SummaryPath");
@@ -66,7 +67,7 @@ const UploadSummary = () => {
   const fetchSummary = async () => {
     setLoading(true);
     try {
-      const res = await getSummary(doc_id);
+      const res = await getSummary(doc_id , currentUser.jwt);
       // console.log(res);
       let temp = String.raw`${res.data.data.fetchedData.summary}`;
 
@@ -95,6 +96,7 @@ const UploadSummary = () => {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
+            Authorization: `Bearer ${currentUser.jwt}`,
           },
           body: JSON.stringify({ document: text }),
         }

@@ -8,7 +8,7 @@ import CustomDropdown from "../components/ui/CustomSelect";
 // import { options } from "./Options";
 import { setPrompt } from "../features/PromptSlice";
 import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch , useSelector } from "react-redux";
 import { driver } from "driver.js";
 import "driver.js/dist/driver.css";
 import { steps } from "../utils/tour";
@@ -26,6 +26,7 @@ const DocType = () => {
 
   const [optionTypes, setOptionTypes] = useState({});
   const [subOption, setSubOptions] = useState([]);
+  const currentUser = useSelector((state)=>state.auth.user)
 
   useEffect(() => {
     if (selectedValue !== "") {
@@ -48,6 +49,7 @@ const DocType = () => {
     localStorage.setItem("from", "docType");
 
     dispatch(setPrompt(selectedSubType.replace(/\s*\(.*?\)\s*/g, "")));
+    
 
     navigate("/Drafter/DrafterArgs");
     setLoading(false);
@@ -63,6 +65,8 @@ const DocType = () => {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${currentUser.jwt}`,
+
       },
     });
 

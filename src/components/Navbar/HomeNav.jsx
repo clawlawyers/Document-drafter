@@ -15,10 +15,10 @@ const HomeNav = ({ className }) => {
   }
 
   return (
-    <div className={`${className} flex flex-row justify-end gap-3`}>
+    <div className={`${className} flex items-center flex-row justify-end gap-3`}>
       <a
       href="https://clawlaw-dev.netlify.app/"
-        className="px-5 py-2 border-customBlue rounded-full border-[2px]"
+        className="px-5 py-2  border-customBlue rounded-full border-[2px]"
         onClick={path.pathname!="/" ?() => navigation("/"):null}
       >
         {homename}

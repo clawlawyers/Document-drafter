@@ -72,10 +72,24 @@ const DocDrafter = () => {
             /> */}
               <div className="flex gap-2">
                 <TextField
+                className="rounded"
                   fullWidth
                   id="outlined-multiline-flexible"
                   size="small"
-                  sx={{ backgroundColor: "white" }}
+                  sx={{
+                    '& .MuiOutlinedInput-root': {
+                      '& fieldset': {
+                        borderColor: 'transparent', // Remove the border color
+                      },
+                      '&:hover fieldset': {
+                        borderColor: 'transparent', // Remove border on hover
+                      },
+                      '&.Mui-focused fieldset': {
+                        borderColor: 'black', // Remove border on focus
+                      },
+                    },
+                    backgroundColor:"white"
+                  }}
                   placeholder="Type prompt to generate a new document"
                   multiline
                   maxRows={4}

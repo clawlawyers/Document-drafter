@@ -34,7 +34,8 @@ const UploadDialog = () => {
   const { fileBlob } = useSelector((state) => state.auth);
   const doc_id = useSelector((state) => state.document.docId);
   const breakoutData = useSelector((state) => state.breakout.breakoutData);
-
+  const currentUser = useSelector((state) => state.auth.user);
+ console.log(currentUser)
   const breakoutCalledRef = useRef(false); // Use ref to avoid re-render on change
 
   // Memoize breakout function to avoid unnecessary re-creation
@@ -47,11 +48,20 @@ const UploadDialog = () => {
     try {
       const res = await axios.post(`${NODE_API_ENDPOINT}/ai-drafter/breakout`, {
         doc_id: doc_id,
-      });
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${currentUser.jwt}`,
+          "Content-Type": "application/json",
+        }});
       console.log(res.data);
       await axios.post(`${NODE_API_ENDPOINT}/ai-drafter/generate_db`, {
         doc_id: doc_id,
-      });
+      },{
+        headers: {
+          Authorization: `Bearer ${currentUser.jwt}`,
+          "Content-Type": "application/json",
+        },});
       // dispatch(setGreenHeading([]));
       dispatch(setBreakoutData(res.data));
       console.log(res.data);
@@ -89,7 +99,11 @@ const UploadDialog = () => {
         try {
           const formData = new FormData();
           const response = await axios.get(
-            `${NODE_API_ENDPOINT}/ai-drafter/create_document`
+            `${NODE_API_ENDPOINT}/ai-drafter/create_document`,{
+              headers: {
+                Authorization: `Bearer ${currentUser.jwt}`,
+                "Content-Type": "application/json",
+              },}
           );
           const doc_id = response.data.data.fetchedData.doc_id;
           console.log(doc_id);
@@ -107,12 +121,12 @@ const UploadDialog = () => {
           formData.append("doc_id", doc_id);
           const res = await axios.post(
             `${NODE_API_ENDPOINT}/ai-drafter/upload_document`,
-            formData
-            // {
-            //   headers: {
-            //     "Content-Type": "multipart/form-data",
-            //   },
-            // }
+            formData ,
+            {
+              headers: {
+                Authorization: `Bearer ${currentUser.jwt}`,
+               
+              },}
           );
           const data = res.data.data.fetchedData;
           console.log(data);
@@ -270,11 +284,13 @@ const UploadDialog = () => {
                   }`}
                 >
                   <img
+                    loading="lazy"
                     className="hover:scale-110 duration-300 cursor-pointer"
                     src={option.src}
                     alt={option.alt}
                     onClick={option.onClick}
-                  />
+                     height="100"
+                  />  
                   {option.hasText && (
                     <p className={option.textClass}>{option.text}</p>
                   )}

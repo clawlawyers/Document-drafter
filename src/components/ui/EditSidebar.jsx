@@ -18,6 +18,7 @@ import CircularProgress from '@mui/material/CircularProgress';
 const EditSidebar = () => {
   const dispatch = useDispatch();
   const doc_id = useSelector((state) => state.document.docId);
+  const currentUser = useSelector((state) => state.auth.user);
 
   const [promptQuery, setPromptQuery] = useState("");
   const [queryLoading, setQueryLoading] = useState(false);
@@ -69,7 +70,12 @@ const EditSidebar = () => {
         {
           doc_id: doc_id,
           edit_query: promptQuery,
-        }
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${currentUser.jwt}`,
+            "Content-Type": "application/json",
+          },}
       ).then(async(res)=>{
 
      
@@ -82,12 +88,18 @@ const EditSidebar = () => {
       setPromptQuery("");
       setShowQueryTextbox(false);
 
-      const res2 = await breakout(doc_id);
+      const res2 = await breakout(doc_id, currentUser.jwt);
       console.log(res2.data);
       dispatch(setBreakoutData(res2.data));
       await axios.post(`${NODE_API_ENDPOINT}/ai-drafter/generate_db`, {
         doc_id: doc_id,
-      });
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${currentUser.jwt}`,
+          "Content-Type": "application/json",
+        },}
+    );
       });
       // while(progressValue<100){
         
@@ -126,7 +138,12 @@ const EditSidebar = () => {
         {
           doc_id: doc_id,
           clause_query: clauseQuery,
-        }
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${currentUser.jwt}`,
+            "Content-Type": "application/json",
+          },}
       );
       console.log(res);
       const doc = res.data.data.fetchedData.updated_document;
@@ -137,7 +154,12 @@ const EditSidebar = () => {
       dispatch(setBreakoutData(res2.data));
       await axios.post(`${NODE_API_ENDPOINT}/ai-drafter/generate_db`, {
         doc_id: doc_id,
-      });
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${currentUser.jwt}`,
+          "Content-Type": "application/json",
+        },});
     } catch (error) {
       console.error("Error fetching answer:", error);
     } finally {
@@ -231,6 +253,9 @@ const EditSidebar = () => {
       <div className="flex flex-col gap-3">
         {!toggleTextbox ? (
           <div
+          style={{
+            
+          }}
             // onSubmit={handleQuerySubmit}
             className="w-full space-x-3 flex gap-2 justify-center items-center"
           >
@@ -245,9 +270,26 @@ const EditSidebar = () => {
             /> */}
             <TextField
               fullWidth
+              className="rounded"
               id="outlined-multiline-flexible"
               size="small"
-              sx={{ backgroundColor: "white" }}
+              sx={{
+                '& .MuiOutlinedInput-root': {
+                  '& fieldset': {
+                    borderColor: 'transparent', // Remove the border color
+                  },
+                  '&:hover fieldset': {
+                    borderColor: 'transparent', // Remove border on hover
+                  },
+                  '&.Mui-focused fieldset': {
+                    borderColor: 'black',
+                     // Remove border on focus
+                  },
+                },
+                backgroundColor:"white",
+             // Thumb and track color for Firefo
+
+              }}
               // label="Multiline Placeholder"
               placeholder="Enter your Query"
               multiline

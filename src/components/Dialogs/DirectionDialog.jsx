@@ -20,6 +20,7 @@ const DirectionDialog = () => {
   let { id: paramsId } = useParams();
   const doc_id = useSelector((state) => state.document.docId);
   const breakoutData = useSelector((state) => state.breakout.breakoutData);
+  const currentUser = useSelector((state) => state.auth.user);
   const headpoints = breakoutData.data.fetchedData.headpoints;
   const details = breakoutData.data.fetchedData.details;
 
@@ -52,7 +53,12 @@ const DirectionDialog = () => {
       {
         doc_id,
         headpoint_to_find: headpoint,
-      }
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${currentUser.jwt}`,
+          "Content-Type": "application/json",
+        },}
     );
     const temp = res.data.data.fetchedData.counter_favourable;
     setData(temp);
@@ -75,6 +81,11 @@ const DirectionDialog = () => {
         data: {
           doc_id: doc_id,
         },
+        
+          headers: {
+            Authorization: `Bearer ${currentUser.jwt}`,
+            "Content-Type": "application/json",
+          }
       };
       const res = await axios.request(config);
       dispatch(setBreakoutData(res.data));

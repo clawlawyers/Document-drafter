@@ -19,6 +19,7 @@ const NeutralDialog = () => {
   let { id: paramsId } = useParams();
   const doc_id = useSelector((state) => state.document.docId);
   const breakoutData = useSelector((state) => state.breakout.breakoutData);
+  const currentUser = useSelector((state) => state.auth.user);
   const headpoints = breakoutData.data.fetchedData.headpoints;
   const details = breakoutData.data.fetchedData.details;
 
@@ -57,7 +58,11 @@ const NeutralDialog = () => {
     const res = await axios.post(`${NODE_API_ENDPOINT}/ai-drafter/neutralize`, {
       doc_id,
       headpoint_to_find: headpoint,
-    });
+    },   {
+      headers: {
+        Authorization: `Bearer ${currentUser.jwt}`,
+        "Content-Type": "application/json",
+      },});
     const temp = res.data.data.fetchedData.steps_to_make_neutral;
     setData(temp);
     setisLoading(false);
@@ -70,6 +75,10 @@ const NeutralDialog = () => {
         url: `${NODE_API_ENDPOINT}/ai-drafter/api/get_modified_doc`,
         data: {
           doc_id: doc_id,
+        },
+        headers: {
+          Authorization: `Bearer ${currentUser.jwt}`,
+          "Content-Type": "application/json",
         },
       };
       const res = await axios.request(config);

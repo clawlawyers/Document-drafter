@@ -4,7 +4,7 @@ import { NODE_API_ENDPOINT } from "../utils/utils";
 export const retrieveDrafterAuth = createAsyncThunk(
   "auth/retrieveAuth",
   async () => {
-    const storedAuth = localStorage.getItem("drafter-auth");
+    const storedAuth = localStorage.getItem("auth");
     if (storedAuth) {
       const props = await fetch(`${NODE_API_ENDPOINT}/clientAdira/getuser`, {
         method: "GET",
@@ -36,11 +36,12 @@ const authSlice = createSlice({
   initialState,
   reducers: {
     setUser: (state, action) => {
-      const {user, props}=action.payload
-      state.user = user;
-      state.props = props;
+      // console.log(action)
+      // const {user, props}=action.payload
+      state.user = action.payload;
+      // state.props = props;
       state.status = "success";
-      localStorage.setItem("drafter-auth", JSON.stringify(action.payload));
+      localStorage.setItem("auth", JSON.stringify(action.payload));
     },
     setOtpVerified: (state, action) => {
       state.isOtpVerified = action.payload;

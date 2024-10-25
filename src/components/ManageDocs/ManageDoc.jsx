@@ -27,6 +27,7 @@ const ManageDoc = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const doc_id = useSelector((state) => state.document.docId);
+  const currentUser = useSelector((state) => state.auth.user);
 
   const [anchorEl, setAnchorEl] = useState(null);
   const [openDialog, setOpenDialog] = useState(false);
@@ -77,9 +78,11 @@ const ManageDoc = () => {
         `${NODE_API_ENDPOINT}/documentDrafter/listFiles`,
         {
           method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
+          
+            headers: {
+              Authorization: `Bearer ${currentUser.jwt}`,
+              "Content-Type": "application/json",
+            },
         }
       );
       if (!response.ok) {
@@ -107,9 +110,11 @@ const ManageDoc = () => {
         `${NODE_API_ENDPOINT}/documentDrafter/renameFile`,
         {
           method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
+          
+            headers: {
+              Authorization: `Bearer ${currentUser.jwt}`,
+              "Content-Type": "application/json",
+            },
           body: JSON.stringify({
             oldFilename: oldFileName,
             newFilename: `${editName}.${reqExt}`,
@@ -141,9 +146,11 @@ const ManageDoc = () => {
         `${NODE_API_ENDPOINT}/documentDrafter/deleteFile/${deleteFileName}`,
         {
           method: "DELETE",
-          headers: {
-            "Content-Type": "application/json",
-          },
+          
+            headers: {
+              Authorization: `Bearer ${currentUser.jwt}`,
+              "Content-Type": "application/json",
+            },
         }
       );
       if (!response.ok) {
@@ -182,6 +189,11 @@ const ManageDoc = () => {
         {
           method: "POST",
           body: formData,
+          
+            headers: {
+              Authorization: `Bearer ${currentUser.jwt}`,
+              "Content-Type": "application/json",
+            }
           // headers: formData.getHeaders()
         }
       );
@@ -241,7 +253,11 @@ const ManageDoc = () => {
       const formData = new FormData();
 
       const docRes = await axios.get(
-        `${NODE_API_ENDPOINT}/ai-drafter/create_document`
+        `${NODE_API_ENDPOINT}/ai-drafter/create_document`,  {
+          headers: {
+            Authorization: `Bearer ${currentUser.jwt}`,
+            "Content-Type": "application/json",
+          },}
       );
       const doc_id = docRes.data.data.fetchedData.doc_id;
 
@@ -254,7 +270,11 @@ const ManageDoc = () => {
 
       const res = await axios.post(
         `${NODE_API_ENDPOINT}/ai-drafter/upload_document`,
-        formData
+        formData,  {
+          headers: {
+            Authorization: `Bearer ${currentUser.jwt}`,
+            "Content-Type": "application/json",
+          },}
       );
       const data = res.data.data.fetchedData;
       dispatch(setDocId(data.doc_id));
@@ -272,10 +292,18 @@ const ManageDoc = () => {
     try {
       const res = await axios.post(`${NODE_API_ENDPOINT}/ai-drafter/breakout`, {
         doc_id: doc_id,
-      });
+      },   {
+        headers: {
+          Authorization: `Bearer ${currentUser.jwt}`,
+          "Content-Type": "application/json",
+        },});
       await axios.post(`${NODE_API_ENDPOINT}/ai-drafter/generate_db`, {
         doc_id: doc_id,
-      });
+      },   {
+        headers: {
+          Authorization: `Bearer ${currentUser.jwt}`,
+          "Content-Type": "application/json",
+        },});
       dispatch(setBreakoutData(res.data));
       dispatch(setUploadDocText(res.data.data.fetchedData.document));
       setUploadStatus("");

@@ -24,13 +24,18 @@ const DocEdit = ({ onSave }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const ediText = useSelector((state) => state.document.uploadDocText);
+  
   console.log(ediText);
   const isGenerateDocCall = useSelector(
     (state) => state.document.IsGenerateDocCalled
   );
+  const currentUser = useSelector(
+    (state) => state.auth.user
+  );
   // console.log(ediText);
   const texteditable = useSelector((state) => state.document.uploadDocText);
   const doc_id = useSelector((state) => state.document.docId);
+  
   const [text, setText] = useState("");
   const [loading, setLoading] = useState(false);
   const [activeSidebar, setActiveSidebar] = useState("preview");
@@ -85,7 +90,7 @@ const DocEdit = ({ onSave }) => {
     // setLoading(true);  
     setsavebutton(false);
     try {
-      const res = await breakout(doc_id);
+      const res = await breakout(doc_id, currentUser.jwt);
 
       if ((res.status = 204)) {
         setsavebutton(true);
@@ -93,7 +98,12 @@ const DocEdit = ({ onSave }) => {
       dispatch(setBreakoutData(res.data));
       await axios.post(`${NODE_API_ENDPOINT}/ai-drafter/generate_db`, {
         doc_id: doc_id,
-      });
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${currentUser.jwt}`,
+          "Content-Type": "application/json",
+        },});
     } catch (e) {
       console.log("breakout failed", e);
     } finally {
@@ -121,9 +131,11 @@ const DocEdit = ({ onSave }) => {
         {
           // Replace with your backend URL
           method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
+          
+            headers: {
+              Authorization: `Bearer ${currentUser.jwt}`,
+              "Content-Type": "application/json",
+            },
           body: JSON.stringify({ document: sendableDoc }),
         }
       );
