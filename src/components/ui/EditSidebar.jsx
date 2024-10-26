@@ -173,14 +173,14 @@ const EditSidebar = () => {
     <main className="w-full flex flex-col justify-between rounded-md h-full">
       <div className="flex-1 h-full">
         {showQueryTextbox ? (
-          <section className="flex flex-col gap-3 w-full h-[50vh] ">
+          <section className="flex flex-col gap-3 w-full h-full ">
             <h1 className="text-2xl m-0 text-[#00A9AB]">Query</h1>
             <p className="flex-1 m-0 h-full overflow-auto">{promptQuery}</p>
             <div className="flex gap-3">
               {
                 queryLoading ?
             <button
-            className="px-5 py-1 send-button border border-white rounded"
+            className="px-5 py-1 send-button border cursor-not-allowed  border-white rounded"
             onClick={handleQuerySubmit}
             disabled={queryLoading}
             
@@ -204,11 +204,12 @@ const EditSidebar = () => {
               </button>
                   }
               <button
-                className="px-5 py-1 border border-white rounded"
+                className={`px-5 py-1 border border-white rounded ${queryLoading ? "cursor-not-allowed":""} `}
                 onClick={() => {
                   setPromptQuery("");
                   setShowQueryTextbox(false);
                 }}
+                disabled={queryLoading}
               >
                 Re-Enter Query
               </button>
@@ -248,9 +249,10 @@ const EditSidebar = () => {
               details to get better results.
             </p>
           </section>
-        )}
+        )}  
       </div>
-      <div className="flex flex-col gap-3">
+      {!showQueryTextbox ?  <div className="flex flex-col gap-3">
+        
         {!toggleTextbox ? (
           <div
           style={{
@@ -356,7 +358,7 @@ const EditSidebar = () => {
         >
           {!toggleTextbox ? "Add Clause" : "Add Query"}
         </button> */}
-      </div>
+      </div>:<div></div>}
     </main>
   );
 };
