@@ -12,11 +12,12 @@ const Hero = () => {
   const dispatch =useDispatch()
   const navigation = useNavigate();
   const currentuser = useSelector((state)=> state.auth.user)
+  console.log(LEGAL_GPT_ENDPOINT)
 
 
   useEffect(() => {
     const handleMessage = (event) => {
-      // console.log("hi")
+      console.log("hi")
       // Ensure the message is from the expected origin
       if (event.origin === LEGAL_GPT_ENDPOINT) {
         if (event.data.msg === 'set-localstorage') {
