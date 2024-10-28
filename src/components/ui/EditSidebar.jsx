@@ -170,7 +170,7 @@ const EditSidebar = () => {
   };
 
   return (
-    <main className="w-full flex flex-col justify-between rounded-md h-full">
+    <main className="w-full font-sans flex flex-col justify-between rounded-md h-full">
       <div className="flex-1 h-full">
         {showQueryTextbox ? (
           <section className="flex flex-col gap-3 w-full h-full ">
@@ -179,13 +179,13 @@ const EditSidebar = () => {
             <div className="flex gap-3">
               {
                 queryLoading ?
-            <button
-            className="px-5 py-1 send-button border cursor-not-allowed  border-white rounded"
-            onClick={handleQuerySubmit}
-            disabled={queryLoading}
-            
-            >Proceed
-                </button>:
+              <button
+              className="px-5 py-1 send-button border cursor-not-allowed  border-white rounded"
+              onClick={handleQuerySubmit}
+              disabled={queryLoading}
+              
+              >Proceed
+                  </button>:
               <button
               className="px-5 py-1  border border-white rounded"
               onClick={handleQuerySubmit}

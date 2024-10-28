@@ -3,10 +3,12 @@ import Footer from "../../components/ui/Footer";
 import HomeNav from "../../components/Navbar/HomeNav";
 import HeroPage from "../../components/ui/HeroPage";
 import aiIcon from "../../assets/icons/back.gif";
+import backgif from "../../assets/icons/backgif.gif";
 import { useDispatch, useSelector } from "react-redux";
 import  { setUser } from "../../features/authSlice"
 import { LEGAL_GPT_ENDPOINT } from "../../utils/utils";
 import { Link , useNavigate, redirect,useLocation  } from "react-router-dom";
+
 
 const Hero = () => {
   const dispatch =useDispatch()
@@ -58,7 +60,9 @@ const Hero = () => {
           background: `radial-gradient(circle at 50% 0%, #018585, transparent 45%)`,
         }}
       >
-        <img className="w-full h-full opacity-50" src={aiIcon} />
+        {/* <img className="w-full h-full opacity-50" src={aiIcon} /> */}
+        <img className="w-full h-full opacity-65" src={backgif} />
+      
       </div>
       <div
         className="flex flex-col h-screen w-full  z-20 gap-3 bg-black bg-opacity-20 rounded-lg p-4"

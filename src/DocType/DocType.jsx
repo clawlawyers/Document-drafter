@@ -15,6 +15,8 @@ import { steps } from "../utils/tour";
 import { NODE_API_ENDPOINT } from "../utils/utils";
 import { Autocomplete, TextField } from "@mui/material";
 import aiIcon from "../assets/icons/back.gif";
+import backGif from "../assets/icons/backgif.gif";
+
 
 const DocType = () => {
   let navigate = useNavigate();
@@ -89,7 +91,7 @@ const DocType = () => {
           background: `radial-gradient(circle at 50% 0%, #018585, transparent 45%)`,
         }}
       >
-        <img className="w-full h-full opacity-50" src={aiIcon} />
+        <img className="w-full h-full opacity-50" src={backGif} />
       </div>
       <section
         className="bg-black bg-opacity-20 flex flex-col justify-between items-center h-full rounded-md w-full p-4 z-20"

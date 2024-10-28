@@ -322,7 +322,7 @@ const DrafterArgs = () => {
   };
 
   return (
-    <div className="flex flex-col h-screen justify-between space-y-2 w-full p-5">
+    <div className="flex font-sans flex-col h-screen justify-between space-y-2 w-full p-5">
       <div className="flex flex-row justify-between w-full items-center">
         <NavbarRight showMenu={false} />
         <NavbarLeft />
@@ -430,13 +430,13 @@ const DrafterArgs = () => {
               </form>
             )}
           </div>
-          <div className="flex flex-row w-full  justify-between items-center">
+          <div className="flex font-sans flex-row w-full  justify-between items-center">
             <button
               onClick={() => {
                 if (path !== "docType") navigate("/Drafter");
                 else navigate("/DocType");
               }}
-              className="transition ease-in-out duration-1000  hover:scale-110  bg-btn-gradient p-2 rounded-md text-sm border-white border-2"
+              className="transition  ease-in-out duration-1000  hover:scale-110  bg-btn-gradient p-2 rounded-md text-sm border-white border-2"
             >
               {path !== "docType" ? "Re-enter Prompt" : "Re-select doctype"}
             </button>
