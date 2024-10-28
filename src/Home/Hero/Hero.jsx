@@ -19,6 +19,7 @@ const Hero = () => {
     const handleMessage = (event) => {
       console.log("hi")
       // Ensure the message is from the expected origin
+      console.log(event)
       if (event.origin === LEGAL_GPT_ENDPOINT) {
         if (event.data.msg === 'set-localstorage') {
           // Set the localStorage data
