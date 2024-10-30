@@ -20,7 +20,7 @@ const AdminLogin = () => {
         body: JSON.stringify({
           phoneNumber: phoneNumber,
           verified: true,
-          Password:pass
+        //   Password:pass
         }),
       });
       console.log(response);
