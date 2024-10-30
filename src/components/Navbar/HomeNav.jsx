@@ -1,10 +1,36 @@
 import React, { useRef, useEffect, useState } from "react";
 import UserModal from "../Modals/UserModal";
 import { useNavigate, useLocation } from "react-router-dom";
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import loginIcon from "../../assets/icons/loginIcon.gif"
+import Typography from '@mui/material/Typography';
+import Modal from '@mui/material/Modal';
+import CircularProgress from "@mui/material/CircularProgress";
+import { useSelector, useDispatch } from "react-redux";
+import toast from "react-hot-toast";
+
+
+
+
+
 
 const HomeNav = ({ className }) => {
+  const [open, setOpen] = React.useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+  
+  const [otp, setOtp] = useState("");
+  const [hasFilled, setHasFilled] = useState(false);
+  const [phoneNumber, setPhoneNumber] = useState("");
+  const [otpLoading, setOtpLoading] = useState(false);
+  const [isFirst, setIsfirst] = useState(true);
+  const dispatch = useDispatch();
+  const currentUser = useSelector((state) => state.auth.user);
+
   const navigation = useNavigate();
   const path = useLocation()
+
   console.log(path.pathname)
   var homename = ""
   if(path.pathname =="/"){
@@ -13,8 +39,21 @@ const HomeNav = ({ className }) => {
   else{
     homename="HOME"
   }
+  const style = {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    width: 800,
+    bgcolor: 'background.paper',
+    border: '2px solid #000',
+    boxShadow: 24,
+    p: 4,
+  };
+
 
   return (
+    <>
     <div className={`${className} flex items-center flex-row justify-end gap-3`}>
       <a
       href={homename !="HOME" ? "https://clawlaw-dev.netlify.app/":"/"}
@@ -33,9 +72,14 @@ const HomeNav = ({ className }) => {
 
         {homename}
 </span>
+
         </div>
       </a>
+      {/* <div  onClick={handleOpen}  className="px-5 py-2 font-sans  border-customBlue rounded-full border-[2px]">
+  LOGIN
+</div> */}
       {/* <button
+
         className="px-5 py-2 border-customBlue rounded-full border-[2px]"
         onClick={() => navigation("/manageDoc")}
       >
@@ -43,6 +87,79 @@ const HomeNav = ({ className }) => {
       </button> */}
       {/* <UserModal /> */}
     </div>
+    {/* 
+    <Modal
+    open={open}
+    onClose={handleClose}
+    aria-labelledby="modal-modal-title"
+    aria-describedby="modal-modal-description"
+  >
+    <Box sx={style}>
+      <div className="bg-customBlue bg-opacity-100 p-3 grid md:grid-cols-2 gap-4 rounded-lg border">
+        <img className="w-auto h-auto rounded-none" src={loginIcon} />
+        {true ? (
+          <form onSubmit={handleSend}  className="flex flex-col gap-3 py-5">
+            <p className="m-0 flex-none">Phone Number</p>
+            <input
+              required
+              className="px-2 py-3 rounded text-black"
+              placeholder="Enter Your Phone Number"
+              value={phoneNumber}
+              onChange={(e) => setPhoneNumber(e.target.value)}
+            />
+            <div className="flex justify-end">
+              <button
+                type="submit"
+                className="rounded px-5 bg-customBlack"
+                // style={{ background: "linear-gradient(90deg,#1D2330,#00C37B)" }}
+              >
+                {otpLoading ? (
+                  <CircularProgress size={15} color="inherit" />
+                ) : (
+                  "Send OTP"
+                )}
+              </button>
+            </div>
+          </form>
+        ) : (
+          <form className="flex flex-col gap-3 py-5">
+            <p className="m-0 flex-none">OTP</p>
+            <input
+              required
+              className="px-2 py-3 rounded text-black"
+              placeholder="Enter OTP"
+              // value={otp}
+              // onChange={(e) => setOtp(e.target.value)}
+            />
+            <div className="flex flex-col md:flex-row justify-end gap-3">
+              <button
+                // onClick={handleRetryClick}
+                // disabled={isDisabled}
+                className="bg-transparent border rounded px-5"
+              >
+                {/* {isDisabled ? `Wait ${countdown} seconds...` : "Retry"} 
+              </button>
+              <button
+                type="submit"
+                className="rounded px-5"
+                style={{ background: "linear-gradient(90deg,#1D2330,#00C37B)" }}
+              >
+                {true ? ( ""
+                  // <CircularProgress size={15} color="inherit" />
+                ) : (
+                  "Verify OTP"
+                )}
+              </button>
+            </div>
+          </form>
+        )}
+      </div>
+    </Box>
+  </Modal>
+  */}
+  </>
+    
+    
   );
 };
 

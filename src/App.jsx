@@ -29,6 +29,7 @@ import {
 } from "./features/authSlice";
 import { useSelector } from "react-redux";
 import { CircularProgress, Modal } from "@mui/material";
+import AdminLogin from "./AdminLogin/AdminLogin";
 
 // const router = createBrowserRouter([
 //   {
@@ -165,6 +166,7 @@ function App() {
         <Route path="/Drafter" element={<DocDrafter />} />
         <Route path="/Drafter/DrafterArgs" element={<DrafterArgs />} />
         <Route path="/DocType" element={<DocType />} />
+        <Route path="/AdminLogin" element={<AdminLogin />} />
       </Routes>
     </Router>
   );

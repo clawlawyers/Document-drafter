@@ -35,6 +35,14 @@ const authSlice = createSlice({
   name: "auth",
   initialState,
   reducers: {
+    login(state, action) {
+      const { ambassador, ...user } = action.payload;
+      state.user = user;
+      state.props = { ambassador };
+      state.autologout = false;
+      localStorage.setItem("auth", JSON.stringify(user));
+      return;
+    },
     setUser: (state, action) => {
       // console.log(action)
       // const {user, props}=action.payload
@@ -83,6 +91,7 @@ export const {
   setFileBlob,
   setLoadingTrue,
   setLoadingFalse,
+  login
 } = authSlice.actions;
 
 export default authSlice.reducer;
