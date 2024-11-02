@@ -1,4 +1,4 @@
-import React, {useEffect} from "react";
+import React, {useEffect, useState} from "react";
 import Footer from "../../components/ui/Footer";
 import HomeNav from "../../components/Navbar/HomeNav";
 import HeroPage from "../../components/ui/HeroPage";
@@ -7,49 +7,75 @@ import backgif from "../../assets/icons/backgif.gif";
 import { useDispatch, useSelector } from "react-redux";
 import  { setUser } from "../../features/authSlice"
 import { LEGAL_GPT_ENDPOINT } from "../../utils/utils";
-import { Link , useNavigate, redirect,useLocation  } from "react-router-dom";
+import { Link , useNavigate, redirect,useLocation, json  } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
+
 
 
 const Hero = () => {
   const dispatch =useDispatch()
   const navigation = useNavigate();
   const currentuser = useSelector((state)=> state.auth.user)
-  console.log(LEGAL_GPT_ENDPOINT)
+  const [params,] = useSearchParams()
 
+  const user= params.get("user")
+  // if(!user){
+  //   window.location.replace("https://clawlaw.in");
+  // }
+  const[ userAuth , setUserS] = useState(user)
 
-  useEffect(() => {
-    const handleMessage = (event) => {
-      console.log("hi")
-      // Ensure the message is from the expected origin
-      console.log(event)
-      if (event.origin === LEGAL_GPT_ENDPOINT) {
-        if (event.data.msg === 'set-localstorage') {
-          // Set the localStorage data
-          console.log(event)
-          const { token, user } = event.data.data;
-          // console.log("hello")  
-          // localStorage.setItem(token, user);
+//  localStorage.setItem("auth",user)
+
+useEffect(()=>{
+  console.log(userAuth)
+  if(currentuser) return
+  if(!userAuth){
+    window.location.replace("https://clawlaw.in");
+    return
+  }
+  dispatch(setUser(JSON.parse(atob(userAuth))))
+  
+  },[])
+  // dispatch(setUser(JSON.parse(user)))
+  // setUser(user)
+          
+
+  
+ 
+
+  // useEffect(() => {
+  //   const handleMessage = (event) => {
+  //     console.log("hi")
+  //     // Ensure the message is from the expected origin
+  //     console.log(event)
+  //     if (event.origin === LEGAL_GPT_ENDPOINT) {
+  //       if (event.data.msg === 'set-localstorage') {
+  //         // Set the localStorage data
+  //         console.log(event)
+  //         const { token, user } = event.data.data;
+  //         // console.log("hello")  
+  //         // localStorage.setItem(token, user);
           
           
-          // localStorage.setItem("auth",user)
-          dispatch(setUser(JSON.parse(user)))
+  //         // localStorage.setItem("auth",user)
+  //         dispatch(setUser(JSON.parse(user)))
           
-          // localStorage.setItem('admin', user);
-          console.log('LocalStorage set:', { token, user });
-        }
-      }
-    };
+  //         // localStorage.setItem('admin', user);
+  //         console.log('LocalStorage set:', { token, user });
+  //       }
+  //     }
+  //   };
 
-    // Add the message event listener
-    window.addEventListener("message", handleMessage, false);
+  //   // Add the message event listener
+  //   window.addEventListener("message", handleMessage, false);
     
 
-    // Clean up the event listener on component unmount
+  //   // Clean up the event listener on component unmount
    
-    return () => {
-      window.removeEventListener("message", handleMessage, false);
-    };
-  }, []);
+  //   return () => {
+  //     window.removeEventListener("message", handleMessage, false);
+  //   };
+  // }, []);
   
 
   return (

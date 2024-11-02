@@ -41,6 +41,7 @@ const AdminLogin = () => {
         //   stateLocation: area ? area : data.stateLocation,
         })
       );
+     
       navigate("/")
 
  }
