@@ -20,7 +20,7 @@ const AdminLogin = () => {
         body: JSON.stringify({
           phoneNumber: phoneNumber,
           verified: true,
-        //   Password:pass
+          Password:pass
         }),
       });
       console.log(response);
@@ -58,7 +58,7 @@ const AdminLogin = () => {
       <input
               required
               className="px-2 py-3 w-[90%] rounded text-black"
-              placeholder="Enter Your Phone Number"
+              placeholder="Enter Your Password"
               value={pass}
               onChange={(e) => setpass(e.target.value)}
             />
