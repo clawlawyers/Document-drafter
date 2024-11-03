@@ -69,6 +69,7 @@ const SummaryDialog = () => {
         <p className="text-lg">
           <Markdown>{selectedHeadpoint}</Markdown>
         </p>
+        <hr />
         <p className="flex-1 h-full overflow-auto scrollbar-hide text-xs font-normal">
           <Markdown>
             {selectedDetails
