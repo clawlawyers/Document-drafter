@@ -12,7 +12,11 @@ const HeroPage = () => {
     <div className="flex flex-col gap-5 items-center justify-between w-full h-full px-4">
       <div className="flex flex-col gap-4 items-center text-center">
         <div className="font-sans font-medium text-xl">Welcome to</div>
-        <div className="font-sans w-72 font-semibold text-6xl px-6 py-2 bg-logo-gradient rounded">
+        <div className="font-sans w-72  text-6xl px-6 py-2 bg-logo-gradient rounded">
+          {/* <div  style={{
+            
+              display: "inline-block",
+            }} className="  typing-demo">Adira AI</div> */}
           <TypeAnimation
             sequence={[
               // Same substring at the start will only be typed out once, initially
@@ -23,13 +27,19 @@ const HeroPage = () => {
               // "Frontend Developer",
               // 2000,
             ]}
-            wrapper="span"
+            wrapper="div"
             speed={1}
             style={{
               fontSize: "3.5rem",
               fontWeight: "700",
               display: "inline-block",
+              
+              // borderStyle: "solid",
+              // borderWidth: "5px",
             }}
+          
+            cursor={false}
+            className="type"
             repeat={Infinity}
           />
         </div>

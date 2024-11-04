@@ -42,15 +42,46 @@ background: linear-gradient(to right, lightblue, transparent);
     background-size: 1% 100%;
     background-repeat: no-repeat;
   }
-/* 
-.send-button::before {
-  border-radius: 35%;
-  background-color: red;
-}
-.send-button::after {
-  border-radius: 35%;
-  background-color: red;
-} */
+
+.typing-demo {
+    /* width: 8ch; */
+    width: 100%;
+    animation: typing 4s infinite  alternate  , blink .5s step-end infinite alternate;
+    white-space: nowrap;
+    overflow: hidden;
+    border-right: 3px solid;
+    font-family:"Plus Jakarta Sans", serif; 
+    /* font-size: 2em; */
+    font-size: 3.5rem;
+    font-weight: 700;
+  }
+  .type::after {
+    content: '|';
+    font-weight: 100;
+    font-family: 'Times New Roman', Times, serif;
+    font-size: 4rem;
+    animation: cursor 1.1s infinite step-start;
+  }
+   
+  @keyframes cursor {
+    50% {
+      opacity: 0;
+    }
+  }
+  
+  @keyframes typing {
+    from {
+      width: 0
+    }
+  }
+      
+  @keyframes blink {
+    50% {
+      border-color: transparent
+    }
+  }
+
+
 @keyframes mymove {
   0% {
     background-size: 1% 100%;

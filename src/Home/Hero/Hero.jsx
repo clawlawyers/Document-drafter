@@ -16,7 +16,7 @@ const Hero = () => {
   const dispatch =useDispatch()
   const navigation = useNavigate();
   const currentuser = useSelector((state)=> state.auth.user)
-  const [params,] = useSearchParams()
+  const [params,setparams] = useSearchParams()
 
   const user= params.get("user")
   // if(!user){
@@ -28,12 +28,19 @@ const Hero = () => {
 
 useEffect(()=>{
   console.log(userAuth)
-  if(currentuser) return
+  if(currentuser) {
+    console.log("hi")
+    params.delete("user");
+    setparams(params)
+    return
+  }
   if(!userAuth){
     window.location.replace("https://clawlaw.in");
     return
   }
   dispatch(setUser(JSON.parse(atob(userAuth))))
+  params.delete('user');
+  setparams(params)
   
   },[])
   // dispatch(setUser(JSON.parse(user)))

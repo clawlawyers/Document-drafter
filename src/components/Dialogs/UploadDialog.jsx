@@ -10,7 +10,7 @@ import UserModal from "../Modals/UserModal";
 import ResponseDialog from "../Dialogs/EditableDialog";
 import { useDispatch, useSelector } from "react-redux";
 import { setFileBlob } from "../../features/authSlice";
-import { setDocId, setUploadDocText } from "../../features/DocumentSlice";
+import { setDocId, setUploadDocText,setIsGenerateDocCalledTrue } from "../../features/DocumentSlice";
 import axios from "axios";
 import {
   setBreakoutData,
@@ -81,7 +81,7 @@ const UploadDialog = () => {
 
   useEffect(() => {
     if (uploadStatus === "analyzing" && doc_id) {
-      breakout();
+      // breakout();
     }
   }, [uploadStatus, doc_id, breakout]);
 
@@ -132,6 +132,7 @@ const UploadDialog = () => {
           console.log(data);
           dispatch(setDocId(data.doc_id));
           dispatch(setUploadDocText(data.document));
+          dispatch(setIsGenerateDocCalledTrue())
           setResponseText(data.document);
           simulateUpload();
         } catch (error) {
@@ -164,7 +165,8 @@ const UploadDialog = () => {
         clearInterval(interval);
         setUploadStatus("complete");
         dispatch(setFileBlob(true));
-        setUploadStatus("analyzing");
+        navigate("/DocPreview");
+        // setUploadStatus("analyzing");
       }
     }, 500);
   }, [dispatch]);
@@ -187,7 +189,7 @@ const UploadDialog = () => {
 
   const uploadOptions = [
     {
-      src: GoogleDriveImage,
+      src: "https://res.cloudinary.com/dumjofgxz/image/upload/v1730705600/Google_Drive_logo_1_y947xc.svg",
       alt: "Google Drive",
       text: "Upload from Drive",
       hasText: true,
@@ -195,7 +197,7 @@ const UploadDialog = () => {
       onClick: handleGoogleDriveUpload,
     },
     {
-      src: FolderImage,
+      src: "https://res.cloudinary.com/dumjofgxz/image/upload/v1730705599/dropbox_pfc9q2.svg",
       alt: "Upload from Computer",
       text: "Upload from Computer",
       textClass: "text-neutral-800 text-center font-semibold mt-2",
@@ -284,7 +286,7 @@ const UploadDialog = () => {
                   }`}
                 >
                   <img
-                    loading="lazy"
+                  
                     className="hover:scale-110 duration-300 cursor-pointer"
                     src={option.src}
                     alt={option.alt}

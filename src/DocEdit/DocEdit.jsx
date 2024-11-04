@@ -251,7 +251,7 @@ const DocEdit = ({ onSave }) => {
                   Save
                 </button>
               ) : (
-                <div className="p-2 rounded-md px-10 border-2 border-teal-700">
+                <div className="p-2 send-button rounded-md px-10 border-2 border-teal-700">
                   Loading...
                 </div>
               )}
