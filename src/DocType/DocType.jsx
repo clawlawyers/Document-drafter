@@ -113,6 +113,7 @@ const DocType = () => {
             <Banner />
             <form onSubmit={handleSubmit} className="flex w-full gap-2">
               <Autocomplete
+              className="rounded"
                 size="small"
                 disablePortal
                 disabled={loading}
@@ -136,10 +137,22 @@ const DocType = () => {
                 }}
                 renderInput={(params) => (
                   <TextField
+                  className="rounded"
                     {...params}
                     placeholder="Select an Option"
                     // label="Select an Option"
                     sx={{
+                      '& .MuiOutlinedInput-root': {
+                      '& fieldset': {
+                        borderColor: 'transparent', // Remove the border color
+                      },
+                      '&:hover fieldset': {
+                        borderColor: 'transparent', // Remove border on hover
+                      },
+                      '&.Mui-focused fieldset': {
+                        borderColor: 'black', // Remove border on focus
+                      },
+                    },  
                       backgroundColor: "white",
                     }}
                   />
@@ -169,9 +182,21 @@ const DocType = () => {
                 }}
                 renderInput={(params) => (
                   <TextField
+                   className="rounded"
                     {...params}
                     placeholder="Select a Type"
                     sx={{
+                      '& .MuiOutlinedInput-root': {
+                      '& fieldset': {
+                        borderColor: 'transparent', // Remove the border color
+                      },
+                      '&:hover fieldset': {
+                        borderColor: 'transparent', // Remove border on hover
+                      },
+                      '&.Mui-focused fieldset': {
+                        borderColor: 'black', // Remove border on focus
+                      },
+                    },
                       backgroundColor: "white",
                     }}
                   />
