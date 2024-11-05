@@ -55,7 +55,7 @@ const UploadDialog = () => {
           "Content-Type": "application/json",
         }});
       console.log(res.data);
-      await axios.post(`${NODE_API_ENDPOINT}/ai-drafter/generate_db`, {
+       axios.post(`${NODE_API_ENDPOINT}/ai-drafter/generate_db`, {
         doc_id: doc_id,
       },{
         headers: {
@@ -81,7 +81,7 @@ const UploadDialog = () => {
 
   useEffect(() => {
     if (uploadStatus === "analyzing" && doc_id) {
-      // breakout();
+      breakout();
     }
   }, [uploadStatus, doc_id, breakout]);
 
@@ -132,7 +132,7 @@ const UploadDialog = () => {
           console.log(data);
           dispatch(setDocId(data.doc_id));
           dispatch(setUploadDocText(data.document));
-          dispatch(setIsGenerateDocCalledTrue())
+          // dispatch(setIsGenerateDocCalledTrue())
           setResponseText(data.document);
           simulateUpload();
         } catch (error) {
@@ -165,8 +165,8 @@ const UploadDialog = () => {
         clearInterval(interval);
         setUploadStatus("complete");
         dispatch(setFileBlob(true));
-        navigate("/DocPreview");
-        // setUploadStatus("analyzing");
+        // navigate("/DocPreview");
+        setUploadStatus("analyzing");
       }
     }, 500);
   }, [dispatch]);
