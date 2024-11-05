@@ -456,7 +456,7 @@ const DrafterArgs = () => {
                           htmlFor={req}
                           className="text-white text-xs"
                         >
-                          {req.replaceAll("_"," ")}
+                          {req}
                         </label>
                         <input
                           type="text"
@@ -499,7 +499,7 @@ const DrafterArgs = () => {
                           htmlFor={req}
                           className="text-white-50 text-xs"
                         >
-                          {req.replaceAll("_"," ")}
+                          {req}
                         </label>
                         <input
                           type="text"
