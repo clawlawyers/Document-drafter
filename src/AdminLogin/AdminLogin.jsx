@@ -18,7 +18,8 @@ const AdminLogin = () => {
         // "auth-token":data.authtoken
       },
       body: JSON.stringify({
-        phoneNumber: phoneNumber,
+        username:phoneNumber,
+        phoneNumber: "8603805697",
         verified: true,
         Password: pass,
       }),
@@ -46,17 +47,17 @@ const AdminLogin = () => {
   };
   return (
     <div className=" h-[100vh] flex items-center justify-center">
-      <div className="flex bg-white bg-opacity-30 rounded-md flex-col w-[50%] h-[50%] gap-5 items-center justify-center">
+      <div className="flex bg-white  bg-opacity-30 rounded-md flex-col w-[50%] h-[50%] gap-5 items-center justify-center">
         <input
           required
-          className="px-2 py-3 w-[90%] rounded text-white"
-          placeholder="Enter Your Phone Number"
+          className="px-2 py-3 w-[90%] rounded text-black"
+          placeholder="Enter Your Username"
           value={phoneNumber}
           onChange={(e) => setPhoneNumber(e.target.value)}
         />
         <input
           required
-          className="px-2 py-3 w-[90%] rounded text-white"
+          className="px-2 py-3 w-[90%] rounded text-black"
           placeholder="Enter Your Password"
           value={pass}
           onChange={(e) => setpass(e.target.value)}
