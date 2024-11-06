@@ -9,6 +9,7 @@ import  { setUser } from "../../features/authSlice"
 import { LEGAL_GPT_ENDPOINT } from "../../utils/utils";
 import { Link , useNavigate, redirect,useLocation, json  } from "react-router-dom";
 import { useSearchParams } from "react-router-dom";
+import toast from "react-hot-toast";
 
 
 
@@ -35,7 +36,8 @@ useEffect(()=>{
     return
   }
   if(!userAuth){
-    window.location.replace("https://clawlaw.in");
+    window.alert("First Login then You can access i")
+    window.location.replace("https://clawlaw.in/login");
     return
   }
   dispatch(setUser(JSON.parse(atob(userAuth))))

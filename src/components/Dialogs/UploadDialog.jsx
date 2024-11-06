@@ -218,11 +218,11 @@ const UploadDialog = () => {
 
   return (
     <div className="bg-black bg-opacity-80 h-full p-4 rounded-md">
-      <div className="flex flex-row justify-end w-full">
-        <UserModal />
-      </div>
+      {/* <div className="flex flex-row justify-end w-full"> */}
+        {/* <UserModal /> */}
+      {/* </div> */}
 
-      <div className="flex flex-row justify-center w-full  items-center h-[70vh]">
+      <div className="flex flex-row justify-center w-full  items-center h-[80vh]">
         <div className="flex flex-col w-1/2 p-5 bg-upload-card rounded-md space-y-7">
           <div>
             <div className="w-full flex justify-end">
