@@ -206,7 +206,7 @@ const UploadDialog = () => {
       onClick: handleComputerUpload,
     },
     {
-      src: DropBox,
+      src: "https://res.cloudinary.com/dumjofgxz/image/upload/v1730964018/Pngtree_dropbox_icon_3584851_1_zpu57q.svg",
       alt: "Dropbox",
       text: "Upload from DropBox",
       textClass: "text-neutral-800 text-center font-semibold ",
