@@ -52,7 +52,7 @@ const HeroPage = () => {
           onClick={() => navigate("/upload")}
           className="hover:scale-110 duration-200 cursor-pointer bg-logo-gradient flex flex-col gap-3 items-center justify-center px-3 py-6 rounded-lg border-2 border-white"
         >
-          <img src={Cloud} alt="Upload Icon" />
+          <img src={"https://res.cloudinary.com/dumjofgxz/image/upload/v1730969164/Cloud_vfpmhw.svg"}className="h-[100px] w-[100px] object-contain" alt="Upload Icon" />
           <div className="flex flex-col  ">
 
           <p className="text-center text-xl font-bold px-1">Upload Your Document</p>
@@ -63,7 +63,7 @@ const HeroPage = () => {
           onClick={() => navigate("/Drafter")}
           className="hover:scale-110 duration-200 cursor-pointer bg-logo-gradient flex flex-col gap-3 items-center justify-center  px-3 py-6 rounded-lg border-2 border-white"
         >
-          <img src={Prompt} alt="Prompt Icon" />
+          <img src={"https://res.cloudinary.com/dumjofgxz/image/upload/v1730969165/Prompt_bkzjmu.svg"} className="h-[90px] w-[90px] object-contain"  alt="Prompt Icon" />
           <div className="flex flex-col ">
 
           <p className="text-center text-lg font-bold  px-1">
@@ -78,7 +78,7 @@ const HeroPage = () => {
           onClick={() => navigate("/DocType")}
           className="hover:scale-110 duration-200 cursor-pointer bg-logo-gradient flex flex-col gap-3 items-center justify-center  px-3 py-6 rounded-lg border-2 border-white"
         >
-          <img src={Type} alt="Type Icon" />
+          <img src={"https://res.cloudinary.com/dumjofgxz/image/upload/v1730969164/Type_m2w22m.svg"} className="h-[80px] w-[80px] object-contain"  alt="Type Icon" />
           <div className="flex flex-col ">
 
           <p className="text-center text-xl font-bold px-1">Select Type of Document</p>
