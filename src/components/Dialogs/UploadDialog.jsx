@@ -193,16 +193,16 @@ const UploadDialog = () => {
       alt: "Google Drive",
       text: "Upload from Drive",
       hasText: true,
-      textClass: "text-neutral-800 text-center font-semibold mt-2",
+      textClass: "text-neutral-800 text-center font-semibold ",
       onClick: handleGoogleDriveUpload,
     },
     {
       src: "https://res.cloudinary.com/dumjofgxz/image/upload/v1730705599/dropbox_pfc9q2.svg",
       alt: "Upload from Computer",
       text: "Upload from Computer",
-      textClass: "text-neutral-800 text-center font-semibold mt-2",
+      textClass: "text-neutral-800 text-center font-semibold ",
       hasText: true,
-      containerClass: "-mt-5",
+      // containerClass: "-mt-5",
       onClick: handleComputerUpload,
     },
     {
@@ -210,7 +210,7 @@ const UploadDialog = () => {
       alt: "Dropbox",
       text: "Upload from DropBox",
       textClass: "text-neutral-800 text-center font-semibold ",
-      containerClass: "-mt-2",
+      // containerClass: "-mt-2",
       hasText: true,
       onClick: handleDropboxUpload,
     },
@@ -277,18 +277,19 @@ const UploadDialog = () => {
               )}
             </div>
           ) : (
-            <div className="flex flex-row justify-center items-center space-x-12">
+            <div className="flex flex-row justify-center items-start space-x-12">
               {uploadOptions.map((option, index) => (
                 <div
                   key={index}
-                  className={`flex flex-col justify-center items-center ${
+                  className={`flex flex-col justify-start items-center ${
                     option.containerClass || ""
                   }`}
                 >
                   <img
                   
-                    className="hover:scale-110 duration-300 cursor-pointer"
+                    className="hover:scale-110   duration-300 cursor-pointer"
                     src={option.src}
+                     width="100"
                     alt={option.alt}
                     onClick={option.onClick}
                      height="100"
