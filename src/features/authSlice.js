@@ -23,7 +23,7 @@ export const retrieveDrafterAuth = createAsyncThunk(
 );
 
 const initialState = {
-  user: null,
+  user: {"jwt":"asbdsa"},
   isOtpVerified: false,
   fileBlob: false,
   status: "unfullfilled",

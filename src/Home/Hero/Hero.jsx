@@ -36,12 +36,12 @@ useEffect(()=>{
     return
   }
   if(!userAuth){
-    window.alert("First Login then You can access i")
-    window.location.replace("https://clawlaw.in/login");
+    // window.alert("First Login then You can access i")
+    // window.location.replace("https://clawlaw.in/login");
     return
   }
-  dispatch(setUser(JSON.parse(atob(userAuth))))
-  params.delete('user');
+  // dispatch(setUser(JSON.parse(atob(userAuth))))
+  // params.delete('user');
   setparams(params)
   
   },[])
