@@ -147,7 +147,13 @@ const Snippets = () => {
                     if (item.isLoading)
                       return <TextBoxDialog key={i} responseData={item} />;
                     return (
-                      <img className="h-40 w-40" src={giff} key={i} alt="" />
+                      // <img className="h-40 w-40" src={giff} key={i} alt="" />
+                      <div className="h-full w-full p-3 flex flex-col gap-2">
+                      <div className="w-full h-3 bg-slate-600 animate-pulse  rounded-full"></div>
+                      <div className="w-full h-3 bg-slate-600 animate-pulse  rounded-full"></div>
+                      <div className="w-[60%] h-3 bg-slate-600 animate-pulse  rounded-full"></div>
+                      <div className="w-[40%] h-3 bg-slate-600 animate-pulse  rounded-full"></div>
+                    </div>
                     );
                   })}
                 </div>

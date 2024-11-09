@@ -141,11 +141,12 @@ function AuthGuard() {
 }
 
 function App() {
-  const currentuser = useSelector((state)=> state.auth.user)
+  // const currentuser = useSelector((state)=> state.auth.user)
   // if(!currentuser){
   //   window.location.replace("https://clawlaw-dev.netlify.app/")
   // }
   
+  localStorage.clear();
   return (
     <Router>
       {/* <AuthGuard /> */}
