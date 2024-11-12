@@ -16,6 +16,7 @@ import { NODE_API_ENDPOINT } from "../utils/utils";
 import toast from "react-hot-toast";
 
 const Snippets = () => {
+  const queryBox = useRef()
   let navigate = useNavigate();
   const doc_id = useSelector((state) => state.document.docId);
   const [showGIF, setShowGif] = useState(false);
@@ -36,13 +37,14 @@ const Snippets = () => {
     // Scroll to the bottom of the chat container when textBoxData changes
     if (chatContainerRef.current) {
       chatContainerRef.current.scrollTop =
-        chatContainerRef.current.scrollHeight;
+        0;
     }
   }, [textBoxData]);
 
   const handleSend = async (e) => {
     e.preventDefault();
     setLoading(true);
+   
     let data = JSON.stringify({
       doc_id: doc_id,
       query: query,
@@ -69,6 +71,7 @@ const Snippets = () => {
     setTextBoxData([...newdata]);
     console.log(textBoxData);
 
+   
     try {
       const response = await axios.request(config);
       newdata[newdata.length - 1].isLoading = true;
@@ -86,6 +89,7 @@ const Snippets = () => {
     } finally {
       setLoading(false);
     }
+   
   };
 
   return (
@@ -143,9 +147,9 @@ const Snippets = () => {
             >
               {textBoxData.length > 0 ? (
                 <div className="flex flex-col justify-center items-center w-full pb-10 gap-3">
-                  {textBoxData.map((item, i) => {
+                  {textBoxData.slice().reverse().map((item, i) => {
                     if (item.isLoading)
-                      return <TextBoxDialog key={i} responseData={item} />;
+                      return  <TextBoxDialog key={i} responseData={item} />;
                     return (
                       // <img className="h-40 w-40" src={giff} key={i} alt="" />
                       <div className="h-full w-full p-3 flex flex-col gap-2">

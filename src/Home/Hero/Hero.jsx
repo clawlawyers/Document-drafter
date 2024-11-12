@@ -96,7 +96,7 @@ useEffect(()=>{
         }}
       >
         {/* <img className="w-full h-full opacity-50" src={aiIcon} /> */}
-        <img className="w-full h-full opacity-65" src={backgif} />
+        <img className="w-full h-full opacity-65" src={"https://res.cloudinary.com/dumjofgxz/image/upload/v1731405971/backgif_qlroqs.gif"} />
       
       </div>
       <div
