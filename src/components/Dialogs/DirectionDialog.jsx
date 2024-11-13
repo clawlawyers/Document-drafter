@@ -5,7 +5,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import Markdown from "react-markdown";
 import loaderGif from "../../assets/icons/2.gif";
-import Snackbar, { SnackbarCloseReason } from "@mui/material/Snackbar";
+// import Snackbar, { SnackbarCloseReason } from "@mui/material/Snackbar";
 import { setBreakoutData } from "../../features/breakoutSlice";
 import { setUploadDocText } from "../../features/DocumentSlice";
 import { CircularProgress } from "@mui/material";
