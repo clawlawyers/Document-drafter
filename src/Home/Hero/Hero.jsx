@@ -93,10 +93,11 @@ useEffect(()=>{
         className="w-full h-screen absolute p-3 rounded-lg"
         style={{
           background: `radial-gradient(circle at 50% 0%, #018585, transparent 45%)`,
+          backgroundImage:'https://res.cloudinary.com/dumjofgxz/image/upload/v1731405971/backgif_qlroqs.gif'
         }}
       >
         {/* <img className="w-full h-full opacity-50" src={aiIcon} /> */}
-        <img className="w-full h-full opacity-65" src={"https://res.cloudinary.com/dumjofgxz/image/upload/v1731405971/backgif_qlroqs.gif"} />
+        <img className="w-full h-full opacity-65" src={"https://res.cloudinary.com/dyuov6i8c/image/upload/v1731494821/Assets/wu5vjve1k99lh1dov25w.gif"} />
       
       </div>
       <div

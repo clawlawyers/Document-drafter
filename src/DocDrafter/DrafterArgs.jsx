@@ -381,16 +381,19 @@ const DrafterArgs = () => {
       <div className="flex space-x-5 flex-row w-full h-[80%]  justify-center items-center">
         <div className="w-[70%] space-y-2 flex flex-col h-full bg-customBlack rounded-md px-5 py-5">
           {/* user */}
-          <div className="flex  font-semibold text-lg gap-5 w-full flex-row justify-start items-center">
+          <div className="flex  font-semibold bg-card-gradient rounded p-2 py-4 text-lg gap-5 w-full flex-col h-[27.3%]  justify-start items-center">
             {/* <UserModal /> */}
-            <div className="h-20 items-center justify-center flex flex-col overflow-y-auto scrollbar-hide">
+            {/* <div className="h-[20%] overflow-y-auto  scrollbar-hide"> */}
+            <div className="my-1 overflow-y-auto scrollbar-hide" >
+
               {prompt
                 .split(" ")
                 .map((x) => {
                   return x[0].toUpperCase() + x.slice(1);
                 })
                 .join(" ")}
-            </div>
+                </div>
+            {/* </div> */}
           </div>
           {/* arguments container */}
           <div
@@ -407,11 +410,24 @@ const DrafterArgs = () => {
               </div>
             ) : (
               <div>
-                <Markdown rehypePlugins={[rehypeRaw]}>
+                {/* <Markdown rehypePlugins={[rehypeRaw]}>
                   {formatText(
                     trimQuotes(uploadDocText.replace(/\u20B9/g, "₹"))
                   )}
-                </Markdown>
+                </Markdown> */}
+                <p dangerouslySetInnerHTML={{__html:uploadDocText.replaceAll("\\\\n\\\\n", "<br/>")
+   .replaceAll("\\\\n", "<br/>")
+   .replaceAll("\\n\\n", "<br/>")
+   .replaceAll("\\n", "<br/>")
+   .replaceAll("\n", "<br/>")
+   .replaceAll("\\", "")
+   .replaceAll('"', "")
+   .replaceAll(":", " :")
+   .replaceAll("#", "")
+   .replaceAll(/\*\*(.*?)\*\*/g, '<strong>$1</strong>').replaceAll("u20b9", "₹")
+   .replaceAll(/\*([^*]+)\*/g, '<strong>$1</strong>')
+   .replace(/\\u20B9/g, "₹")
+   .replace(/\u20B9/g, "₹")}}></p>
               </div>
             )}
           </div>
@@ -452,7 +468,7 @@ const DrafterArgs = () => {
                         color: "white",
                       }}
                     >
-                      Essetional Requirements
+                      Eessential Requirements
                     </AccordionSummary>
                     <AccordionDetails>
                       {Object.keys(EssentialReq || {}).map((req, index) => (
@@ -584,7 +600,7 @@ const DrafterArgs = () => {
                         fill="white"
                       />
                     </svg>
-                    <span>Uplaod Document</span>
+                    <span>Upload Document</span>
                   </div>
                 </button>
               </div>

@@ -68,9 +68,9 @@ const ResponseDialog = ({ open, onClose,  onSave }) => {
           </Box>
           <Box className="flex-1 flex flex-col items-center justify-between p-4 h-full">
             <div className="w-full flex flex-row gap-2 items-center justify-center">
-              <Typography variant="h3" className="font-bold text-teal-500">
+              <h3 variant="h3" className="font-bold text-teal-500">
                 Adira AI
-              </Typography>
+              </h3>
               <sup className="text-white text-base">by CLAW</sup>
             </div>
 

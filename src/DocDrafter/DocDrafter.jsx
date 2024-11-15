@@ -47,7 +47,7 @@ const DocDrafter = () => {
           background: `radial-gradient(circle at 50% 0%, #018585, transparent 45%)`,
         }}
       >
-        <img className="w-full h-full opacity-50" src={backGif} />
+        <img className="w-full h-full opacity-50" src={"https://res.cloudinary.com/dyuov6i8c/image/upload/v1731494821/Assets/wu5vjve1k99lh1dov25w.gif"} />
       </div>
       <div
         className="flex flex-col h-screen w-full  z-20 gap-3 bg-black bg-opacity-20 rounded-lg p-4"

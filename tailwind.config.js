@@ -35,6 +35,7 @@ export default {
         customOTP: "#001616",
         customBORDER: "#2D2D2D",
         customDrakBlue: "#00A9AB",
+        customFleUploadBg:"rgba(108, 108, 108, 0.50)"
       },
       fontFamily: {
         sans: ["Plus Jakarta Sans", "sans-serif"],

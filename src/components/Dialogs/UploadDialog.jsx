@@ -189,7 +189,7 @@ const UploadDialog = () => {
 
   const uploadOptions = [
     {
-      src: "https://res.cloudinary.com/dumjofgxz/image/upload/v1730705600/Google_Drive_logo_1_y947xc.svg",
+      src: "https://res.cloudinary.com/dyuov6i8c/image/upload/v1731494821/Assets/h8t9m5fv3sictjttnjsw.svg",
       alt: "Google Drive",
       text: "Upload from Drive",
       hasText: true,
@@ -197,7 +197,7 @@ const UploadDialog = () => {
       onClick: handleGoogleDriveUpload,
     },
     {
-      src: "https://res.cloudinary.com/dumjofgxz/image/upload/v1730705599/dropbox_pfc9q2.svg",
+      src: "https://res.cloudinary.com/dyuov6i8c/image/upload/v1731494821/Assets/xagvyxfdawpxvmfuzdfk.svg",
       alt: "Upload from Computer",
       text: "Upload from Computer",
       textClass: "text-neutral-800 text-center font-semibold ",
@@ -206,7 +206,7 @@ const UploadDialog = () => {
       onClick: handleComputerUpload,
     },
     {
-      src: "https://res.cloudinary.com/dumjofgxz/image/upload/v1730964018/Pngtree_dropbox_icon_3584851_1_zpu57q.svg",
+      src: "https://res.cloudinary.com/dyuov6i8c/image/upload/v1731494821/Assets/v5pruzqodcn4cgnptxms.svg",
       alt: "Dropbox",
       text: "Upload from DropBox",
       textClass: "text-neutral-800 text-center font-semibold ",
@@ -266,7 +266,7 @@ const UploadDialog = () => {
               {uploadStatus === "analyzing" && (
                 <div className="flex flex-col items-center">
                   <img
-                    src={analyzingGif}
+                    src={"https://res.cloudinary.com/dyuov6i8c/image/upload/v1731494821/Assets/tdb7icx0kk8yayjzxt5y.gif"}
                     alt="Analyzing"
                     className="w-80 h-80"
                   />
