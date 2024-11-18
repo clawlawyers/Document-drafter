@@ -63,6 +63,8 @@ const DrafterArgs = () => {
   const docuText = useSelector((state) => state.document.uploadDocText);
   const isThisByprompt = useSelector((state) => state.document.IsThisByprompt);
   const currentUser = useSelector((state) => state.auth.user);
+  const essential = useSelector((state) => state.document.essentialRequirements);
+  const optional = useSelector((state) => state.document.optionalRequirements);
   const [uploadDocText, setDocText] = useState("");
   const [fallbackText, setFallbackText] = useState();
   const [EssentialReq, setEssentialReq] = useState([]);
@@ -81,7 +83,17 @@ const DrafterArgs = () => {
           // console.log(data);
           dispatch(setDocId(doc_id));
           setDocID(doc_id);
+          
           if (doc_id && prompt) {
+            if(path=="Prompt"){
+              fetchDataPrompt(doc_id);
+              setOptionalReq(optional)
+              setEssentialReq(essential)
+              setDocText(docuText)
+              console.log(optional)
+              return
+              
+            }
             if (path !== "docType") {
               fetchData(doc_id);
             } else {
@@ -107,6 +119,11 @@ const DrafterArgs = () => {
     if (path === "docType")
       setDocText("Please set the requirements to proceed!");
   }, [docId]);
+
+
+  const fetchDataPrompt=async(doc_id)=>{
+
+  }
 
   const fetchReq = async (doc_id) => {
     console.log(docId);

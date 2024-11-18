@@ -9,12 +9,18 @@ import { useDispatch, useSelector } from "react-redux";
 import aiIcon from "../assets/icons/back.gif";
 import backGif from "../assets/icons/backgif.gif";
 import pdf from "../assets/icons/pdf.svg"
+import { trimQuotes } from "../utils/utils";
+
 
 import { setPrompt } from "../features/PromptSlice";
 import { useNavigate } from "react-router-dom";
 import {
+  setDocId,
+  setEssentialRequirements,
   setIsThisBypromptFalse,
   setIsThisBypromptTrue,
+  setOptionalRequirements,
+  setUploadDocText,
 } from "../features/DocumentSlice";
 import { TextField } from "@mui/material";
 import HomeNav from "../components/Navbar/HomeNav";
@@ -32,6 +38,7 @@ const PromptFile = () => {
   const [fileUploaded , setFileUploaded]= useState(true)
   const [loading, setLoading] = useState(false);
   const currentUser = useSelector((state) => state.auth.user);
+  const [fileUploading, setFileUploading] =  useState(false)
   
 
   const onChange = (e) => {
@@ -44,6 +51,7 @@ const PromptFile = () => {
         setFileUploaded(false)
         return
     }
+    setFileUploading(true)
     const formData = new FormData();
     const response = await axios.get(
       `${NODE_API_ENDPOINT}/ai-drafter/create_document`,{
@@ -53,6 +61,7 @@ const PromptFile = () => {
         },}
     );
     const doc_id = response.data.data.fetchedData.doc_id;
+    dispatch(setDocId(doc_id))
     const renamedFile = new File([fileData[0]], doc_id + ".docx", {
       type: fileData[0].type,
     });
@@ -70,10 +79,15 @@ const PromptFile = () => {
          
         },}
     );
+    dispatch(setUploadDocText(trimQuotes(res.data.document)));
+    dispatch(setEssentialRequirements(res.data.essential_requirements))
+    dispatch(setOptionalRequirements(res.data.optional_requirements))
     console.log(res)
-    // localStorage.setItem("from", "drafter");
+    
+    localStorage.setItem("from", "Prompt");
     // dispatch(setPrompt(prompt));
-    // navigate("/Drafter/DrafterArgs");
+    
+    navigate("/Drafter/DrafterArgs");
   };
 
   const handleFileUpload =()=>{
@@ -155,7 +169,7 @@ console.log(fileData)
               required={true}
             /> */}
               <div className="flex gap-2 justify-between">
-                {fileData.length>0 ?   <div   className={`w-[30%] relative flex gap-3 border-2 rounded justify-around   items-center bg-customFleUploadBg text-white`} >
+                {fileData.length>0 ?   <div   className={`w-[30%] relative flex gap-3 border-2 rounded justify-around   items-center bg-customFleUploadBg text-white ${fileUploading ? "send-button":""}`} >
                 <svg width="25" height="30" viewBox="0 0 35 40" fill="none" xmlns="http://www.w3.org/2000/svg">
 <g id="Group 88" >
 <path id="Vector" d="M1.42822 21.4287H22.8568V32.8573H1.42822V21.4287Z" fill="#00B6FF"/>
@@ -215,7 +229,7 @@ console.log(fileData)
                   onChange={onChange}
                 />
                 <button
-                  disabled={prompt === ""}
+                  disabled={prompt === "" || fileUploading}
                   onClick={handleSubmit}
                   className="bg-btn-gradient p-2 font-semibold px-4 rounded-md"
                 >
