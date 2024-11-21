@@ -168,7 +168,13 @@ console.log(fileData)
               value={prompt}
               required={true}
             /> */}
-              <div className="flex gap-2 justify-between">
+            {fileUploading ?
+          
+  <div className={"w-full flex justify-center items-center upload-button text-center h-10 border-2 rounded bg-customFleUploadBg"}>
+    <span>Uploading</span>
+  </div>
+                :
+          <div className="flex gap-2 justify-between">
                 {fileData.length>0 ?   <div   className={`w-[30%] relative flex gap-3 border-2 rounded justify-around   items-center bg-customFleUploadBg text-white ${fileUploading ? "send-button":""}`} >
                 <svg width="25" height="30" viewBox="0 0 35 40" fill="none" xmlns="http://www.w3.org/2000/svg">
 <g id="Group 88" >
@@ -235,7 +241,7 @@ console.log(fileData)
                 >
                   Send
                 </button>
-              </div>
+              </div>}
               <Footer />
             </div>
           </div>
