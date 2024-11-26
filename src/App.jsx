@@ -30,6 +30,7 @@ import {
 import { useSelector } from "react-redux";
 import { CircularProgress, Modal } from "@mui/material";
 import AdminLogin from "./AdminLogin/AdminLogin";
+import PromptFile from "./PromptFile/PromptFile";
 
 // const router = createBrowserRouter([
 //   {
@@ -168,6 +169,7 @@ function App() {
         <Route path="/Drafter/DrafterArgs" element={<DrafterArgs />} />
         <Route path="/DocType" element={<DocType />} />
         <Route path="/AdminLogin" element={<AdminLogin />} />
+        <Route path="/Prompt" element={<PromptFile />} />
       </Routes>
     </Router>
   );

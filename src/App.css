@@ -7,6 +7,38 @@
   pointer-events: none;
 }
 
+
+
+
+.text-fade-in {
+  font-size: 2rem;
+  font-weight: bold;
+  overflow: hidden; /* Hide overflow for fade-in effect */
+  position: relative;
+  width: fit-content; /* Ensure content width only matches text */
+}
+
+.text-fade-in span {
+  display: inline-block;
+  opacity: 0; /* Start invisible */
+  transform: translateX(-20px); /* Slightly offset left */
+  animation: fadeInText 2s forwards;
+}
+
+/* Apply a staggered delay for each character */
+.text-fade-in span:nth-child(1) { animation-delay: 0.1s; }
+.text-fade-in span:nth-child(2) { animation-delay: 0.2s; }
+.text-fade-in span:nth-child(3) { animation-delay: 0.3s; }
+.text-fade-in span:nth-child(4) { animation-delay: 0.4s; }
+.text-fade-in span:nth-child(5) { animation-delay: 0.5s; }
+.text-fade-in span:nth-child(6) { animation-delay: 0.6s; }
+
+@keyframes fadeInText {
+  to {
+    opacity: 1; /* Fully visible */
+    transform: translateX(0); /* Move into place */
+  }}
+
 @media (prefers-reduced-motion: no-preference) {
   .App-logo {
     animation: App-logo-spin infinite 20s linear;
@@ -45,15 +77,12 @@ background: linear-gradient(to right, lightblue, transparent);
 
 .typing-demo {
     /* width: 8ch; */
-    width: 100%;
-    animation: typing 4s infinite  alternate  , blink .5s step-end infinite alternate;
+    /* width: 50%; */
+    animation: typing 1s   ;
     white-space: nowrap;
     overflow: hidden;
-    border-right: 3px solid;
-    font-family:"Plus Jakarta Sans", serif; 
-    /* font-size: 2em; */
-    font-size: 3.5rem;
-    font-weight: 700;
+    /* border-right: 3px solid; */
+   
   }
   .type::after {
     content: '|';
@@ -71,7 +100,10 @@ background: linear-gradient(to right, lightblue, transparent);
   
   @keyframes typing {
     from {
-      width: 0
+      width: 10%
+    }
+    to{
+      width: 16.5%;
     }
   }
       

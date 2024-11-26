@@ -19,6 +19,7 @@ import rehypeSanitize from "rehype-sanitize";
 import PDFDownloadButton from "../PdfDownloader/PdfDoc";
 import { Edit } from "@mui/icons-material";
 import { setIsGenerateDocCalledFalse } from "../features/DocumentSlice";
+import chatbot from "../assets/icons/chatbot.svg"
 
 const DocEdit = ({ onSave }) => {
   const dispatch = useDispatch();
@@ -42,6 +43,7 @@ const DocEdit = ({ onSave }) => {
   const [readyDownload, setReadyDownload] = useState(false);
   const [downlaodText, setDownloadText] = useState(ediText);
   const [savebutton, setsavebutton] = useState(true);
+  const [chatbotDisplay, setchatbotDisplay] = useState(true);
 
   console.log(doc_id);
   let count = 0;
@@ -207,6 +209,19 @@ const DocEdit = ({ onSave }) => {
                 </p>
               )}
             </div>
+            <div className="flex flex-row justify-between">
+           
+
+                <div  onMouseEnter={() => setchatbotDisplay(false)} onMouseLeave={() => setchatbotDisplay(true)}  className={`flex   text-clip gap-2  rounded-full border-2 border-white p-2 bg-card-gradient  ${chatbotDisplay ?"" :"typing-demo"}`}>
+                <img src={chatbot} alt=""  />
+                {chatbotDisplay ?
+               ""
+                :
+                <span >Talk to an Expert</span>
+                             }
+              </div>
+    
+           
             <div className="flex flex-row justify-end items-center gap-5">
               {/* <button
                 onClick={setReadyDownload(true)}
@@ -255,6 +270,7 @@ const DocEdit = ({ onSave }) => {
                   Loading...
                 </div>
               )}
+            </div>
             </div>
           </div>
 

@@ -5,7 +5,7 @@ import Type from "../../assets/icons/Type.svg";
 import Prompt from "../../assets/icons/Prompt.svg";
 import UserModal from "../../components/Modals/UserModal";
 import { TypeAnimation } from "react-type-animation";
-
+import group from "../../assets/icons/Group.svg";
 const HeroPage = () => {
   let navigate = useNavigate();
   return (
@@ -47,7 +47,7 @@ const HeroPage = () => {
           AI Powered Legal Document Drafter by CLAW
         </div>
       </div>
-      <div className="grid font-sans md:grid-cols-3 gap-8">
+      <div className="grid font-sans md:grid-cols-4 gap-8">
         <div
           onClick={() => navigate("/upload")}
           className="hover:scale-110 duration-200 cursor-pointer bg-logo-gradient flex flex-col gap-3 items-center justify-center px-3 py-6 rounded-lg border-2 border-white"
@@ -85,6 +85,19 @@ const HeroPage = () => {
           <p className="text-center text-sm  px-1">Quickly upload your legal file</p>
           </div>
         </div>
+        <div
+            onClick={() => navigate("/Prompt")}
+            className="hover:scale-110 duration-200 cursor-pointer bg-logo-gradient flex flex-col gap-3 items-center justify-center  px-3 py-6 rounded-lg border-2 border-white"
+          >
+            <img src={group} className="h-[80px] w-[80px] object-contain"  alt="Type Icon" />
+
+    
+            <div className="flex flex-col ">
+
+            <p className="text-center text-xl font-bold px-1">File along with Prompt</p>
+            <p className="text-center text-sm  px-1">Upload your file and describe using prompt</p>
+            </div>
+          </div>
       </div>
     </div>
   );
