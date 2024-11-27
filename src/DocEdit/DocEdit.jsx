@@ -610,7 +610,7 @@ const DocEdit = ({ onSave }) => {
           </div>
         </div>
         <div className="text-center p-3 font-bold bg-logo-gradient rounded">
-          Proceed with Booking
+          Proceed with Bookin
         </div>
         {!showMore1 && (
           <div className="flex gap-3">
