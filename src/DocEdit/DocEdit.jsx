@@ -29,6 +29,14 @@ import Popover from "@mui/material/Popover";
 import Typography from "@mui/material/Typography";
 
 const DocEdit = ({ onSave }) => {
+  
+  const faqData = [
+    { title: "asdasd", data: "asdsad" },
+    { title: "asdasd", data: "asdsad" },
+    { title: "asdasd", data: "asdsad" },
+    { title: "asdasd", data: "asdsad" },
+  ];
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const ediText = useSelector((state) => state.document.uploadDocText);
@@ -234,6 +242,18 @@ const DocEdit = ({ onSave }) => {
 
     setPageNo(3);
   };
+  const rows = [];
+  for (let i = 0; i < 20; i++) {
+    const time = 10 + Number((i / 2).toFixed());
+
+    rows.push(
+      <div className="border  text-center border-white  rounded p-1">
+        <span className="rounded">
+          {time + ":" + `${i % 2 == 0 ? "30" : "00"}`}
+        </span>
+      </div>
+    );
+  }
 
   const chatbotData = [
     <>
@@ -380,54 +400,7 @@ const DocEdit = ({ onSave }) => {
           </AccordionSummary>
           <AccordionDetails>
             <div className="grid text-[8px] text-white grid-cols-4 gap-1">
-              <div className="border  text-center border-white  rounded p-1">
-                <span className="rounded">10:00 AM</span>
-              </div>
-              <div className="border  text-center border-white  rounded p-1">
-                <span className="rounded">10:00 AM</span>
-              </div>
-              <div className="border  text-center border-white  rounded p-1">
-                <span className="rounded">10:00 AM</span>
-              </div>
-              <div className="border  text-center border-white  rounded p-1">
-                <span className="rounded">10:00 AM</span>
-              </div>
-              <div className="border  text-center border-white  rounded p-1">
-                <span className="rounded">10:00 AM</span>
-              </div>
-              <div className="border  text-center border-white  rounded p-1">
-                <span className="rounded">10:00 AM</span>
-              </div>
-              <div className="border  text-center border-white  rounded p-1">
-                <span className="rounded">10:00 AM</span>
-              </div>
-              <div className="border  text-center border-white  rounded p-1">
-                <span className="rounded">10:00 AM</span>
-              </div>
-              <div className="border  text-center border-white  rounded p-1">
-                <span className="rounded">10:00 AM</span>
-              </div>
-              <div className="border  text-center border-white  rounded p-1">
-                <span className="rounded">10:00 AM</span>
-              </div>
-              <div className="border  text-center border-white  rounded p-1">
-                <span className="rounded">10:00 AM</span>
-              </div>
-              <div className="border  text-center border-white  rounded p-1">
-                <span className="rounded">10:00 AM</span>
-              </div>
-              <div className="border  text-center border-white  rounded p-1">
-                <span className="rounded">10:00 AM</span>
-              </div>
-              <div className="border  text-center border-white  rounded p-1">
-                <span className="rounded">10:00 AM</span>
-              </div>
-              <div className="border  text-center border-white  rounded p-1">
-                <span className="rounded">10:00 AM</span>
-              </div>
-              <div className="border  text-center border-white  rounded p-1">
-                <span className="rounded">10:00 AM</span>
-              </div>
+              {rows.map((val) => val)}
             </div>
           </AccordionDetails>
         </Accordion>
@@ -515,7 +488,10 @@ const DocEdit = ({ onSave }) => {
       </p>
       <div className="flex flex-col gap-3">
         <div className="flex flex-col border-2 border-white p-2 rounded bg-teal-900">
-          <div onClick={()=>setPageNo(4)} className="text-white text-[12px] font-bold border-b-2 pb-1">
+          <div
+            onClick={() => setPageNo(4)}
+            className="text-white text-[12px] font-bold border-b-2 pb-1"
+          >
             Document Related Consultation
           </div>
           <div className="text-white pt-1 text-[10px]  ">
@@ -523,7 +499,10 @@ const DocEdit = ({ onSave }) => {
             generated or might want to have.
           </div>
         </div>
-        <div onClick={()=>setPageNo(2)} className="flex flex-col border-2 border-white p-2 rounded bg-teal-900">
+        <div
+          onClick={() => setPageNo(2)}
+          className="flex flex-col border-2 border-white p-2 rounded bg-teal-900"
+        >
           <div className="text-white text-[12px] font-bold border-b-2 pb-1">
             Document Legal Consultation
           </div>
@@ -536,7 +515,7 @@ const DocEdit = ({ onSave }) => {
       <div className="pb-[100px]"></div>
     </>,
     <>
-      <div  className="flex flex-col gap-1">
+      <div className="flex flex-col gap-1">
         <p>Document Related Consultation</p>
         <p className="text-[10px]  mb-4">
           For Consultation with our Expert on Legal Documents that you generated
@@ -555,7 +534,12 @@ const DocEdit = ({ onSave }) => {
               <li>Related Query Solving</li>
             </ul>
           </div>
-          <div onClick={()=>{setPageNo(5)}} className="text-center text-[15px] p-2 border-2 py-1 rounded-md bg-logo-gradient">
+          <div
+            onClick={() => {
+              setPageNo(5);
+            }}
+            className="text-center text-[15px] p-2 border-2 py-1 rounded-md bg-logo-gradient"
+          >
             Proceed
           </div>
         </div>
@@ -859,30 +843,38 @@ const DocEdit = ({ onSave }) => {
                       </svg>
                     </div>
                     <div className="flex flex-col gap-2">
-                      <Accordion
-                        style={{
-                          backgroundColor: "#004343",
-                          font: "",
-                          boxShadow: "0px",
-                          "border-radius": "5px",
-                        }}
-                        className=" rounded-md bg-[#004343]"
-                      >
-                        <AccordionSummary
-                          expandIcon={<ExpandMoreIcon></ExpandMoreIcon>}
-                          aria-controls="panel1-content"
-                          id="panel1-header"
-                          style={{
-                            // backgroundColor:"rgba(34, 34, 34, 0.8)",
-                            font: "",
-                            boxShadow: "0px",
-                            color: "white",
-                          }}
-                        >
-                          Select A Time Slot
-                        </AccordionSummary>
-                        <AccordionDetails></AccordionDetails>
-                      </Accordion>
+                      {faqData.map((val, i) => {
+                        return (
+                          <Accordion
+                            style={{
+                              backgroundColor: "#004343",
+                              font: "",
+                              boxShadow: "0px",
+                              "border-radius": "5px",
+                            }}
+                            className=" rounded-md bg-[#004343]"
+                          >
+                            <AccordionSummary
+                              expandIcon={<ExpandMoreIcon></ExpandMoreIcon>}
+                              aria-controls="panel1-content"
+                              id="panel1-header"
+                              style={{
+                                // backgroundColor:"rgba(34, 34, 34, 0.8)",
+                                font: "",
+                                boxShadow: "0px",
+                                color: "white",
+                                borderRadius: "0.5rem",
+                              }}
+                              className="rounded-md"
+                            >
+                              {val.title}
+                            </AccordionSummary>
+                            <AccordionDetails className="bg-[#00A9AB]">
+                              {val.data}
+                            </AccordionDetails>
+                          </Accordion>
+                        );
+                      })}
                     </div>
                   </div>
                   {/* 
@@ -902,7 +894,11 @@ const DocEdit = ({ onSave }) => {
                 }`}
               >
                 <img src={chatbot} alt="" />
-                {chatbotDisplay ? "" : <span className="text-xs">Talk to an Expert</span>}
+                {chatbotDisplay ? (
+                  ""
+                ) : (
+                  <span className="text-xs">Talk to an Expert</span>
+                )}
               </div>
               {chatbotDisplay && (
                 <div
