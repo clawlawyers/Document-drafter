@@ -523,7 +523,7 @@ const DocEdit = ({ onSave }) => {
             generated or might want to have.
           </div>
         </div>
-        <div className="flex flex-col border-2 border-white p-2 rounded bg-teal-900">
+        <div onClick={()=>setPageNo(2)} className="flex flex-col border-2 border-white p-2 rounded bg-teal-900">
           <div className="text-white text-[12px] font-bold border-b-2 pb-1">
             Document Legal Consultation
           </div>
@@ -897,24 +897,24 @@ const DocEdit = ({ onSave }) => {
                 onClick={handleClick}
                 onMouseEnter={() => setchatbotDisplay(false)}
                 onMouseLeave={() => setchatbotDisplay(true)}
-                className={`flex    text-clip gap-2  rounded-full border-2 border-white p-2 bg-card-gradient  ${
-                  chatbotDisplay ? "" : "typing-demo"
+                className={`flex items-center   text-clip gap-2  rounded-full border-2 border-white p-2 bg-card-gradient  ${
+                  chatbotDisplay ? "" : "typing-demo2"
                 }`}
               >
                 <img src={chatbot} alt="" />
-                {chatbotDisplay ? "" : <span>Talk to an Expert</span>}
+                {chatbotDisplay ? "" : <span className="text-xs">Talk to an Expert</span>}
               </div>
               {chatbotDisplay && (
                 <div
                   onClick={handleClick2}
                   onMouseEnter={() => setchatbotDisplay2(false)}
                   onMouseLeave={() => setchatbotDisplay2(true)}
-                  className={`flex   text-clip gap-2  rounded-full border-2 border-white p-2 bg-card-gradient  ${
+                  className={`flex items-center   text-clip gap-2  rounded-full border-2 border-white p-2 bg-card-gradient  ${
                     chatbotDisplay2 ? "" : "typing-demo"
                   }`}
                 >
                   <img src={chatbot} alt="" />
-                  {chatbotDisplay2 ? "" : <span>FAQ</span>}
+                  {chatbotDisplay2 ? "" : <span className="text-xs ">FAQ</span>}
                 </div>
               )}
 
