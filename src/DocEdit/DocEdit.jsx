@@ -55,12 +55,15 @@ const DocEdit = ({ onSave }) => {
   const [chatbotSwitch, setchatbotSwitch] = React.useState(true);
   const [showMore1, setshowMore1] = useState(false);
   const [showMore2, setshowMore2] = useState(false);
+  const [pageNo, setPageNo] = useState(0);
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     mobile: "",
     query: "",
     comments: "",
+    hour: null,
+    date: null,
   });
 
   const handleChange = (e) => {
@@ -218,16 +221,34 @@ const DocEdit = ({ onSave }) => {
     // console.log("asdas")
     setchatbotSwitch(false);
   };
+
+  const handleNext1 = (e) => {
+    e.preventDefault();
+    setPageNo(1);
+  };
+
+  const handleNext2 = (e) => {
+    // if(formData.hour ==null || formData.date ==null){
+    //   return
+    // }
+
+    setPageNo(3);
+  };
+
   const chatbotData = [
     <>
       <p className="text-[10px]  mb-4">
         Talk to an Expert Lawyer at your convenient time by entering some
         important details below
       </p>
-      <div className="text-[10px] bg-white p-2 rounded-md">
+      <form
+        onSubmit={handleNext1}
+        className="text-[10px] bg-white p-2 rounded-md"
+      >
         <div className="mb-2 text-xs">
           <input
             type="text"
+            required
             value={formData.name}
             name="name"
             onChange={handleChange}
@@ -238,6 +259,7 @@ const DocEdit = ({ onSave }) => {
         <div className="mb-2">
           <input
             type="email"
+            required
             value={formData.email}
             onChange={handleChange}
             name="email"
@@ -248,6 +270,7 @@ const DocEdit = ({ onSave }) => {
         <div className="mb-2">
           <input
             type="text"
+            required
             value={formData.mobile}
             name="mobile"
             onChange={handleChange}
@@ -259,6 +282,7 @@ const DocEdit = ({ onSave }) => {
           <input
             type="text"
             name="query"
+            required
             value={formData.query}
             onChange={handleChange}
             placeholder="Put Your Query Heading"
@@ -267,6 +291,7 @@ const DocEdit = ({ onSave }) => {
         </div>
         <div className="mb-2">
           <textarea
+            required
             value={formData.comments}
             name="comments"
             onChange={handleChange}
@@ -283,7 +308,7 @@ const DocEdit = ({ onSave }) => {
             Next
           </button>
         </div>
-      </div>
+      </form>
     </>,
     <>
       <p className="text-[10px]  mb-4">
@@ -291,7 +316,7 @@ const DocEdit = ({ onSave }) => {
         important details below
       </p>
 
-      <div className="text-[10px] flex flex-col gap-3 bg-white p-2 rounded-md">
+      <div className="text-[10px] mb-20 flex flex-col gap-3 bg-white p-2 rounded-md">
         <Accordion
           style={{
             backgroundColor: "#004343",
@@ -409,7 +434,7 @@ const DocEdit = ({ onSave }) => {
 
         <div className="flex justify-end">
           <button
-            type="submit"
+            onClick={handleNext2}
             className="w-[50%]  bg-logo-gradient p-2 rounded-md text-white font-semibold hover:bg-teal-700"
           >
             Next
@@ -490,7 +515,7 @@ const DocEdit = ({ onSave }) => {
       </p>
       <div className="flex flex-col gap-3">
         <div className="flex flex-col border-2 border-white p-2 rounded bg-teal-900">
-          <div className="text-white text-[12px] font-bold border-b-2 pb-1">
+          <div onClick={()=>setPageNo(4)} className="text-white text-[12px] font-bold border-b-2 pb-1">
             Document Related Consultation
           </div>
           <div className="text-white pt-1 text-[10px]  ">
@@ -500,18 +525,18 @@ const DocEdit = ({ onSave }) => {
         </div>
         <div className="flex flex-col border-2 border-white p-2 rounded bg-teal-900">
           <div className="text-white text-[12px] font-bold border-b-2 pb-1">
-            Document Related Consultation
+            Document Legal Consultation
           </div>
           <div className="text-white pt-1 text-[10px] ">
-            For Consultation with our Expert on Legal Documents that you
-            generated or might want to have.
+            For Consultation with our Expert on Legal Matters that of any type
+            and gain legal advice on topics of your choice
           </div>
         </div>
       </div>
       <div className="pb-[100px]"></div>
     </>,
     <>
-      <div className="flex flex-col gap-1">
+      <div  className="flex flex-col gap-1">
         <p>Document Related Consultation</p>
         <p className="text-[10px]  mb-4">
           For Consultation with our Expert on Legal Documents that you generated
@@ -530,7 +555,7 @@ const DocEdit = ({ onSave }) => {
               <li>Related Query Solving</li>
             </ul>
           </div>
-          <div className="text-center text-[15px] p-2 border-2 py-1 rounded-md bg-logo-gradient">
+          <div onClick={()=>{setPageNo(5)}} className="text-center text-[15px] p-2 border-2 py-1 rounded-md bg-logo-gradient">
             Proceed
           </div>
         </div>
@@ -684,56 +709,55 @@ const DocEdit = ({ onSave }) => {
               )}
             </div>
             <div className="flex flex-row  justify-between">
-             
-                <Popover
-                  id={id}
-                  open={open}
-                  anchorEl={anchorEl}
-                  onClose={handleClose}
-                  anchorOrigin={{
-                    vertical: "bottom",
-                    horizontal: "left",
-                  }}
-                  sx={{
-                    "& .MuiPaper-root": {
-                      borderRadius: "1rem", // Custom border radius
-                    },
-                    "& .MuiPaper-root::-webkit-scrollbar": {
-                      display: "none",
-                    },
-                  }}
-                  className="flex w-[30%] bg-transparent overflow-auto hide-scrollbar   rounded-2xl  "
-                >
-                  <div className="p-4 rounded-2xl flex overflow-auto flex-col hide-scrollbar gap-4  bg-btn-gradient">
-                    <div className="max-w-sm mx-auto flex flex-col gap-3 hide-scrollbar bg-[#00232F] text-white rounded-2xl p-6 shadow-lg">
-                      <div className="flex border-b-2 border-b-[#004343] pb-1 justify-around flex-row gap-2 scrollbar-hide  items-start">
-                        <img src={chatbot} alt="" />
+              <Popover
+                id={id}
+                open={open}
+                anchorEl={anchorEl}
+                onClose={handleClose}
+                anchorOrigin={{
+                  vertical: "bottom",
+                  horizontal: "left",
+                }}
+                sx={{
+                  "& .MuiPaper-root": {
+                    borderRadius: "1rem", // Custom border radius
+                  },
+                  "& .MuiPaper-root::-webkit-scrollbar": {
+                    display: "none",
+                  },
+                }}
+                className="flex w-[30%] bg-transparent overflow-auto hide-scrollbar   rounded-2xl  "
+              >
+                <div className="p-4 rounded-2xl flex overflow-auto flex-col hide-scrollbar gap-4  bg-btn-gradient">
+                  <div className="max-w-sm mx-auto flex flex-col gap-3 hide-scrollbar bg-[#00232F] text-white rounded-2xl p-6 shadow-lg">
+                    <div className="flex border-b-2 border-b-[#004343] pb-1 justify-around flex-row gap-2 scrollbar-hide  items-start">
+                      <img src={chatbot} alt="" />
 
-                        <h2 className="text-[15px] scrollbar-hide font-semibold mb-4">
-                          How Can We Help You Today?
-                        </h2>
-                        <svg
-                          onClick={handleClose}
-                          xmlns="http://www.w3.org/2000/svg"
-                          width="28"
-                          height="28"
-                          viewBox="0 0 28 28"
-                          fill="none"
-                        >
-                          <path
-                            d="M14 0C11.2311 0 8.52431 0.821086 6.22202 2.35943C3.91973 3.89777 2.12532 6.08427 1.06569 8.64243C0.00606596 11.2006 -0.271181 14.0155 0.269012 16.7313C0.809205 19.447 2.14258 21.9416 4.10051 23.8995C6.05845 25.8574 8.55301 27.1908 11.2687 27.731C13.9845 28.2712 16.7994 27.9939 19.3576 26.9343C21.9157 25.8747 24.1022 24.0803 25.6406 21.778C27.1789 19.4757 28 16.7689 28 14C28 10.287 26.525 6.72601 23.8995 4.1005C21.274 1.475 17.713 0 14 0ZM14 26C11.6266 26 9.30655 25.2962 7.33316 23.9776C5.35977 22.6591 3.8217 20.7849 2.91345 18.5922C2.0052 16.3995 1.76756 13.9867 2.23058 11.6589C2.69361 9.33114 3.83649 7.19295 5.51472 5.51472C7.19296 3.83649 9.33115 2.6936 11.6589 2.23058C13.9867 1.76755 16.3995 2.00519 18.5922 2.91345C20.7849 3.8217 22.6591 5.35977 23.9776 7.33316C25.2962 9.30655 26 11.6266 26 14C26 17.1826 24.7357 20.2348 22.4853 22.4853C20.2348 24.7357 17.1826 26 14 26Z"
-                            fill="white"
-                          />
-                          <path
-                            d="M20.7099 7.28994C20.617 7.19621 20.5064 7.12182 20.3845 7.07105C20.2627 7.02028 20.132 6.99414 19.9999 6.99414C19.8679 6.99414 19.7372 7.02028 19.6154 7.07105C19.4935 7.12182 19.3829 7.19621 19.2899 7.28994L13.9999 12.5899L8.70994 7.28994C8.52164 7.10164 8.26624 6.99585 7.99994 6.99585C7.73364 6.99585 7.47824 7.10164 7.28994 7.28994C7.10164 7.47824 6.99585 7.73364 6.99585 7.99994C6.99585 8.26624 7.10164 8.52164 7.28994 8.70994L12.5899 13.9999L7.28994 19.2899C7.19621 19.3829 7.12182 19.4935 7.07105 19.6154C7.02028 19.7372 6.99414 19.8679 6.99414 19.9999C6.99414 20.132 7.02028 20.2627 7.07105 20.3845C7.12182 20.5064 7.19621 20.617 7.28994 20.7099C7.3829 20.8037 7.4935 20.8781 7.61536 20.9288C7.73722 20.9796 7.86793 21.0057 7.99994 21.0057C8.13195 21.0057 8.26266 20.9796 8.38452 20.9288C8.50638 20.8781 8.61698 20.8037 8.70994 20.7099L13.9999 15.4099L19.2899 20.7099C19.3829 20.8037 19.4935 20.8781 19.6154 20.9288C19.7372 20.9796 19.8679 21.0057 19.9999 21.0057C20.132 21.0057 20.2627 20.9796 20.3845 20.9288C20.5064 20.8781 20.617 20.8037 20.7099 20.7099C20.8037 20.617 20.8781 20.5064 20.9288 20.3845C20.9796 20.2627 21.0057 20.132 21.0057 19.9999C21.0057 19.8679 20.9796 19.7372 20.9288 19.6154C20.8781 19.4935 20.8037 19.3829 20.7099 19.2899L15.4099 13.9999L20.7099 8.70994C20.8037 8.61698 20.8781 8.50638 20.9288 8.38452C20.9796 8.26266 21.0057 8.13195 21.0057 7.99994C21.0057 7.86793 20.9796 7.73722 20.9288 7.61536C20.8781 7.4935 20.8037 7.3829 20.7099 7.28994Z"
-                            fill="white"
-                          />
-                        </svg>
-                      </div>
-                      {/* <hr className="bg-[#004343] border border-[#004343]" /> */}
+                      <h2 className="text-[15px] scrollbar-hide font-semibold mb-4">
+                        How Can We Help You Today?
+                      </h2>
+                      <svg
+                        onClick={handleClose}
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="28"
+                        height="28"
+                        viewBox="0 0 28 28"
+                        fill="none"
+                      >
+                        <path
+                          d="M14 0C11.2311 0 8.52431 0.821086 6.22202 2.35943C3.91973 3.89777 2.12532 6.08427 1.06569 8.64243C0.00606596 11.2006 -0.271181 14.0155 0.269012 16.7313C0.809205 19.447 2.14258 21.9416 4.10051 23.8995C6.05845 25.8574 8.55301 27.1908 11.2687 27.731C13.9845 28.2712 16.7994 27.9939 19.3576 26.9343C21.9157 25.8747 24.1022 24.0803 25.6406 21.778C27.1789 19.4757 28 16.7689 28 14C28 10.287 26.525 6.72601 23.8995 4.1005C21.274 1.475 17.713 0 14 0ZM14 26C11.6266 26 9.30655 25.2962 7.33316 23.9776C5.35977 22.6591 3.8217 20.7849 2.91345 18.5922C2.0052 16.3995 1.76756 13.9867 2.23058 11.6589C2.69361 9.33114 3.83649 7.19295 5.51472 5.51472C7.19296 3.83649 9.33115 2.6936 11.6589 2.23058C13.9867 1.76755 16.3995 2.00519 18.5922 2.91345C20.7849 3.8217 22.6591 5.35977 23.9776 7.33316C25.2962 9.30655 26 11.6266 26 14C26 17.1826 24.7357 20.2348 22.4853 22.4853C20.2348 24.7357 17.1826 26 14 26Z"
+                          fill="white"
+                        />
+                        <path
+                          d="M20.7099 7.28994C20.617 7.19621 20.5064 7.12182 20.3845 7.07105C20.2627 7.02028 20.132 6.99414 19.9999 6.99414C19.8679 6.99414 19.7372 7.02028 19.6154 7.07105C19.4935 7.12182 19.3829 7.19621 19.2899 7.28994L13.9999 12.5899L8.70994 7.28994C8.52164 7.10164 8.26624 6.99585 7.99994 6.99585C7.73364 6.99585 7.47824 7.10164 7.28994 7.28994C7.10164 7.47824 6.99585 7.73364 6.99585 7.99994C6.99585 8.26624 7.10164 8.52164 7.28994 8.70994L12.5899 13.9999L7.28994 19.2899C7.19621 19.3829 7.12182 19.4935 7.07105 19.6154C7.02028 19.7372 6.99414 19.8679 6.99414 19.9999C6.99414 20.132 7.02028 20.2627 7.07105 20.3845C7.12182 20.5064 7.19621 20.617 7.28994 20.7099C7.3829 20.8037 7.4935 20.8781 7.61536 20.9288C7.73722 20.9796 7.86793 21.0057 7.99994 21.0057C8.13195 21.0057 8.26266 20.9796 8.38452 20.9288C8.50638 20.8781 8.61698 20.8037 8.70994 20.7099L13.9999 15.4099L19.2899 20.7099C19.3829 20.8037 19.4935 20.8781 19.6154 20.9288C19.7372 20.9796 19.8679 21.0057 19.9999 21.0057C20.132 21.0057 20.2627 20.9796 20.3845 20.9288C20.5064 20.8781 20.617 20.8037 20.7099 20.7099C20.8037 20.617 20.8781 20.5064 20.9288 20.3845C20.9796 20.2627 21.0057 20.132 21.0057 19.9999C21.0057 19.8679 20.9796 19.7372 20.9288 19.6154C20.8781 19.4935 20.8037 19.3829 20.7099 19.2899L15.4099 13.9999L20.7099 8.70994C20.8037 8.61698 20.8781 8.50638 20.9288 8.38452C20.9796 8.26266 21.0057 8.13195 21.0057 7.99994C21.0057 7.86793 20.9796 7.73722 20.9288 7.61536C20.8781 7.4935 20.8037 7.3829 20.7099 7.28994Z"
+                          fill="white"
+                        />
+                      </svg>
+                    </div>
+                    {/* <hr className="bg-[#004343] border border-[#004343]" /> */}
 
-                      {chatbotData[2]}
-                      {/* <form className="text-[10px] bg-white p-2 rounded-md">
+                    {chatbotData[pageNo]}
+                    {/* <form className="text-[10px] bg-white p-2 rounded-md">
                       <div className="mb-2 text-xs">
                         <input
                           type="text"
@@ -779,126 +803,120 @@ const DocEdit = ({ onSave }) => {
                         </button>
                       </div>
                     </form> */}
-                    </div>
-                    {/* 
+                  </div>
+                  {/* 
                   <div onclick={() => console.log("as")} className="p-1 rounded-sm flex justify-around bg-white">
 
                     <button onMouseDown={setSwitch} className="text-white rounded-md text-[12px] w-[50%] p-1   bg-[#004343] ">Talk To An Expert</button>
                     <button onclick={() => console.log("as")} className="text-[#004343] text-[12px] w-[50%] p-1  ">FAQs</button>
                   </div> */}
-                  </div>
-                </Popover>
-             
-                <Popover
-                  id={id2}
-                  open={open2}
-                  anchorEl={anchorEl2}
-                  onClose={handleClose2}
-                  anchorOrigin={{
-                    vertical: "bottom",
-                    horizontal: "left",
-                  }}
-                  sx={{
-                    "& .MuiPaper-root": {
-                      borderRadius: "1rem", // Custom border radius
-                    },
-                    "& .MuiPaper-root::-webkit-scrollbar": {
-                      display: "none",
-                    },
-                  }}
-                  className="flex w-[40%] bg-transparent overflow-auto hide-scrollbar   rounded-2xl  "
-                >
-                  <div className="p-4 rounded-2xl flex overflow-auto flex-col hide-scrollbar gap-4  bg-btn-gradient">
-                    <div className="max-w-sm mx-auto flex flex-col gap-3 hide-scrollbar bg-[#00232F] text-white rounded-2xl p-6 shadow-lg">
-                      <div className="flex border-b-2 border-b-[#004343] pb-1 justify-between flex-row gap-2 scrollbar-hide  items-start">
-                        {/* <img src={chatbot} alt="" /> */}
+                </div>
+              </Popover>
 
-                        <h2 className="text-[15px] scrollbar-hide font-semibold mb-4">
+              <Popover
+                id={id2}
+                open={open2}
+                anchorEl={anchorEl2}
+                onClose={handleClose2}
+                anchorOrigin={{
+                  vertical: "bottom",
+                  horizontal: "left",
+                }}
+                sx={{
+                  "& .MuiPaper-root": {
+                    borderRadius: "1rem", // Custom border radius
+                  },
+                  "& .MuiPaper-root::-webkit-scrollbar": {
+                    display: "none",
+                  },
+                }}
+                className="flex w-[40%] bg-transparent overflow-auto hide-scrollbar   rounded-2xl  "
+              >
+                <div className="p-4 rounded-2xl flex overflow-auto flex-col hide-scrollbar gap-4  bg-btn-gradient">
+                  <div className="max-w-sm mx-auto flex flex-col gap-3 hide-scrollbar bg-[#00232F] text-white rounded-2xl p-6 shadow-lg">
+                    <div className="flex border-b-2 border-b-[#004343] pb-1 justify-between flex-row gap-2 scrollbar-hide  items-start">
+                      {/* <img src={chatbot} alt="" /> */}
+
+                      <h2 className="text-[15px] scrollbar-hide font-semibold mb-4">
                         FrequentlyAsked Questions
-                        </h2>
-                        <svg
-                          onClick={handleClose2}
-                          xmlns="http://www.w3.org/2000/svg"
-                          width="28"
-                          height="28"
-                          viewBox="0 0 28 28"
-                          fill="none"
-                        >
-                          <path
-                            d="M14 0C11.2311 0 8.52431 0.821086 6.22202 2.35943C3.91973 3.89777 2.12532 6.08427 1.06569 8.64243C0.00606596 11.2006 -0.271181 14.0155 0.269012 16.7313C0.809205 19.447 2.14258 21.9416 4.10051 23.8995C6.05845 25.8574 8.55301 27.1908 11.2687 27.731C13.9845 28.2712 16.7994 27.9939 19.3576 26.9343C21.9157 25.8747 24.1022 24.0803 25.6406 21.778C27.1789 19.4757 28 16.7689 28 14C28 10.287 26.525 6.72601 23.8995 4.1005C21.274 1.475 17.713 0 14 0ZM14 26C11.6266 26 9.30655 25.2962 7.33316 23.9776C5.35977 22.6591 3.8217 20.7849 2.91345 18.5922C2.0052 16.3995 1.76756 13.9867 2.23058 11.6589C2.69361 9.33114 3.83649 7.19295 5.51472 5.51472C7.19296 3.83649 9.33115 2.6936 11.6589 2.23058C13.9867 1.76755 16.3995 2.00519 18.5922 2.91345C20.7849 3.8217 22.6591 5.35977 23.9776 7.33316C25.2962 9.30655 26 11.6266 26 14C26 17.1826 24.7357 20.2348 22.4853 22.4853C20.2348 24.7357 17.1826 26 14 26Z"
-                            fill="white"
-                          />
-                          <path
-                            d="M20.7099 7.28994C20.617 7.19621 20.5064 7.12182 20.3845 7.07105C20.2627 7.02028 20.132 6.99414 19.9999 6.99414C19.8679 6.99414 19.7372 7.02028 19.6154 7.07105C19.4935 7.12182 19.3829 7.19621 19.2899 7.28994L13.9999 12.5899L8.70994 7.28994C8.52164 7.10164 8.26624 6.99585 7.99994 6.99585C7.73364 6.99585 7.47824 7.10164 7.28994 7.28994C7.10164 7.47824 6.99585 7.73364 6.99585 7.99994C6.99585 8.26624 7.10164 8.52164 7.28994 8.70994L12.5899 13.9999L7.28994 19.2899C7.19621 19.3829 7.12182 19.4935 7.07105 19.6154C7.02028 19.7372 6.99414 19.8679 6.99414 19.9999C6.99414 20.132 7.02028 20.2627 7.07105 20.3845C7.12182 20.5064 7.19621 20.617 7.28994 20.7099C7.3829 20.8037 7.4935 20.8781 7.61536 20.9288C7.73722 20.9796 7.86793 21.0057 7.99994 21.0057C8.13195 21.0057 8.26266 20.9796 8.38452 20.9288C8.50638 20.8781 8.61698 20.8037 8.70994 20.7099L13.9999 15.4099L19.2899 20.7099C19.3829 20.8037 19.4935 20.8781 19.6154 20.9288C19.7372 20.9796 19.8679 21.0057 19.9999 21.0057C20.132 21.0057 20.2627 20.9796 20.3845 20.9288C20.5064 20.8781 20.617 20.8037 20.7099 20.7099C20.8037 20.617 20.8781 20.5064 20.9288 20.3845C20.9796 20.2627 21.0057 20.132 21.0057 19.9999C21.0057 19.8679 20.9796 19.7372 20.9288 19.6154C20.8781 19.4935 20.8037 19.3829 20.7099 19.2899L15.4099 13.9999L20.7099 8.70994C20.8037 8.61698 20.8781 8.50638 20.9288 8.38452C20.9796 8.26266 21.0057 8.13195 21.0057 7.99994C21.0057 7.86793 20.9796 7.73722 20.9288 7.61536C20.8781 7.4935 20.8037 7.3829 20.7099 7.28994Z"
-                            fill="white"
-                          />
-                        </svg>
-                      </div>
-                      <div className="flex flex-col gap-2">
-                      <Accordion
-          style={{
-            backgroundColor: "#004343",
-            font: "",
-            boxShadow: "0px",
-            "border-radius": "5px",
-          }}
-          className=" rounded-md bg-[#004343]"
-        >
-          <AccordionSummary
-            expandIcon={
-             <ExpandMoreIcon></ExpandMoreIcon>
-            }
-            aria-controls="panel1-content"
-            id="panel1-header"
-            style={{
-             
-              // backgroundColor:"rgba(34, 34, 34, 0.8)",
-              font: "",
-              boxShadow: "0px",
-              color: "white",
-            }}
-          >
-            Select A Time Slot
-          </AccordionSummary>
-          <AccordionDetails></AccordionDetails>
-        </Accordion>
-                      </div>
-
-                   
+                      </h2>
+                      <svg
+                        onClick={handleClose2}
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="28"
+                        height="28"
+                        viewBox="0 0 28 28"
+                        fill="none"
+                      >
+                        <path
+                          d="M14 0C11.2311 0 8.52431 0.821086 6.22202 2.35943C3.91973 3.89777 2.12532 6.08427 1.06569 8.64243C0.00606596 11.2006 -0.271181 14.0155 0.269012 16.7313C0.809205 19.447 2.14258 21.9416 4.10051 23.8995C6.05845 25.8574 8.55301 27.1908 11.2687 27.731C13.9845 28.2712 16.7994 27.9939 19.3576 26.9343C21.9157 25.8747 24.1022 24.0803 25.6406 21.778C27.1789 19.4757 28 16.7689 28 14C28 10.287 26.525 6.72601 23.8995 4.1005C21.274 1.475 17.713 0 14 0ZM14 26C11.6266 26 9.30655 25.2962 7.33316 23.9776C5.35977 22.6591 3.8217 20.7849 2.91345 18.5922C2.0052 16.3995 1.76756 13.9867 2.23058 11.6589C2.69361 9.33114 3.83649 7.19295 5.51472 5.51472C7.19296 3.83649 9.33115 2.6936 11.6589 2.23058C13.9867 1.76755 16.3995 2.00519 18.5922 2.91345C20.7849 3.8217 22.6591 5.35977 23.9776 7.33316C25.2962 9.30655 26 11.6266 26 14C26 17.1826 24.7357 20.2348 22.4853 22.4853C20.2348 24.7357 17.1826 26 14 26Z"
+                          fill="white"
+                        />
+                        <path
+                          d="M20.7099 7.28994C20.617 7.19621 20.5064 7.12182 20.3845 7.07105C20.2627 7.02028 20.132 6.99414 19.9999 6.99414C19.8679 6.99414 19.7372 7.02028 19.6154 7.07105C19.4935 7.12182 19.3829 7.19621 19.2899 7.28994L13.9999 12.5899L8.70994 7.28994C8.52164 7.10164 8.26624 6.99585 7.99994 6.99585C7.73364 6.99585 7.47824 7.10164 7.28994 7.28994C7.10164 7.47824 6.99585 7.73364 6.99585 7.99994C6.99585 8.26624 7.10164 8.52164 7.28994 8.70994L12.5899 13.9999L7.28994 19.2899C7.19621 19.3829 7.12182 19.4935 7.07105 19.6154C7.02028 19.7372 6.99414 19.8679 6.99414 19.9999C6.99414 20.132 7.02028 20.2627 7.07105 20.3845C7.12182 20.5064 7.19621 20.617 7.28994 20.7099C7.3829 20.8037 7.4935 20.8781 7.61536 20.9288C7.73722 20.9796 7.86793 21.0057 7.99994 21.0057C8.13195 21.0057 8.26266 20.9796 8.38452 20.9288C8.50638 20.8781 8.61698 20.8037 8.70994 20.7099L13.9999 15.4099L19.2899 20.7099C19.3829 20.8037 19.4935 20.8781 19.6154 20.9288C19.7372 20.9796 19.8679 21.0057 19.9999 21.0057C20.132 21.0057 20.2627 20.9796 20.3845 20.9288C20.5064 20.8781 20.617 20.8037 20.7099 20.7099C20.8037 20.617 20.8781 20.5064 20.9288 20.3845C20.9796 20.2627 21.0057 20.132 21.0057 19.9999C21.0057 19.8679 20.9796 19.7372 20.9288 19.6154C20.8781 19.4935 20.8037 19.3829 20.7099 19.2899L15.4099 13.9999L20.7099 8.70994C20.8037 8.61698 20.8781 8.50638 20.9288 8.38452C20.9796 8.26266 21.0057 8.13195 21.0057 7.99994C21.0057 7.86793 20.9796 7.73722 20.9288 7.61536C20.8781 7.4935 20.8037 7.3829 20.7099 7.28994Z"
+                          fill="white"
+                        />
+                      </svg>
                     </div>
-                    {/* 
+                    <div className="flex flex-col gap-2">
+                      <Accordion
+                        style={{
+                          backgroundColor: "#004343",
+                          font: "",
+                          boxShadow: "0px",
+                          "border-radius": "5px",
+                        }}
+                        className=" rounded-md bg-[#004343]"
+                      >
+                        <AccordionSummary
+                          expandIcon={<ExpandMoreIcon></ExpandMoreIcon>}
+                          aria-controls="panel1-content"
+                          id="panel1-header"
+                          style={{
+                            // backgroundColor:"rgba(34, 34, 34, 0.8)",
+                            font: "",
+                            boxShadow: "0px",
+                            color: "white",
+                          }}
+                        >
+                          Select A Time Slot
+                        </AccordionSummary>
+                        <AccordionDetails></AccordionDetails>
+                      </Accordion>
+                    </div>
+                  </div>
+                  {/* 
                   <div onclick={() => console.log("as")} className="p-1 rounded-sm flex justify-around bg-white">
 
                     <button onMouseDown={setSwitch} className="text-white rounded-md text-[12px] w-[50%] p-1   bg-[#004343] ">Talk To An Expert</button>
                     <button onclick={() => console.log("as")} className="text-[#004343] text-[12px] w-[50%] p-1  ">FAQs</button>
                   </div> */}
-                  </div>
-                </Popover>
+                </div>
+              </Popover>
+              <div
+                onClick={handleClick}
+                onMouseEnter={() => setchatbotDisplay(false)}
+                onMouseLeave={() => setchatbotDisplay(true)}
+                className={`flex    text-clip gap-2  rounded-full border-2 border-white p-2 bg-card-gradient  ${
+                  chatbotDisplay ? "" : "typing-demo"
+                }`}
+              >
+                <img src={chatbot} alt="" />
+                {chatbotDisplay ? "" : <span>Talk to an Expert</span>}
+              </div>
+              {chatbotDisplay && (
                 <div
-                  onClick={handleClick}
-                  onMouseEnter={() => setchatbotDisplay(false)}
-                  onMouseLeave={() => setchatbotDisplay(true)}
-                  className={`flex    text-clip gap-2  rounded-full border-2 border-white p-2 bg-card-gradient  ${
-                    chatbotDisplay ? "" : "typing-demo"
+                  onClick={handleClick2}
+                  onMouseEnter={() => setchatbotDisplay2(false)}
+                  onMouseLeave={() => setchatbotDisplay2(true)}
+                  className={`flex   text-clip gap-2  rounded-full border-2 border-white p-2 bg-card-gradient  ${
+                    chatbotDisplay2 ? "" : "typing-demo"
                   }`}
                 >
                   <img src={chatbot} alt="" />
-                  {chatbotDisplay ? "" : <span>Talk to an Expert</span>}
+                  {chatbotDisplay2 ? "" : <span>FAQ</span>}
                 </div>
-                {chatbotDisplay && (
-                  <div
-                    onClick={handleClick2}
-                    onMouseEnter={() => setchatbotDisplay2(false)}
-                    onMouseLeave={() => setchatbotDisplay2(true)}
-                    className={`flex   text-clip gap-2  rounded-full border-2 border-white p-2 bg-card-gradient  ${
-                      chatbotDisplay2 ? "" : "typing-demo"
-                    }`}
-                  >
-                    <img src={chatbot} alt="" />
-                    {chatbotDisplay2 ? "" : <span>FAQ</span>}
-                  </div>
-                )}
-          
+              )}
 
               <div className="flex flex-row justify-end items-center gap-5">
                 {/* <button
