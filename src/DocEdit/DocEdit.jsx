@@ -6,6 +6,7 @@ import NavbarLeft from "../components/Navbar/NavbarLeft";
 import { useDispatch, useSelector } from "react-redux";
 import loaderGif from "../assets/icons/2.gif";
 import EditSidebar from "../components/ui/EditSidebar";
+import Back from "../assets/icons/back-arrow.png";
 import { useNavigate } from "react-router-dom";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
@@ -27,15 +28,15 @@ import { setIsGenerateDocCalledFalse } from "../features/DocumentSlice";
 import chatbot from "../assets/icons/chatbot.svg";
 import Popover from "@mui/material/Popover";
 import Typography from "@mui/material/Typography";
+import toast from "react-hot-toast";
 
 const DocEdit = ({ onSave }) => {
-  
-  const faqData = [
-    { title: "asdasd", data: "asdsad" },
-    { title: "asdasd", data: "asdsad" },
-    { title: "asdasd", data: "asdsad" },
-    { title: "asdasd", data: "asdsad" },
-  ];
+  // const faqData = [
+  //   { title: "asdasd", data: "asdsad" },
+  //   { title: "asdasd", data: "asdsad" },
+  //   { title: "asdasd", data: "asdsad" },
+  //   { title: "asdasd", data: "asdsad" },
+  // ];
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -50,6 +51,7 @@ const DocEdit = ({ onSave }) => {
   const texteditable = useSelector((state) => state.document.uploadDocText);
   const doc_id = useSelector((state) => state.document.docId);
 
+  const [faqData, setfaqData] = useState([]);
   const [text, setText] = useState("");
   const [loading, setLoading] = useState(false);
   const [activeSidebar, setActiveSidebar] = useState("preview");
@@ -61,9 +63,13 @@ const DocEdit = ({ onSave }) => {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [anchorEl2, setAnchorEl2] = React.useState(null);
   const [chatbotSwitch, setchatbotSwitch] = React.useState(true);
+  const [customerType, setCustomerType] = useState("");
   const [showMore1, setshowMore1] = useState(false);
   const [showMore2, setshowMore2] = useState(false);
   const [pageNo, setPageNo] = useState(0);
+  const [noOfPages, setnoOfPages] = useState(0);
+  const [payemnetComplete, setpayemnetComplete] = useState(false);
+  const [Hour, setHour] = useState(null);
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -71,6 +77,8 @@ const DocEdit = ({ onSave }) => {
     query: "",
     comments: "",
     hour: null,
+    enddate: null,
+    startdate: null,
     date: null,
   });
 
@@ -86,8 +94,22 @@ const DocEdit = ({ onSave }) => {
   const handleClose = () => {
     setAnchorEl(null);
   };
-  const handleClick2 = (event) => {
+  const handleClick2 = async (event) => {
     setAnchorEl2(event.currentTarget);
+    const res = await axios.post(
+      `${NODE_API_ENDPOINT}/ai-drafter/anomaly_questions`,
+      { doc_id: doc_id }
+    );
+    let data = [];
+    var ques = res.data.data.fetcheAnomalyQuestions.anomaly_questions;
+    Object.keys(ques).forEach((i) => {
+      const obj = {
+        title: i,
+        data: ques[i],
+      };
+      data.push(obj);
+    });
+    setfaqData(data);
   };
 
   const handleClose2 = () => {
@@ -236,24 +258,69 @@ const DocEdit = ({ onSave }) => {
   };
 
   const handleNext2 = (e) => {
-    // if(formData.hour ==null || formData.date ==null){
-    //   return
-    // }
+    if (formData.startdate == null || formData.date == null) {
+      toast.error("select a date and a hour");
+      return;
+    }
 
     setPageNo(3);
   };
+
+  const handleDateChange = (date, date2, i) => {
+    setFormData({ ...formData, ["enddate"]: date2, ["startdate"]: date });
+    setHour(i);
+    console.log(formData);
+  };
+
   const rows = [];
   for (let i = 0; i < 20; i++) {
     const time = 10 + Number((i / 2).toFixed());
+    const time1 = 10 + Number(((i + 1) / 2).toFixed());
 
     rows.push(
-      <div className="border  text-center border-white  rounded p-1">
+      <div
+        onClick={() =>
+          handleDateChange(
+            time + ":" + `${i % 2 == 0 ? "30" : "00"}:00`,
+            time1 + ":" + `${(i + 1) % 2 == 0 ? "30" : "00"}:00`,
+            i
+          )
+        }
+        className={`border  text-center cursor-pointer ${
+          Hour == i ? "border-green-400" : "border-white"
+        }  rounded p-1`}
+      >
         <span className="rounded">
           {time + ":" + `${i % 2 == 0 ? "30" : "00"}`}
         </span>
       </div>
     );
   }
+  const handlesubmitchatbot = async () => {
+    try {
+      const requestBody = {
+        doc_id: doc_id,
+        User_name: formData.name,
+        email_id: formData.email,
+        contact_no: formData.mobile,
+        meeting_date: formData.date,
+        start_time: formData.startdate,
+        end_time: formData.enddate,
+        user_query: formData.query,
+        additional_details: formData.comments,
+        number_of_pages: "10",
+        customer_type: customerType,
+      };
+      const res = await axios.post(
+        `${NODE_API_ENDPOINT}/ai-drafter/api/telegram_bot`,
+        requestBody
+      );
+      console.log(res);
+      if ((res.status = 200)) {
+        setpayemnetComplete(true);
+      }
+    } catch (e) {}
+  };
 
   const chatbotData = [
     <>
@@ -337,7 +404,15 @@ const DocEdit = ({ onSave }) => {
       </p>
 
       <div className="text-[10px] mb-20 flex flex-col gap-3 bg-white p-2 rounded-md">
-        <Accordion
+        <div className="flex p-4 bg-[#004343]">
+          <input
+            type="date"
+            name="date"
+            onChange={handleChange}
+            className="bg-[#004343]"
+          ></input>
+        </div>
+        {/* <Accordion
           style={{
             backgroundColor: "#004343",
             font: "",
@@ -371,10 +446,72 @@ const DocEdit = ({ onSave }) => {
               color: "white",
             }}
           >
-            Select A Time Slot
+            select date
           </AccordionSummary>
-          <AccordionDetails></AccordionDetails>
-        </Accordion>
+          <AccordionDetails>
+            {" "}
+            <div class="" >
+              <div class="datepicker-header">
+                <button class="prev">Prev</button>
+
+                <div>
+                  <select class="month-input">
+                    <option>January</option>
+                    <option>February</option>
+                    <option>March</option>
+                    <option>April</option>
+                    <option>May</option>
+                    <option>June</option>
+                    <option>July</option>
+                    <option>August</option>
+                    <option>September</option>
+                    <option>October</option>
+                    <option>November</option>
+                    <option>December</option>
+                  </select>
+                  <input type="number" class="year-input" />
+                </div>
+
+                <button class="next">Next</button>
+              </div>
+
+              <div class="days">
+                <span>Sun</span>
+                <span>Mon</span>
+                <span>Tue</span>
+                <span>Wed</span>
+                <span>Thu</span>
+                <span>Fri</span>
+                <span>Sat</span>
+              </div>
+
+              <div class="dates">
+                <button>1</button>
+                <button>2</button>
+                <button>3</button>
+                <button>4</button>
+                <button>5</button>
+                <button>6</button>
+                <button>7</button>
+                <button>8</button>
+                <button>9</button>
+                <button>10</button>
+                <button>11</button>  
+                <button>12</button>  
+                <button>13</button>  
+                <button>14</button>  
+                <button>11</button>  
+                <button>11</button>  
+                <button>11</button>  
+              </div>
+
+              <div class="datepicker-footer">
+                <button class="cancel">Cancel</button>
+                <button class="apply">Apply</button>
+              </div>
+            </div>
+          </AccordionDetails>
+        </Accordion> */}
         <Accordion
           style={{
             backgroundColor: "#004343",
@@ -408,7 +545,7 @@ const DocEdit = ({ onSave }) => {
         <div className="flex justify-end">
           <button
             onClick={handleNext2}
-            className="w-[50%]  bg-logo-gradient p-2 rounded-md text-white font-semibold hover:bg-teal-700"
+            className="w-[50%]   bg-logo-gradient p-2 rounded-md text-white font-semibold hover:bg-teal-700"
           >
             Next
           </button>
@@ -452,7 +589,13 @@ const DocEdit = ({ onSave }) => {
             <span className="text-xs ">/slot</span>
           </div>
         </div>
-        <div className="text-center p-3 font-bold bg-logo-gradient rounded">
+        <div
+          onClick={() => {
+            setCustomerType("consulting");
+            handlesubmitchatbot();
+          }}
+          className="text-center cursor-pointer p-3 font-bold bg-logo-gradient rounded"
+        >
           Proceed with Booking
         </div>
         {!showMore2 && (
@@ -461,7 +604,13 @@ const DocEdit = ({ onSave }) => {
               Consultation on Document Generated by ADIRA AI
             </div>
             <button
-              onMouseDown={() => setshowMore2(true)}
+              onMouseDown={async () => {
+                setCustomerType(
+                  "consulting and vetting of document generated by Adira"
+                );
+
+                setshowMore2(true);
+              }}
               className="flex text-xs items-center gap-2 rounded border justify-center  w-1/3"
             >
               <svg
@@ -490,7 +639,7 @@ const DocEdit = ({ onSave }) => {
         <div className="flex flex-col border-2 border-white p-2 rounded bg-teal-900">
           <div
             onClick={() => setPageNo(4)}
-            className="text-white text-[12px] font-bold border-b-2 pb-1"
+            className="text-white cursor-pointer text-[12px] font-bold border-b-2 pb-1"
           >
             Document Related Consultation
           </div>
@@ -500,11 +649,14 @@ const DocEdit = ({ onSave }) => {
           </div>
         </div>
         <div
-          onClick={() => setPageNo(2)}
-          className="flex flex-col border-2 border-white p-2 rounded bg-teal-900"
+          onClick={() => {
+            setCustomerType("consulting");
+            setPageNo(2);
+          }}
+          className="flex flex-col cursor-pointer border-2 border-white p-2 rounded bg-teal-900"
         >
           <div className="text-white text-[12px] font-bold border-b-2 pb-1">
-            Document Legal Consultation
+            Basic Legal Consultation
           </div>
           <div className="text-white pt-1 text-[10px] ">
             For Consultation with our Expert on Legal Matters that of any type
@@ -525,7 +677,7 @@ const DocEdit = ({ onSave }) => {
       <div className="flex flex-col gap-3">
         <div className="flex flex-col gap-3  p-4 rounded-md bg-[#004343]">
           <div className="text-[15px] font-bold">
-            Document Generated ByAdira AI
+            Document Generated By Adira AI
           </div>
           <div>
             <ul className="list-disc text-xs list-inside">
@@ -535,10 +687,20 @@ const DocEdit = ({ onSave }) => {
             </ul>
           </div>
           <div
-            onClick={() => {
+            onClick={async () => {
+              setCustomerType("only vetting of document generated by Adira");
+              const res = await axios.post(
+                `${NODE_API_ENDPOINT}/ai-drafter/api/get_pdf_count`,
+                {
+                  document: ediText,
+                }
+              );
+              console.log(res);
+              const pages = res.data.no_of_pages;
+              setnoOfPages(pages);
               setPageNo(5);
             }}
-            className="text-center text-[15px] p-2 border-2 py-1 rounded-md bg-logo-gradient"
+            className="text-center cursor-pointer text-[15px] p-2 border-2 py-1 rounded-md bg-logo-gradient"
           >
             Proceed
           </div>
@@ -554,7 +716,13 @@ const DocEdit = ({ onSave }) => {
               <li>Legal Document Update Assistance</li>
             </ul>
           </div>
-          <div className="text-center text-[15px] p-2 border-2 py-1 rounded-md bg-logo-gradient">
+          <div
+            onClick={() => {
+              setCustomerType("consulting");
+              setPageNo(2);
+            }}
+            className="text-center cursor-pointer text-[15px] p-2 border-2 py-1 rounded-md bg-logo-gradient"
+          >
             Proceed
           </div>
         </div>
@@ -614,12 +782,19 @@ const DocEdit = ({ onSave }) => {
               />
             </svg>
             <div>
-              <span className="text-[15px] font-bold">₹0000 </span>
+              <span className="text-[15px] font-bold">
+                ₹{`${noOfPages < 20 ? noOfPages * 200 : noOfPages * 100}`}{" "}
+              </span>
             </div>
           </div>
         </div>
-        <div className="text-center p-3 font-bold bg-logo-gradient rounded">
-          Proceed with Bookin
+        <div
+          onClick={() => {
+            handlesubmitchatbot();
+          }}
+          className="text-center cursor-pointer p-3 font-bold bg-logo-gradient rounded"
+        >
+          Proceed with Booking
         </div>
         {!showMore1 && (
           <div className="flex gap-3">
@@ -628,7 +803,12 @@ const DocEdit = ({ onSave }) => {
             </div>
 
             <button
-              onClick={() => setshowMore1(true)}
+              onClick={() => {
+                setCustomerType(
+                  "consulting and vetting of document generated by Adira"
+                );
+                setshowMore1(true);
+              }}
               className="flex text-xs items-center gap-2 rounded border justify-center  w-1/3"
             >
               <svg
@@ -712,36 +892,50 @@ const DocEdit = ({ onSave }) => {
                 }}
                 className="flex w-[30%] bg-transparent overflow-auto hide-scrollbar   rounded-2xl  "
               >
-                <div className="p-4 rounded-2xl flex overflow-auto flex-col hide-scrollbar gap-4  bg-btn-gradient">
-                  <div className="max-w-sm mx-auto flex flex-col gap-3 hide-scrollbar bg-[#00232F] text-white rounded-2xl p-6 shadow-lg">
-                    <div className="flex border-b-2 border-b-[#004343] pb-1 justify-around flex-row gap-2 scrollbar-hide  items-start">
-                      <img src={chatbot} alt="" />
+                {!payemnetComplete ? (
+                  <div className="p-4 rounded-2xl flex overflow-auto flex-col hide-scrollbar gap-4  bg-btn-gradient">
+                    <div className="max-w-sm mx-auto flex flex-col gap-3 hide-scrollbar bg-[#00232F] text-white rounded-2xl p-6 shadow-lg">
+                      <div className="flex border-b-2 border-b-[#004343] pb-1 justify-around flex-row gap-2 scrollbar-hide  items-start">
+                        <img src={chatbot} alt="" />
 
-                      <h2 className="text-[15px] scrollbar-hide font-semibold mb-4">
-                        How Can We Help You Today?
-                      </h2>
-                      <svg
-                        onClick={handleClose}
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="28"
-                        height="28"
-                        viewBox="0 0 28 28"
-                        fill="none"
-                      >
-                        <path
-                          d="M14 0C11.2311 0 8.52431 0.821086 6.22202 2.35943C3.91973 3.89777 2.12532 6.08427 1.06569 8.64243C0.00606596 11.2006 -0.271181 14.0155 0.269012 16.7313C0.809205 19.447 2.14258 21.9416 4.10051 23.8995C6.05845 25.8574 8.55301 27.1908 11.2687 27.731C13.9845 28.2712 16.7994 27.9939 19.3576 26.9343C21.9157 25.8747 24.1022 24.0803 25.6406 21.778C27.1789 19.4757 28 16.7689 28 14C28 10.287 26.525 6.72601 23.8995 4.1005C21.274 1.475 17.713 0 14 0ZM14 26C11.6266 26 9.30655 25.2962 7.33316 23.9776C5.35977 22.6591 3.8217 20.7849 2.91345 18.5922C2.0052 16.3995 1.76756 13.9867 2.23058 11.6589C2.69361 9.33114 3.83649 7.19295 5.51472 5.51472C7.19296 3.83649 9.33115 2.6936 11.6589 2.23058C13.9867 1.76755 16.3995 2.00519 18.5922 2.91345C20.7849 3.8217 22.6591 5.35977 23.9776 7.33316C25.2962 9.30655 26 11.6266 26 14C26 17.1826 24.7357 20.2348 22.4853 22.4853C20.2348 24.7357 17.1826 26 14 26Z"
-                          fill="white"
-                        />
-                        <path
-                          d="M20.7099 7.28994C20.617 7.19621 20.5064 7.12182 20.3845 7.07105C20.2627 7.02028 20.132 6.99414 19.9999 6.99414C19.8679 6.99414 19.7372 7.02028 19.6154 7.07105C19.4935 7.12182 19.3829 7.19621 19.2899 7.28994L13.9999 12.5899L8.70994 7.28994C8.52164 7.10164 8.26624 6.99585 7.99994 6.99585C7.73364 6.99585 7.47824 7.10164 7.28994 7.28994C7.10164 7.47824 6.99585 7.73364 6.99585 7.99994C6.99585 8.26624 7.10164 8.52164 7.28994 8.70994L12.5899 13.9999L7.28994 19.2899C7.19621 19.3829 7.12182 19.4935 7.07105 19.6154C7.02028 19.7372 6.99414 19.8679 6.99414 19.9999C6.99414 20.132 7.02028 20.2627 7.07105 20.3845C7.12182 20.5064 7.19621 20.617 7.28994 20.7099C7.3829 20.8037 7.4935 20.8781 7.61536 20.9288C7.73722 20.9796 7.86793 21.0057 7.99994 21.0057C8.13195 21.0057 8.26266 20.9796 8.38452 20.9288C8.50638 20.8781 8.61698 20.8037 8.70994 20.7099L13.9999 15.4099L19.2899 20.7099C19.3829 20.8037 19.4935 20.8781 19.6154 20.9288C19.7372 20.9796 19.8679 21.0057 19.9999 21.0057C20.132 21.0057 20.2627 20.9796 20.3845 20.9288C20.5064 20.8781 20.617 20.8037 20.7099 20.7099C20.8037 20.617 20.8781 20.5064 20.9288 20.3845C20.9796 20.2627 21.0057 20.132 21.0057 19.9999C21.0057 19.8679 20.9796 19.7372 20.9288 19.6154C20.8781 19.4935 20.8037 19.3829 20.7099 19.2899L15.4099 13.9999L20.7099 8.70994C20.8037 8.61698 20.8781 8.50638 20.9288 8.38452C20.9796 8.26266 21.0057 8.13195 21.0057 7.99994C21.0057 7.86793 20.9796 7.73722 20.9288 7.61536C20.8781 7.4935 20.8037 7.3829 20.7099 7.28994Z"
-                          fill="white"
-                        />
-                      </svg>
-                    </div>
-                    {/* <hr className="bg-[#004343] border border-[#004343]" /> */}
+                        <h2 className="text-[15px] scrollbar-hide font-semibold mb-4">
+                          How Can We Help You Today?
+                        </h2>
+                        {pageNo != 0 ? (
+                          <div
+                            onClick={() => {
+                              const page = pageNo - 1 >= 0 ? pageNo - 1 : 0;
+                              setPageNo(page);
+                            }}
+                            className="cursor-pointer h-6 w-6 mt-[2px] p-1 border-2 border-white rounded-full"
+                          >
+                            <img src={Back} alt="back" />
+                          </div>
+                        ) : (
+                          ""
+                        )}
+                        <svg
+                          onClick={handleClose}
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="28"
+                          height="28"
+                          viewBox="0 0 28 28"
+                          fill="none"
+                        >
+                          <path
+                            d="M14 0C11.2311 0 8.52431 0.821086 6.22202 2.35943C3.91973 3.89777 2.12532 6.08427 1.06569 8.64243C0.00606596 11.2006 -0.271181 14.0155 0.269012 16.7313C0.809205 19.447 2.14258 21.9416 4.10051 23.8995C6.05845 25.8574 8.55301 27.1908 11.2687 27.731C13.9845 28.2712 16.7994 27.9939 19.3576 26.9343C21.9157 25.8747 24.1022 24.0803 25.6406 21.778C27.1789 19.4757 28 16.7689 28 14C28 10.287 26.525 6.72601 23.8995 4.1005C21.274 1.475 17.713 0 14 0ZM14 26C11.6266 26 9.30655 25.2962 7.33316 23.9776C5.35977 22.6591 3.8217 20.7849 2.91345 18.5922C2.0052 16.3995 1.76756 13.9867 2.23058 11.6589C2.69361 9.33114 3.83649 7.19295 5.51472 5.51472C7.19296 3.83649 9.33115 2.6936 11.6589 2.23058C13.9867 1.76755 16.3995 2.00519 18.5922 2.91345C20.7849 3.8217 22.6591 5.35977 23.9776 7.33316C25.2962 9.30655 26 11.6266 26 14C26 17.1826 24.7357 20.2348 22.4853 22.4853C20.2348 24.7357 17.1826 26 14 26Z"
+                            fill="white"
+                          />
+                          <path
+                            d="M20.7099 7.28994C20.617 7.19621 20.5064 7.12182 20.3845 7.07105C20.2627 7.02028 20.132 6.99414 19.9999 6.99414C19.8679 6.99414 19.7372 7.02028 19.6154 7.07105C19.4935 7.12182 19.3829 7.19621 19.2899 7.28994L13.9999 12.5899L8.70994 7.28994C8.52164 7.10164 8.26624 6.99585 7.99994 6.99585C7.73364 6.99585 7.47824 7.10164 7.28994 7.28994C7.10164 7.47824 6.99585 7.73364 6.99585 7.99994C6.99585 8.26624 7.10164 8.52164 7.28994 8.70994L12.5899 13.9999L7.28994 19.2899C7.19621 19.3829 7.12182 19.4935 7.07105 19.6154C7.02028 19.7372 6.99414 19.8679 6.99414 19.9999C6.99414 20.132 7.02028 20.2627 7.07105 20.3845C7.12182 20.5064 7.19621 20.617 7.28994 20.7099C7.3829 20.8037 7.4935 20.8781 7.61536 20.9288C7.73722 20.9796 7.86793 21.0057 7.99994 21.0057C8.13195 21.0057 8.26266 20.9796 8.38452 20.9288C8.50638 20.8781 8.61698 20.8037 8.70994 20.7099L13.9999 15.4099L19.2899 20.7099C19.3829 20.8037 19.4935 20.8781 19.6154 20.9288C19.7372 20.9796 19.8679 21.0057 19.9999 21.0057C20.132 21.0057 20.2627 20.9796 20.3845 20.9288C20.5064 20.8781 20.617 20.8037 20.7099 20.7099C20.8037 20.617 20.8781 20.5064 20.9288 20.3845C20.9796 20.2627 21.0057 20.132 21.0057 19.9999C21.0057 19.8679 20.9796 19.7372 20.9288 19.6154C20.8781 19.4935 20.8037 19.3829 20.7099 19.2899L15.4099 13.9999L20.7099 8.70994C20.8037 8.61698 20.8781 8.50638 20.9288 8.38452C20.9796 8.26266 21.0057 8.13195 21.0057 7.99994C21.0057 7.86793 20.9796 7.73722 20.9288 7.61536C20.8781 7.4935 20.8037 7.3829 20.7099 7.28994Z"
+                            fill="white"
+                          />
+                        </svg>
+                      </div>
+                      {/* <hr className="bg-[#004343] border border-[#004343]" /> */}
 
-                    {chatbotData[pageNo]}
-                    {/* <form className="text-[10px] bg-white p-2 rounded-md">
+                      {chatbotData[pageNo]}
+                      {/* <form className="text-[10px] bg-white p-2 rounded-md">
                       <div className="mb-2 text-xs">
                         <input
                           type="text"
@@ -787,14 +981,53 @@ const DocEdit = ({ onSave }) => {
                         </button>
                       </div>
                     </form> */}
-                  </div>
-                  {/* 
+                    </div>
+                    {/* 
                   <div onclick={() => console.log("as")} className="p-1 rounded-sm flex justify-around bg-white">
 
                     <button onMouseDown={setSwitch} className="text-white rounded-md text-[12px] w-[50%] p-1   bg-[#004343] ">Talk To An Expert</button>
                     <button onclick={() => console.log("as")} className="text-[#004343] text-[12px] w-[50%] p-1  ">FAQs</button>
                   </div> */}
-                </div>
+                  </div>
+                ) : (
+                  <div className="p-4 text-white rounded-2xl flex overflow-auto flex-col hide-scrollbar gap-4  bg-btn-gradient">
+                    <div className="flex gap-10 items-center flex-col">
+                      <div className="flex justify-end w-full items-end">
+                        <svg
+                          onClick={() => {
+                            setpayemnetComplete(false);
+                            setPageNo(0);
+                            handleClose();
+                          }}
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="28"
+                          height="28"
+                          viewBox="0 0 28 28"
+                          fill="none"
+                        >
+                          <path
+                            d="M14 0C11.2311 0 8.52431 0.821086 6.22202 2.35943C3.91973 3.89777 2.12532 6.08427 1.06569 8.64243C0.00606596 11.2006 -0.271181 14.0155 0.269012 16.7313C0.809205 19.447 2.14258 21.9416 4.10051 23.8995C6.05845 25.8574 8.55301 27.1908 11.2687 27.731C13.9845 28.2712 16.7994 27.9939 19.3576 26.9343C21.9157 25.8747 24.1022 24.0803 25.6406 21.778C27.1789 19.4757 28 16.7689 28 14C28 10.287 26.525 6.72601 23.8995 4.1005C21.274 1.475 17.713 0 14 0ZM14 26C11.6266 26 9.30655 25.2962 7.33316 23.9776C5.35977 22.6591 3.8217 20.7849 2.91345 18.5922C2.0052 16.3995 1.76756 13.9867 2.23058 11.6589C2.69361 9.33114 3.83649 7.19295 5.51472 5.51472C7.19296 3.83649 9.33115 2.6936 11.6589 2.23058C13.9867 1.76755 16.3995 2.00519 18.5922 2.91345C20.7849 3.8217 22.6591 5.35977 23.9776 7.33316C25.2962 9.30655 26 11.6266 26 14C26 17.1826 24.7357 20.2348 22.4853 22.4853C20.2348 24.7357 17.1826 26 14 26Z"
+                            fill="white"
+                          />
+                          <path
+                            d="M20.7099 7.28994C20.617 7.19621 20.5064 7.12182 20.3845 7.07105C20.2627 7.02028 20.132 6.99414 19.9999 6.99414C19.8679 6.99414 19.7372 7.02028 19.6154 7.07105C19.4935 7.12182 19.3829 7.19621 19.2899 7.28994L13.9999 12.5899L8.70994 7.28994C8.52164 7.10164 8.26624 6.99585 7.99994 6.99585C7.73364 6.99585 7.47824 7.10164 7.28994 7.28994C7.10164 7.47824 6.99585 7.73364 6.99585 7.99994C6.99585 8.26624 7.10164 8.52164 7.28994 8.70994L12.5899 13.9999L7.28994 19.2899C7.19621 19.3829 7.12182 19.4935 7.07105 19.6154C7.02028 19.7372 6.99414 19.8679 6.99414 19.9999C6.99414 20.132 7.02028 20.2627 7.07105 20.3845C7.12182 20.5064 7.19621 20.617 7.28994 20.7099C7.3829 20.8037 7.4935 20.8781 7.61536 20.9288C7.73722 20.9796 7.86793 21.0057 7.99994 21.0057C8.13195 21.0057 8.26266 20.9796 8.38452 20.9288C8.50638 20.8781 8.61698 20.8037 8.70994 20.7099L13.9999 15.4099L19.2899 20.7099C19.3829 20.8037 19.4935 20.8781 19.6154 20.9288C19.7372 20.9796 19.8679 21.0057 19.9999 21.0057C20.132 21.0057 20.2627 20.9796 20.3845 20.9288C20.5064 20.8781 20.617 20.8037 20.7099 20.7099C20.8037 20.617 20.8781 20.5064 20.9288 20.3845C20.9796 20.2627 21.0057 20.132 21.0057 19.9999C21.0057 19.8679 20.9796 19.7372 20.9288 19.6154C20.8781 19.4935 20.8037 19.3829 20.7099 19.2899L15.4099 13.9999L20.7099 8.70994C20.8037 8.61698 20.8781 8.50638 20.9288 8.38452C20.9796 8.26266 21.0057 8.13195 21.0057 7.99994C21.0057 7.86793 20.9796 7.73722 20.9288 7.61536C20.8781 7.4935 20.8037 7.3829 20.7099 7.28994Z"
+                            fill="white"
+                          />
+                        </svg>
+                      </div>
+                      <img className="h-20 w-20" src={chatbot}></img>
+                      <div className="flex flex-col items-center">
+                        <div className="text-md font-bold">
+                          Your Session is booked with our Expert
+                        </div>
+                        <div className="text-xs">
+                          Please Check Your Mail for all the session details
+                        </div>
+                      </div>
+                      <div className="pb-[200px]"></div>
+                    </div>
+                  </div>
+                )}
               </Popover>
 
               <Popover
