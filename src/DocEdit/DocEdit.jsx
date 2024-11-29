@@ -49,6 +49,7 @@ const DocEdit = ({ onSave }) => {
   const currentUser = useSelector((state) => state.auth.user);
   // console.log(ediText);
   const texteditable = useSelector((state) => state.document.uploadDocText);
+  const PlanData = useSelector((state) => state.auth.PlanData);
   const doc_id = useSelector((state) => state.document.docId);
 
   const [faqData, setfaqData] = useState([]);
@@ -311,7 +312,7 @@ const DocEdit = ({ onSave }) => {
       alert("Razorpay SDK failed to load. Are you online?");
     };
     script.onload = async () => {
-    console.log("hi");
+      console.log("hi");
 
       try {
         let amountdata = 0;
@@ -1306,7 +1307,13 @@ const DocEdit = ({ onSave }) => {
                   // <PDFDownloadButton pdfDownloadText={formatPdfText(ediText)} />
                   <button
                     className=" transition ease-in-out duration-1000  hover:scale-110 p-2 rounded-md px-10 border-2 border-teal-700"
-                    onClick={handlepdfdownload}
+                    onClick={() => {
+                      if (PlanData?.isDownloadWithWaterMark) {
+                        handlepdfdownload();
+                      } else {
+                        toast.error("PLEASE UPGRADE YOUR PLAN");
+                      }
+                    }}
                   >
                     Download
                   </button>
@@ -1326,13 +1333,29 @@ const DocEdit = ({ onSave }) => {
                 </button>
                 <button
                   className="transition ease-in-out duration-1000  hover:scale-110 p-2 px-5 rounded-md border-2 border-teal-700"
-                  onClick={handlePreviewClick}
+                  onClick={() => {
+                    if (PlanData?.isSummerizeDocument) {
+                      handlePreviewClick();
+                    } else {
+                      toast.error("PLEASE UPGRADE YOUR PLAN");
+                    }
+                  }}
                 >
                   Summary
                 </button>
                 {savebutton ? (
                   <button
-                    onClick={handleSave}
+                    onClick={
+                      ()=>{
+                        if(PlanData?.isSnippet){
+
+                          handleSave()
+                        }
+                        else{
+                          toast.error("PLEASE UPGRADE YOUR PLAN")
+                        }
+                      }
+                      }
                     className="transition ease-in-out duration-1000  hover:scale-110 p-2 rounded-md px-10 border-2 border-teal-700"
                   >
                     Save

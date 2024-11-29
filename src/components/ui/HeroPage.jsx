@@ -6,8 +6,12 @@ import Prompt from "../../assets/icons/Prompt.svg";
 import UserModal from "../../components/Modals/UserModal";
 import { TypeAnimation } from "react-type-animation";
 import group from "../../assets/icons/Group.svg";
+import { useSelector } from "react-redux";
+import toast from "react-hot-toast";
 const HeroPage = () => {
   let navigate = useNavigate();
+
+  const userPlan = useSelector((state) => state.auth.PlanData);
   return (
     <div className="flex flex-col gap-5 items-center justify-between w-full h-full px-4">
       <div className="flex flex-col gap-4 items-center text-center">
@@ -33,11 +37,10 @@ const HeroPage = () => {
               fontSize: "3.5rem",
               fontWeight: "700",
               display: "inline-block",
-              
+
               // borderStyle: "solid",
               // borderWidth: "5px",
             }}
-          
             cursor={false}
             className="type"
             repeat={Infinity}
@@ -49,55 +52,109 @@ const HeroPage = () => {
       </div>
       <div className="grid font-sans md:grid-cols-4 gap-8">
         <div
-          onClick={() => navigate("/upload")}
+          onClick={() => {
+            if (userPlan?.isUploadOwnDocument) {
+              navigate("/upload");
+            }
+            else{
+              toast.error("PLEASE UPGRADE YOUR PLAN");
+            }
+          }}
           className="hover:scale-110 duration-200 cursor-pointer bg-logo-gradient flex flex-col gap-3 items-center justify-center px-3 py-6 rounded-lg border-2 border-white"
         >
-          <img src={"https://res.cloudinary.com/dumjofgxz/image/upload/v1730969164/Cloud_vfpmhw.svg"}className="h-[100px] w-[100px] object-contain" alt="Upload Icon" />
+          <img
+            src={
+              "https://res.cloudinary.com/dumjofgxz/image/upload/v1730969164/Cloud_vfpmhw.svg"
+            }
+            className="h-[100px] w-[100px] object-contain"
+            alt="Upload Icon"
+          />
           <div className="flex flex-col  ">
-
-          <p className="text-center text-xl font-bold px-1">Upload Your Document</p>
-          <p className="text-center text-sm px-1">Quickly upload your legal file</p>
+            <p className="text-center text-xl font-bold px-1">
+              Upload Your Document
+            </p>
+            <p className="text-center text-sm px-1">
+              Quickly upload your legal file
+            </p>
           </div>
         </div>
         <div
-          onClick={() => navigate("/Drafter")}
+          onClick={() => {
+            if (userPlan?.isPromptDrafting) {
+              navigate("/Drafter");
+            } else {
+              toast.error("PLEASE UPGRADE YOUR PLAN");
+            }
+          }}
           className="hover:scale-110 duration-200 cursor-pointer bg-logo-gradient flex flex-col gap-3 items-center justify-center  px-3 py-6 rounded-lg border-2 border-white"
         >
-          <img src={"https://res.cloudinary.com/dumjofgxz/image/upload/v1730969165/Prompt_bkzjmu.svg"} className="h-[90px] w-[90px] object-contain"  alt="Prompt Icon" />
+          <img
+            src={
+              "https://res.cloudinary.com/dumjofgxz/image/upload/v1730969165/Prompt_bkzjmu.svg"
+            }
+            className="h-[90px] w-[90px] object-contain"
+            alt="Prompt Icon"
+          />
           <div className="flex flex-col ">
-
-          <p className="text-center text-lg font-bold  px-1">
-            Create Document from Prompt
-          </p>
-          <p className="text-center text-sm  px-1">
-          Describe it, we’ll draft it
-          </p>
+            <p className="text-center text-lg font-bold  px-1">
+              Create Document from Prompt
+            </p>
+            <p className="text-center text-sm  px-1">
+              Describe it, we’ll draft it
+            </p>
           </div>
         </div>
         <div
-          onClick={() => navigate("/DocType")}
+          onClick={() => {
+            if (userPlan?.isTypeOfDocument) {
+              navigate("/DocType");
+            } else {
+              toast.error("PLEASE UPGRADE YOUR PLAN");
+            }
+          }}
           className="hover:scale-110 duration-200 cursor-pointer bg-logo-gradient flex flex-col gap-3 items-center justify-center  px-3 py-6 rounded-lg border-2 border-white"
         >
-          <img src={"https://res.cloudinary.com/dumjofgxz/image/upload/v1730969164/Type_m2w22m.svg"} className="h-[80px] w-[80px] object-contain"  alt="Type Icon" />
+          <img
+            src={
+              "https://res.cloudinary.com/dumjofgxz/image/upload/v1730969164/Type_m2w22m.svg"
+            }
+            className="h-[80px] w-[80px] object-contain"
+            alt="Type Icon"
+          />
           <div className="flex flex-col ">
-
-          <p className="text-center text-xl font-bold px-1">Select Type of Document</p>
-          <p className="text-center text-sm  px-1">Quickly upload your legal file</p>
+            <p className="text-center text-xl font-bold px-1">
+              Select Type of Document
+            </p>
+            <p className="text-center text-sm  px-1">
+              Quickly upload your legal file
+            </p>
           </div>
         </div>
         <div
-            onClick={() => navigate("/Prompt")}
-            className="hover:scale-110 duration-200 cursor-pointer bg-logo-gradient flex flex-col gap-3 items-center justify-center  px-3 py-6 rounded-lg border-2 border-white"
-          >
-            <img src={group} className="h-[80px] w-[80px] object-contain"  alt="Type Icon" />
+          onClick={() => {
+            if (userPlan?.isUploadOwnDocumentWithPrompt) {
+              navigate("/Prompt");
+            } else {
+              toast.error("PLEASE UPGRADE YOUR PLAN");
+            }
+          }}
+          className="hover:scale-110 duration-200 cursor-pointer bg-logo-gradient flex flex-col gap-3 items-center justify-center  px-3 py-6 rounded-lg border-2 border-white"
+        >
+          <img
+            src={group}
+            className="h-[80px] w-[80px] object-contain"
+            alt="Type Icon"
+          />
 
-    
-            <div className="flex flex-col ">
-
-            <p className="text-center text-xl font-bold px-1">File along with Prompt</p>
-            <p className="text-center text-sm  px-1">Upload your file and describe using prompt</p>
-            </div>
+          <div className="flex flex-col ">
+            <p className="text-center text-xl font-bold px-1">
+              File along with Prompt
+            </p>
+            <p className="text-center text-sm  px-1">
+              Upload your file and describe using prompt
+            </p>
           </div>
+        </div>
       </div>
     </div>
   );

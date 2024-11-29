@@ -23,12 +23,13 @@ export const retrieveDrafterAuth = createAsyncThunk(
 );
 
 const initialState = {
-  user: {"jwt":"asbdsa"},
+  user: {"jwt":"aasdsa"},
   isOtpVerified: false,
   fileBlob: false,
   status: "unfullfilled",
   userLoading: false,
-  props:null
+  props: null,
+  PlanData: null,
 };
 
 const authSlice = createSlice({
@@ -66,6 +67,9 @@ const authSlice = createSlice({
     setLoadingFalse: (state) => {
       state.userLoading = false;
     },
+    setPlanData: (state, action) => {
+      state.PlanData = action.payload;
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(retrieveDrafterAuth.pending, (state) => {
@@ -91,7 +95,8 @@ export const {
   setFileBlob,
   setLoadingTrue,
   setLoadingFalse,
-  login
+  login,
+  setPlanData,
 } = authSlice.actions;
 
 export default authSlice.reducer;
