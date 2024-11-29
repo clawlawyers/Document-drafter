@@ -55,6 +55,7 @@ const DocEdit = ({ onSave }) => {
   const [text, setText] = useState("");
   const [loading, setLoading] = useState(false);
   const [activeSidebar, setActiveSidebar] = useState("preview");
+  const [receipt, setReceipt] = useState(`receipt_${Date.now()}`);
   const [readyDownload, setReadyDownload] = useState(false);
   const [downlaodText, setDownloadText] = useState(ediText);
   const [savebutton, setsavebutton] = useState(true);
@@ -70,6 +71,8 @@ const DocEdit = ({ onSave }) => {
   const [noOfPages, setnoOfPages] = useState(0);
   const [payemnetComplete, setpayemnetComplete] = useState(false);
   const [Hour, setHour] = useState(null);
+  const [faqLoading, setFaqLOading] = useState(false);
+  const [price, setPrice] = useState(0);
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -96,6 +99,7 @@ const DocEdit = ({ onSave }) => {
   };
   const handleClick2 = async (event) => {
     setAnchorEl2(event.currentTarget);
+    faqLoading(true);
     const res = await axios.post(
       `${NODE_API_ENDPOINT}/ai-drafter/anomaly_questions`,
       { doc_id: doc_id }
@@ -110,6 +114,7 @@ const DocEdit = ({ onSave }) => {
       data.push(obj);
     });
     setfaqData(data);
+    faqLoading(false);
   };
 
   const handleClose2 = () => {
@@ -296,6 +301,116 @@ const DocEdit = ({ onSave }) => {
       </div>
     );
   }
+
+  const handleRazorpay = async () => {
+    console.log("hi");
+    const script = document.createElement("script");
+    script.src = "https://checkout.razorpay.com/v1/checkout.js";
+    script.onerror = () => {
+      setLoading(false);
+      alert("Razorpay SDK failed to load. Are you online?");
+    };
+    script.onload = async () => {
+    console.log("hi");
+
+      try {
+        let amountdata = 0;
+        if (showMore1) {
+          amountdata =
+            699 + (noOfPages < 20 ? noOfPages * 200 : noOfPages * 100);
+        } else {
+          amountdata = noOfPages < 20 ? noOfPages * 200 : noOfPages * 100;
+        }
+
+        const result = await axios.post(
+          `${NODE_API_ENDPOINT}/payment/talk-to-expert-createOrde`,
+          {
+            amount: amountdata,
+            currency: "INR",
+            receipt: receipt,
+          }
+        );
+
+        console.log(result);
+
+        const { amount, id, currency } = result.data.razorpayOrder;
+        const { _id } = result.data.createdOrder;
+
+        const options = {
+          key: "rzp_live_vlDmt5SV4QPDhN",
+          amount: String(amount),
+          currency: currency,
+          name: "CLAW LEGALTECH PRIVATE LIMITED",
+          description: "Transaction",
+          order_id: id,
+          handler: async function (response) {
+            console.log(response);
+            const createdAt = new Date(paymentDetails?.createdAt);
+            const resultDate = new Date(createdAt);
+            const data = {
+              razorpay_order_id: response.razorpay_order_id,
+              razorpay_payment_id: response.razorpay_payment_id,
+              razorpay_signature: response.razorpay_signature,
+              phoneNumber: formData.phoneNumber,
+              meetingData: {
+                doc_id: doc_id,
+                User_name: formData.name,
+                email_id: formData.email,
+                contact_no: formData.mobile,
+                meeting_date: formData.date,
+                start_time: formData.startdate,
+                end_time: formData.enddate,
+                user_query: formData.query,
+                additional_details: formData.comments,
+                number_of_pages: noOfPages,
+                customer_type: customerType,
+              },
+              // refferalCode: paymentDetails?.refferalCode,
+              // couponCode: paymentDetails?.couponCode,
+              // existingSubscription: paymentDetails?.existingSubscription,
+              // // amount: paymentDetails?.refundAmount
+              // //   ? paymentDetails?.refundAmount
+              // //   : paymentDetails?.totalPrice,
+              // amount: paymentDetails?.totalPrice,
+              // trialDays: paymentDetails?.trialDays,
+            };
+
+            console.log(response);
+
+            const result = await axios.post(
+              `${NODE_API_ENDPOINT}/payment/talk-to-expert-verifyOrder`,
+              data
+            );
+            alert(result.data.status);
+            setLoading(false);
+            setPaymentVerified(true);
+            dispatch(retrieveActivePlanUser());
+          },
+          prefill: {
+            name: currentUser?.name,
+            email: currentUser?.email,
+            contact: currentUser?.phoneNumber,
+          },
+          theme: {
+            color: "#3399cc",
+          },
+        };
+
+        console.log(options);
+
+        const paymentObject = new window.Razorpay(options);
+
+        console.log(paymentObject);
+        paymentObject.open();
+      } catch (error) {
+        setLoading(false);
+        alert(error.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+  };
+
   const handlesubmitchatbot = async () => {
     try {
       const requestBody = {
@@ -585,14 +700,23 @@ const DocEdit = ({ onSave }) => {
             </>
           )}
           <div className="text-right">
-            <span className="text-[15px] font-bold">₹699 </span>
-            <span className="text-xs ">/slot</span>
+            {!showMore2 ? (
+              <>
+                <span className="text-[15px] font-bold">₹699 </span>
+                <span className="text-xs ">/slot</span>
+              </>
+            ) : (
+              <span className="text-[15px] font-bold">
+                {699 + (noOfPages < 20 ? noOfPages * 200 : noOfPages * 100)}
+              </span>
+            )}
           </div>
         </div>
         <div
           onClick={() => {
             setCustomerType("consulting");
-            handlesubmitchatbot();
+            handleRazorpay();
+            // handlesubmitchatbot();
           }}
           className="text-center cursor-pointer p-3 font-bold bg-logo-gradient rounded"
         >
@@ -756,7 +880,12 @@ const DocEdit = ({ onSave }) => {
               </div>
             </>
           )}
-          <div className="flex flex-row justify-between items-center">
+          <div
+            title="Plan Explaination :
+₹ 200 / Page  for Total Pages upto 20
+₹ 100  /  Page for Pages More Than 20"
+            className="flex flex-row justify-between items-center"
+          >
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="15"
@@ -782,15 +911,24 @@ const DocEdit = ({ onSave }) => {
               />
             </svg>
             <div>
-              <span className="text-[15px] font-bold">
-                ₹{`${noOfPages < 20 ? noOfPages * 200 : noOfPages * 100}`}{" "}
-              </span>
+              {!showMore1 ? (
+                <>
+                  <span className="text-[15px] font-bold">
+                    {noOfPages < 20 ? noOfPages * 200 : noOfPages * 100}
+                  </span>
+                </>
+              ) : (
+                <span className="text-[15px] font-bold">
+                  {699 + (noOfPages < 20 ? noOfPages * 200 : noOfPages * 100)}
+                </span>
+              )}
             </div>
           </div>
         </div>
         <div
           onClick={() => {
-            handlesubmitchatbot();
+            handleRazorpay();
+            // handlesubmitchatbot();
           }}
           className="text-center cursor-pointer p-3 font-bold bg-logo-gradient rounded"
         >
@@ -1076,38 +1214,47 @@ const DocEdit = ({ onSave }) => {
                       </svg>
                     </div>
                     <div className="flex flex-col gap-2">
-                      {faqData.map((val, i) => {
-                        return (
-                          <Accordion
-                            style={{
-                              backgroundColor: "#004343",
-                              font: "",
-                              boxShadow: "0px",
-                              "border-radius": "5px",
-                            }}
-                            className=" rounded-md bg-[#004343]"
-                          >
-                            <AccordionSummary
-                              expandIcon={<ExpandMoreIcon></ExpandMoreIcon>}
-                              aria-controls="panel1-content"
-                              id="panel1-header"
+                      {faqLoading ? (
+                        <div className="h-full w-full p-3 flex flex-col gap-2">
+                          <div className="w-full h-3 bg-slate-600 animate-pulse  rounded-full"></div>
+                          <div className="w-full h-3 bg-slate-600 animate-pulse  rounded-full"></div>
+                          <div className="w-[60%] h-3 bg-slate-600 animate-pulse  rounded-full"></div>
+                          <div className="w-[40%] h-3 bg-slate-600 animate-pulse  rounded-full"></div>
+                        </div>
+                      ) : (
+                        faqData.map((val, i) => {
+                          return (
+                            <Accordion
                               style={{
-                                // backgroundColor:"rgba(34, 34, 34, 0.8)",
+                                backgroundColor: "#004343",
                                 font: "",
                                 boxShadow: "0px",
-                                color: "white",
-                                borderRadius: "0.5rem",
+                                "border-radius": "5px",
                               }}
-                              className="rounded-md"
+                              className=" rounded-md bg-[#004343]"
                             >
-                              {val.title}
-                            </AccordionSummary>
-                            <AccordionDetails className="bg-[#00A9AB]">
-                              {val.data}
-                            </AccordionDetails>
-                          </Accordion>
-                        );
-                      })}
+                              <AccordionSummary
+                                expandIcon={<ExpandMoreIcon></ExpandMoreIcon>}
+                                aria-controls="panel1-content"
+                                id="panel1-header"
+                                style={{
+                                  // backgroundColor:"rgba(34, 34, 34, 0.8)",
+                                  font: "",
+                                  boxShadow: "0px",
+                                  color: "white",
+                                  borderRadius: "0.5rem",
+                                }}
+                                className="rounded-md"
+                              >
+                                {val.title}
+                              </AccordionSummary>
+                              <AccordionDetails className="bg-[#00A9AB]">
+                                {val.data}
+                              </AccordionDetails>
+                            </Accordion>
+                          );
+                        })
+                      )}
                     </div>
                   </div>
                   {/* 
@@ -1191,7 +1338,7 @@ const DocEdit = ({ onSave }) => {
                     Save
                   </button>
                 ) : (
-                  <div className="p-2 send-button rounded-md px-10 border-2 border-teal-700">
+                  <div className="p-1 send-button rounded-md px-10 border-2 border-teal-700">
                     Loading...
                   </div>
                 )}
