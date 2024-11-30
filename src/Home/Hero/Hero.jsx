@@ -20,13 +20,14 @@ const Hero = () => {
   const [userAuth, setUserS] = useState(user);
   const retrivePlan = async () => {
     console.log(currentUser.jwt);
-    const res = await axios.get(
+    const res = await axios.post(
       `${NODE_API_ENDPOINT}/ai-drafter/retrive-adira_plan`,
       // {
       //   headers: {
       //     Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2NTg5NWQ0ZWQ5NjQyOTJkNjNkOGYzZCIsInBob25lTnVtYmVyIjoiOTc2MTM3MTM1MiIsInNlc3Npb25JZCI6IjY3NDlkN2RkMDczYmM1N2ZhYjc2OGMxNiIsImlhdCI6MTczMjg5MjYzNywiZXhwIjoxNzM1NDg0NjM3fQ.C0bwmaJ0dZBqKnAVOPSrr5Y7dfHjsQjmj6LpbwVzfss`,
       //     "Content-Type": "application/json",
       //   },
+      {},
       {
         headers: {
           Authorization: `Bearer ${currentUser.jwt}`,
@@ -34,7 +35,10 @@ const Hero = () => {
         },
       }
     );
+    console.log(res);
+
     dispatch(setPlanData(res.data.plan.plan));
+
     console.log(res.data.plan.plan);
   };
 

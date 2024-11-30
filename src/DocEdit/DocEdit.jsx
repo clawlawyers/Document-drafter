@@ -100,7 +100,7 @@ const DocEdit = ({ onSave }) => {
   };
   const handleClick2 = async (event) => {
     setAnchorEl2(event.currentTarget);
-    faqLoading(true);
+    setFaqLOading(true);
     const res = await axios.post(
       `${NODE_API_ENDPOINT}/ai-drafter/anomaly_questions`,
       { doc_id: doc_id }
@@ -115,7 +115,7 @@ const DocEdit = ({ onSave }) => {
       data.push(obj);
     });
     setfaqData(data);
-    faqLoading(false);
+    setFaqLOading(false);
   };
 
   const handleClose2 = () => {
@@ -303,114 +303,234 @@ const DocEdit = ({ onSave }) => {
     );
   }
 
-  const handleRazorpay = async () => {
-    console.log("hi");
-    const script = document.createElement("script");
-    script.src = "https://checkout.razorpay.com/v1/checkout.js";
-    script.onerror = () => {
-      setLoading(false);
-      alert("Razorpay SDK failed to load. Are you online?");
-    };
-    script.onload = async () => {
-      console.log("hi");
+  const handleRazorpay = async (event) => {
+    // Prevent page refresh
+    if (event) event.preventDefault();
+    try {
+      console.log("Loading Razorpay...");
+      // setLoading(true);
 
-      try {
-        let amountdata = 0;
-        if (showMore1) {
-          amountdata =
-            699 + (noOfPages < 20 ? noOfPages * 200 : noOfPages * 100);
-        } else {
-          amountdata = noOfPages < 20 ? noOfPages * 200 : noOfPages * 100;
-        }
+      const script = document.createElement("script");
+      script.src = "https://checkout.razorpay.com/v1/checkout.js";
 
-        const result = await axios.post(
-          `${NODE_API_ENDPOINT}/payment/talk-to-expert-createOrde`,
-          {
-            amount: amountdata,
-            currency: "INR",
-            receipt: receipt,
-          }
+      script.onerror = () => {
+        // setLoading(false);
+        alert(
+          "Failed to load Razorpay SDK. Please check your internet connection."
         );
+      };
 
-        console.log(result);
+      script.onload = async () => {
+        console.log("Razorpay script loaded successfully");
 
-        const { amount, id, currency } = result.data.razorpayOrder;
-        const { _id } = result.data.createdOrder;
+        try {
+          let amountdata = 0;
 
-        const options = {
-          key: "rzp_live_vlDmt5SV4QPDhN",
-          amount: String(amount),
-          currency: currency,
-          name: "CLAW LEGALTECH PRIVATE LIMITED",
-          description: "Transaction",
-          order_id: id,
-          handler: async function (response) {
-            console.log(response);
-            const createdAt = new Date(paymentDetails?.createdAt);
-            const resultDate = new Date(createdAt);
-            const data = {
-              razorpay_order_id: response.razorpay_order_id,
-              razorpay_payment_id: response.razorpay_payment_id,
-              razorpay_signature: response.razorpay_signature,
-              phoneNumber: formData.phoneNumber,
-              meetingData: {
-                doc_id: doc_id,
-                User_name: formData.name,
-                email_id: formData.email,
-                contact_no: formData.mobile,
-                meeting_date: formData.date,
-                start_time: formData.startdate,
-                end_time: formData.enddate,
-                user_query: formData.query,
-                additional_details: formData.comments,
-                number_of_pages: noOfPages,
-                customer_type: customerType,
-              },
-              // refferalCode: paymentDetails?.refferalCode,
-              // couponCode: paymentDetails?.couponCode,
-              // existingSubscription: paymentDetails?.existingSubscription,
-              // // amount: paymentDetails?.refundAmount
-              // //   ? paymentDetails?.refundAmount
-              // //   : paymentDetails?.totalPrice,
-              // amount: paymentDetails?.totalPrice,
-              // trialDays: paymentDetails?.trialDays,
-            };
+          if (showMore1) {
+            amountdata =
+              699 + (noOfPages < 20 ? noOfPages * 200 : noOfPages * 100);
+          } else {
+            amountdata = noOfPages < 20 ? noOfPages * 200 : noOfPages * 100;
+          }
 
-            console.log(response);
+          const result = await axios.post(
+            `${NODE_API_ENDPOINT}/payment/talk-to-expert-createOrder`,
+            {
+              amount: amountdata,
+              currency: "INR",
+              receipt: receipt,
+            }
+          );
 
-            const result = await axios.post(
-              `${NODE_API_ENDPOINT}/payment/talk-to-expert-verifyOrder`,
-              data
-            );
-            alert(result.data.status);
-            setLoading(false);
-            setPaymentVerified(true);
-            dispatch(retrieveActivePlanUser());
-          },
-          prefill: {
-            name: currentUser?.name,
-            email: currentUser?.email,
-            contact: currentUser?.phoneNumber,
-          },
-          theme: {
-            color: "#3399cc",
-          },
-        };
+          if (!result || !result.data.razorpayOrder) {
+            throw new Error("Failed to create Razorpay order");
+          }
 
-        console.log(options);
+          const { amount, id, currency } = result.data.razorpayOrder;
 
-        const paymentObject = new window.Razorpay(options);
+          const options = {
+            key: "rzp_test_UWcqHHktRV6hxM",
+            amount: String(amount),
+            currency,
+            name: "CLAW LEGALTECH PRIVATE LIMITED",
+            description: "Transaction",
+            order_id: id,
+            handler: async (response) => {
+              try {
+                console.log("Payment response:", response);
 
-        console.log(paymentObject);
-        paymentObject.open();
-      } catch (error) {
-        setLoading(false);
-        alert(error.message);
-      } finally {
-        setLoading(false);
-      }
-    };
+                const data = {
+                  razorpay_order_id: response.razorpay_order_id,
+                  razorpay_payment_id: response.razorpay_payment_id,
+                  razorpay_signature: response.razorpay_signature,
+                  phoneNumber: currentUser?.phoneNumber,
+                  meetingData: {
+                    doc_id: doc_id,
+                    User_name: formData.name,
+                    email_id: formData.email,
+                    contact_no: formData.mobile,
+                    meeting_date: formData.date,
+                    start_time: formData.startdate,
+                    end_time: formData.enddate,
+                    user_query: formData.query,
+                    additional_details: formData.comments,
+                    number_of_pages: noOfPages,
+                    customer_type: customerType,
+                  },
+                };
+
+                const verificationResult = await axios.post(
+                  `${NODE_API_ENDPOINT}/payment/talk-to-expert-verifyOrder`,
+                  data
+                );
+
+                console.log(verificationResult);
+
+                alert(verificationResult.data.data.fetchedMeeting);
+                // setPaymentVerified(true);
+                // dispatch(retrieveActivePlanUser());
+              } catch (error) {
+                console.error("Order verification failed:", error);
+                alert("Payment verification failed. Please contact support.");
+              } finally {
+                // setLoading(false);
+              }
+            },
+            prefill: {
+              name: currentUser?.name,
+              email: currentUser?.email,
+              contact: currentUser?.phoneNumber,
+            },
+            theme: {
+              color: "#3399cc",
+            },
+          };
+
+          const paymentObject = new window.Razorpay(options);
+          paymentObject.open();
+        } catch (error) {
+          console.error("Error during Razorpay initialization:", error);
+          alert("Payment process failed. Please try again.");
+        } finally {
+          // setLoading(false);
+        }
+      };
+
+      document.body.appendChild(script);
+    } catch (error) {
+      console.error("Unexpected error in handleRazorpay:", error);
+      // setLoading(false);
+    }
   };
+
+  // const handleRazorpay = async () => {
+  //   console.log("hi");
+  //   const script = document.createElement("script");
+  //   script.src = "https://checkout.razorpay.com/v1/checkout.js";
+  //   script.onerror = () => {
+  //     setLoading(false);
+  //     alert("Razorpay SDK failed to load. Are you online?");
+  //   };
+  //   script.onload = async () => {
+  //     console.log("hi");
+
+  //     try {
+  //       let amountdata = 0;
+  //       if (showMore1) {
+  //         amountdata =
+  //           699 + (noOfPages < 20 ? noOfPages * 200 : noOfPages * 100);
+  //       } else {
+  //         amountdata = noOfPages < 20 ? noOfPages * 200 : noOfPages * 100;
+  //       }
+
+  //       const result = await axios.post(
+  //         `${NODE_API_ENDPOINT}/payment/talk-to-expert-createOrde`,
+  //         {
+  //           amount: amountdata,
+  //           currency: "INR",
+  //           receipt: receipt,
+  //         }
+  //       );
+
+  //       console.log(result);
+
+  //       const { amount, id, currency } = result.data.razorpayOrder;
+  //       const { _id } = result.data.createdOrder;
+
+  //       const options = {
+  //         key: "rzp_test_UWcqHHktRV6hxM",
+  //         amount: String(amount),
+  //         currency: currency,
+  //         name: "CLAW LEGALTECH PRIVATE LIMITED",
+  //         description: "Transaction",
+  //         order_id: id,
+  //         handler: async function (response) {
+  //           console.log(response);
+  //           const createdAt = new Date(paymentDetails?.createdAt);
+  //           const resultDate = new Date(createdAt);
+  //           const data = {
+  //             razorpay_order_id: response.razorpay_order_id,
+  //             razorpay_payment_id: response.razorpay_payment_id,
+  //             razorpay_signature: response.razorpay_signature,
+  //             phoneNumber: formData.phoneNumber,
+  //             meetingData: {
+  //               doc_id: doc_id,
+  //               User_name: formData.name,
+  //               email_id: formData.email,
+  //               contact_no: formData.mobile,
+  //               meeting_date: formData.date,
+  //               start_time: formData.startdate,
+  //               end_time: formData.enddate,
+  //               user_query: formData.query,
+  //               additional_details: formData.comments,
+  //               number_of_pages: noOfPages,
+  //               customer_type: customerType,
+  //             },
+  //             // refferalCode: paymentDetails?.refferalCode,
+  //             // couponCode: paymentDetails?.couponCode,
+  //             // existingSubscription: paymentDetails?.existingSubscription,
+  //             // // amount: paymentDetails?.refundAmount
+  //             // //   ? paymentDetails?.refundAmount
+  //             // //   : paymentDetails?.totalPrice,
+  //             // amount: paymentDetails?.totalPrice,
+  //             // trialDays: paymentDetails?.trialDays,
+  //           };
+
+  //           console.log(response);
+
+  //           const result = await axios.post(
+  //             `${NODE_API_ENDPOINT}/payment/talk-to-expert-verifyOrder`,
+  //             data
+  //           );
+  //           alert(result.data.status);
+  //           setLoading(false);
+  //           setPaymentVerified(true);
+  //           dispatch(retrieveActivePlanUser());
+  //         },
+  //         prefill: {
+  //           name: currentUser?.name,
+  //           email: currentUser?.email,
+  //           contact: currentUser?.phoneNumber,
+  //         },
+  //         theme: {
+  //           color: "#3399cc",
+  //         },
+  //       };
+
+  //       console.log(options);
+
+  //       const paymentObject = new window.Razorpay(options);
+
+  //       console.log(paymentObject);
+  //       paymentObject.open();
+  //     } catch (error) {
+  //       setLoading(false);
+  //       alert(error.message);
+  //     } finally {
+  //       setLoading(false);
+  //     }
+  //   };
+  // };
 
   const handlesubmitchatbot = async () => {
     try {
@@ -1345,17 +1465,13 @@ const DocEdit = ({ onSave }) => {
                 </button>
                 {savebutton ? (
                   <button
-                    onClick={
-                      ()=>{
-                        if(PlanData?.isSnippet){
-
-                          handleSave()
-                        }
-                        else{
-                          toast.error("PLEASE UPGRADE YOUR PLAN")
-                        }
+                    onClick={() => {
+                      if (PlanData?.isSnippet) {
+                        handleSave();
+                      } else {
+                        toast.error("PLEASE UPGRADE YOUR PLAN");
                       }
-                      }
+                    }}
                     className="transition ease-in-out duration-1000  hover:scale-110 p-2 rounded-md px-10 border-2 border-teal-700"
                   >
                     Save

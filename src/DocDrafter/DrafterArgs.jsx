@@ -4,7 +4,17 @@ import NavbarRight from "../components/Navbar/NavbarRight";
 import NavbarLeft from "../components/Navbar/NavbarLeft";
 import UserModal from "../components/Modals/UserModal";
 import Footer from "../components/ui/Footer";
-import { CircularProgress } from "@mui/material";
+import {
+  Box,
+  Checkbox,
+  CircularProgress,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  FormControlLabel,
+  Typography,
+} from "@mui/material";
 import loaderGif from "../assets/icons/2.gif";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
@@ -37,8 +47,8 @@ import "driver.js/dist/driver.css";
 import { steps } from "../utils/tour";
 import Accordion from "@mui/material/Accordion";
 import AccordionActions from "@mui/material/AccordionActions";
-  import AccordionSummary from "@mui/material/AccordionSummary";
-  import AccordionDetails from "@mui/material/AccordionDetails";
+import AccordionSummary from "@mui/material/AccordionSummary";
+import AccordionDetails from "@mui/material/AccordionDetails";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import Button from "@mui/material/Button";
 import { NODE_API_ENDPOINT } from "../utils/utils";
@@ -70,6 +80,26 @@ const DrafterArgs = () => {
   const [essentialInputs, setEssentialInputs] = useState({});
   const [optionalInputs, setOptionalInputs] = useState({});
   const [docID, setDocID] = useState(null);
+  const [languageDialogOpen, setLanguageDialogOpen] = useState(false); // State for language dialog
+  const [selectedLanguages, setSelectedLanguages] = useState([]);
+
+  const handleCancelLanguageSelection = () => {
+    setLanguageDialogOpen(false);
+  };
+
+  const languages = ["English", "Hindi", "Telugu", "Tamil", "Kannada"];
+
+  const handleLanguageChange = (event) => {
+    const { value, checked } = event.target;
+    setSelectedLanguages((prev) =>
+      checked ? [...prev, value] : prev.filter((lang) => lang !== value)
+    );
+  };
+
+  const convertArrayToString = (arr) => {
+    return arr.map((lang) => lang.toLowerCase()).join(", ");
+  };
+
   useEffect(() => {
     dispatch(clearDocId());
 
@@ -336,6 +366,19 @@ const DrafterArgs = () => {
     navigate("/DocEdit");
   };
 
+  const handleLanguageConfirm = () => {
+    setLanguageDialogOpen(false);
+    handleUploadDoc();
+    // Proceed with file selection
+    // if (fileInputRef.current) {
+    //   fileInputRef.current.click();
+    // }
+  };
+
+  const handleToOpenDialog = () => {
+    setLanguageDialogOpen(true);
+  };
+
   const handleUploadDoc = async () => {
     const fileInput = document.createElement("input");
     fileInput.type = "file";
@@ -348,6 +391,8 @@ const DrafterArgs = () => {
           const formData = new FormData();
           formData.append("file", file);
           formData.append("doc_id", docId);
+          const language = convertArrayToString(selectedLanguages);
+          formData.append("language", language);
           // formData.append("isMultilang", true);
           const response = await axios.post(
             `${NODE_API_ENDPOINT}/ai-drafter/upload_input_document`,
@@ -567,7 +612,7 @@ const DrafterArgs = () => {
                 </form>
 
                 <button
-                  onClick={handleUploadDoc}
+                  onClick={handleToOpenDialog}
                   className="w-full rounded-md bg-[#018081] py-2 font-semibold text-lg "
                 >
                   <div className=" flex gap-3 items-center justify-center">
@@ -587,6 +632,75 @@ const DrafterArgs = () => {
                     <span>Uplaod Document</span>
                   </div>
                 </button>
+                <Dialog
+                  open={languageDialogOpen}
+                  onClose={handleCancelLanguageSelection}
+                  PaperProps={{
+                    style: {
+                      background: "linear-gradient(135deg, #1f4037, #99f2c8)",
+                      color: "#fff",
+                      borderRadius: "15px",
+                    },
+                  }}
+                >
+                  <DialogTitle>
+                    <Typography variant="h5" style={{ fontWeight: "bold" }}>
+                      Select Languages
+                    </Typography>
+                  </DialogTitle>
+                  <DialogContent>
+                    <Box display="flex" flexDirection="column" gap={1}>
+                      {languages.map((language) => (
+                        <FormControlLabel
+                          key={language}
+                          control={
+                            <Checkbox
+                              value={language}
+                              checked={selectedLanguages.includes(language)}
+                              onChange={handleLanguageChange}
+                              style={{ color: "#fff" }}
+                            />
+                          }
+                          label={
+                            <Typography style={{ color: "#fff" }}>
+                              {language}
+                            </Typography>
+                          }
+                        />
+                      ))}
+                    </Box>
+                  </DialogContent>
+                  <DialogActions>
+                    <Button
+                      onClick={handleCancelLanguageSelection}
+                      style={{
+                        backgroundColor: "transparent",
+                        color: "#fff",
+                        border: "2px solid #fff",
+                        borderRadius: "20px",
+                        padding: "5px 15px",
+                        fontWeight: "bold",
+                        textTransform: "none",
+                      }}
+                    >
+                      Cancel
+                    </Button>
+                    <Button
+                      onClick={handleLanguageConfirm}
+                      disabled={selectedLanguages.length === 0}
+                      style={{
+                        backgroundColor: "#00b894",
+                        color: "#fff",
+                        borderRadius: "20px",
+                        padding: "5px 15px",
+                        fontWeight: "bold",
+                        textTransform: "none",
+                      }}
+                    >
+                      Confirm
+                    </Button>
+                  </DialogActions>
+                </Dialog>
               </div>
             )}
           </div>

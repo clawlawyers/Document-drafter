@@ -47,7 +47,20 @@ const DocDrafter = () => {
           background: `radial-gradient(circle at 50% 0%, #018585, transparent 45%)`,
         }}
       >
-        <img className="w-full h-full opacity-50" src={backGif} />
+        {/* Video background */}
+        <video
+          className="w-full h-full object-cover opacity-65"
+          autoPlay
+          loop
+          muted
+          playsInline
+        >
+          <source
+            src="https://res.cloudinary.com/dyuov6i8c/video/upload/v1732689934/LegalGPT/vnibvz9t1533t1bq2ekf.mp4"
+            type="video/mp4"
+          />
+          Your browser does not support the video tag.
+        </video>
       </div>
       <div
         className="flex flex-col h-screen w-full  z-20 gap-3 bg-black bg-opacity-20 rounded-lg p-4"
@@ -73,23 +86,23 @@ const DocDrafter = () => {
             /> */}
               <div className="flex gap-2">
                 <TextField
-                className="rounded"
+                  className="rounded"
                   fullWidth
                   id="outlined-multiline-flexible"
                   size="small"
                   sx={{
-                    '& .MuiOutlinedInput-root': {
-                      '& fieldset': {
-                        borderColor: 'transparent', // Remove the border color
+                    "& .MuiOutlinedInput-root": {
+                      "& fieldset": {
+                        borderColor: "transparent", // Remove the border color
                       },
-                      '&:hover fieldset': {
-                        borderColor: 'transparent', // Remove border on hover
+                      "&:hover fieldset": {
+                        borderColor: "transparent", // Remove border on hover
                       },
-                      '&.Mui-focused fieldset': {
-                        borderColor: 'black', // Remove border on focus
+                      "&.Mui-focused fieldset": {
+                        borderColor: "black", // Remove border on focus
                       },
                     },
-                    backgroundColor:"white"
+                    backgroundColor: "white",
                   }}
                   placeholder="Type prompt to generate a new document"
                   multiline

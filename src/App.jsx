@@ -100,7 +100,7 @@ import PromptFile from "./PromptFile/PromptFile";
 // ]);
 
 function AuthGuard() {
-  console.log("hi")
+  console.log("hi");
 
   const navigate = useNavigate();
   const currentUser = useSelector((state) => state.auth.user);
@@ -126,7 +126,6 @@ function AuthGuard() {
     // Dispatch the action to retrieve drafter auth
     store.dispatch(retrieveDrafterAuth());
   }, []);
- 
 
   return (
     <>
@@ -146,8 +145,8 @@ function App() {
   // if(!currentuser){
   //   window.location.replace("https://clawlaw-dev.netlify.app/")
   // }
-  
-  localStorage.clear();
+
+  // localStorage.clear();
   return (
     <Router>
       {/* <AuthGuard /> */}

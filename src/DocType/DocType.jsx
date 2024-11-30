@@ -8,7 +8,7 @@ import CustomDropdown from "../components/ui/CustomSelect";
 // import { options } from "./Options";
 import { setPrompt } from "../features/PromptSlice";
 import { useNavigate } from "react-router-dom";
-import { useDispatch , useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { driver } from "driver.js";
 import "driver.js/dist/driver.css";
 import { steps } from "../utils/tour";
@@ -16,7 +16,6 @@ import { NODE_API_ENDPOINT } from "../utils/utils";
 import { Autocomplete, TextField } from "@mui/material";
 import aiIcon from "../assets/icons/back.gif";
 import backGif from "../assets/icons/backgif.gif";
-
 
 const DocType = () => {
   let navigate = useNavigate();
@@ -28,7 +27,7 @@ const DocType = () => {
 
   const [optionTypes, setOptionTypes] = useState({});
   const [subOption, setSubOptions] = useState([]);
-  const currentUser = useSelector((state)=>state.auth.user)
+  const currentUser = useSelector((state) => state.auth.user);
 
   useEffect(() => {
     if (selectedValue !== "") {
@@ -51,7 +50,6 @@ const DocType = () => {
     localStorage.setItem("from", "docType");
 
     dispatch(setPrompt(selectedSubType.replace(/\s*\(.*?\)\s*/g, "")));
-    
 
     navigate("/Drafter/DrafterArgs");
     setLoading(false);
@@ -68,7 +66,6 @@ const DocType = () => {
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${currentUser.jwt}`,
-
       },
     });
 
@@ -91,7 +88,20 @@ const DocType = () => {
           background: `radial-gradient(circle at 50% 0%, #018585, transparent 45%)`,
         }}
       >
-        <img className="w-full h-full opacity-50" src={backGif} />
+        {/* <img className="w-full h-full opacity-50" src={backGif} /> */}
+        <video
+          className="w-full h-full object-cover opacity-65"
+          autoPlay
+          loop
+          muted
+          playsInline
+        >
+          <source
+            src="https://res.cloudinary.com/dyuov6i8c/video/upload/v1732689934/LegalGPT/vnibvz9t1533t1bq2ekf.mp4"
+            type="video/mp4"
+          />
+          Your browser does not support the video tag.
+        </video>
       </div>
       <section
         className="bg-black bg-opacity-20 flex flex-col justify-between items-center h-full rounded-md w-full p-4 z-20"
@@ -113,7 +123,7 @@ const DocType = () => {
             <Banner />
             <form onSubmit={handleSubmit} className="flex w-full gap-2">
               <Autocomplete
-              className="rounded"
+                className="rounded"
                 size="small"
                 disablePortal
                 disabled={loading}
@@ -137,22 +147,22 @@ const DocType = () => {
                 }}
                 renderInput={(params) => (
                   <TextField
-                  className="rounded"
+                    className="rounded"
                     {...params}
                     placeholder="Select an Option"
                     // label="Select an Option"
                     sx={{
-                      '& .MuiOutlinedInput-root': {
-                      '& fieldset': {
-                        borderColor: 'transparent', // Remove the border color
+                      "& .MuiOutlinedInput-root": {
+                        "& fieldset": {
+                          borderColor: "transparent", // Remove the border color
+                        },
+                        "&:hover fieldset": {
+                          borderColor: "transparent", // Remove border on hover
+                        },
+                        "&.Mui-focused fieldset": {
+                          borderColor: "black", // Remove border on focus
+                        },
                       },
-                      '&:hover fieldset': {
-                        borderColor: 'transparent', // Remove border on hover
-                      },
-                      '&.Mui-focused fieldset': {
-                        borderColor: 'black', // Remove border on focus
-                      },
-                    },  
                       backgroundColor: "white",
                     }}
                   />
@@ -182,21 +192,21 @@ const DocType = () => {
                 }}
                 renderInput={(params) => (
                   <TextField
-                   className="rounded"
+                    className="rounded"
                     {...params}
                     placeholder="Select a Type"
                     sx={{
-                      '& .MuiOutlinedInput-root': {
-                      '& fieldset': {
-                        borderColor: 'transparent', // Remove the border color
+                      "& .MuiOutlinedInput-root": {
+                        "& fieldset": {
+                          borderColor: "transparent", // Remove the border color
+                        },
+                        "&:hover fieldset": {
+                          borderColor: "transparent", // Remove border on hover
+                        },
+                        "&.Mui-focused fieldset": {
+                          borderColor: "black", // Remove border on focus
+                        },
                       },
-                      '&:hover fieldset': {
-                        borderColor: 'transparent', // Remove border on hover
-                      },
-                      '&.Mui-focused fieldset': {
-                        borderColor: 'black', // Remove border on focus
-                      },
-                    },
                       backgroundColor: "white",
                     }}
                   />

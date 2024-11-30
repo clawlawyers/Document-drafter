@@ -50,7 +50,7 @@ const UploadDialog = () => {
   const doc_id = useSelector((state) => state.document.docId);
   const breakoutData = useSelector((state) => state.breakout.breakoutData);
   const currentUser = useSelector((state) => state.auth.user);
-  console.log(currentUser);
+  // console.log(currentUser);
   const breakoutCalledRef = useRef(false); // Use ref to avoid re-render on change
   const languages = ["English", "Hindi", "Telugu", "Tamil", "Kannada"];
   const handleLanguageChange = (event) => {
@@ -59,6 +59,8 @@ const UploadDialog = () => {
       checked ? [...prev, value] : prev.filter((lang) => lang !== value)
     );
   };
+  console.log(selectedLanguages);
+
   const handleCancelLanguageSelection = () => {
     setLanguageDialogOpen(false);
   };
@@ -69,6 +71,10 @@ const UploadDialog = () => {
     // if (fileInputRef.current) {
     //   fileInputRef.current.click();
     // }
+  };
+
+  const convertArrayToString = (arr) => {
+    return arr.map((lang) => lang.toLowerCase()).join(", ");
   };
 
   // Memoize breakout function to avoid unnecessary re-creation
@@ -131,8 +137,12 @@ const UploadDialog = () => {
     console.log("Upload from Dropbox clicked");
   }, []);
 
+  console.log(selectedLanguages);
+
   const handleFileChange = useCallback(
     async (event) => {
+      console.log(selectedLanguages);
+
       var file = event.target.files[0];
       if (file) {
         setFile(file);
@@ -162,7 +172,11 @@ const UploadDialog = () => {
           });
           formData.append("file", renamedFile);
 
+          console.log(selectedLanguages);
+          const language = convertArrayToString(selectedLanguages);
+
           formData.append("doc_id", doc_id);
+          formData.append("language", language);
           const res = await axios.post(
             `${NODE_API_ENDPOINT}/ai-drafter/upload_document`,
             formData,
@@ -186,7 +200,7 @@ const UploadDialog = () => {
         }
       }
     },
-    [dispatch]
+    [selectedLanguages, dispatch]
   );
 
   const handleGoogleDriveUpload = useCallback(() => {
@@ -237,28 +251,28 @@ const UploadDialog = () => {
 
   const uploadOptions = [
     {
-      src: "https://res.cloudinary.com/dumjofgxz/image/upload/v1730705600/Google_Drive_logo_1_y947xc.svg",
+      src: "https://res.cloudinary.com/dyuov6i8c/image/upload/v1732988219/Assets/wwzeqnqjmppxkkyprjo3.png",
       alt: "Google Drive",
       text: "Upload from Drive",
       hasText: true,
-      textClass: "text-neutral-800 text-center font-semibold ",
+      textClass: "text-neutral-800 text-center font-semibold mt-4",
       onClick: handleGoogleDriveUpload,
     },
     {
-      src: "https://res.cloudinary.com/dumjofgxz/image/upload/v1730705599/dropbox_pfc9q2.svg",
+      src: "https://res.cloudinary.com/dyuov6i8c/image/upload/v1732988219/Assets/yiqy6jm522y4logozt01.png",
       alt: "Upload from Computer",
       text: "Upload from Computer",
-      textClass: "text-neutral-800 text-center font-semibold ",
+      textClass: "text-neutral-800 text-center font-semibold mt-5",
       hasText: true,
       // containerClass: "-mt-5",
       // onClick: handleComputerUpload,
       onClick: handlleuplaodfromcomputerlanguage,
     },
     {
-      src: "https://res.cloudinary.com/dumjofgxz/image/upload/v1730964018/Pngtree_dropbox_icon_3584851_1_zpu57q.svg",
+      src: "https://res.cloudinary.com/dyuov6i8c/image/upload/v1732988219/Assets/plagq9li7rcrocmv3fol.png",
       alt: "Dropbox",
       text: "Upload from DropBox",
-      textClass: "text-neutral-800 text-center font-semibold ",
+      textClass: "text-neutral-800 text-center font-semibold mt-1",
       // containerClass: "-mt-2",
       hasText: true,
       onClick: handleDropboxUpload,
@@ -283,7 +297,7 @@ const UploadDialog = () => {
               )}
             </div>
 
-            <div className="flex justify-center">
+            <div className="flex justify-center pb-8">
               <p className="text-teal-700 font-bold text-2xl">
                 {!file ? "Upload Your Document" : ""}
               </p>
@@ -326,7 +340,7 @@ const UploadDialog = () => {
               )}
             </div>
           ) : (
-            <div className="flex flex-row justify-center items-start space-x-12">
+            <div className="flex flex-row justify-center items-start space-x-12 h-40">
               {uploadOptions.map((option, index) => (
                 <div
                   key={index}
@@ -335,7 +349,7 @@ const UploadDialog = () => {
                   }`}
                 >
                   <img
-                    className="hover:scale-110   duration-300 cursor-pointer"
+                    className="hover:scale-110 duration-300 cursor-pointer"
                     src={option.src}
                     width="100"
                     alt={option.alt}
