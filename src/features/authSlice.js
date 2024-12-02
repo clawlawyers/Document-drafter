@@ -6,24 +6,26 @@ export const retrieveDrafterAuth = createAsyncThunk(
   async () => {
     const storedAuth = localStorage.getItem("auth");
     if (storedAuth) {
-      const props = await fetch(`${NODE_API_ENDPOINT}/clientAdira/getuser`, {
+      const parsedUser = await JSON.parse(storedAuth);
+      console.log(parsedUser);
+      const props = await fetch(`${NODE_API_ENDPOINT}/client/auth/me`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
-          // Authorization: `Bearer ${parsedUser.token}`,
+          Authorization: `Bearer ${parsedUser.jwt}`,
         },
       });
       const parsedProps = await props.json();
       console.log(parsedProps);
       return {
-        user: parsedProps.data.user,
+        user: parsedUser,
       };
     } else return null;
   }
 );
 
 const initialState = {
-  user: {"jwt":"aasdsa"},
+  user: { jwt: "aasdsa" },
   isOtpVerified: false,
   fileBlob: false,
   status: "unfullfilled",
@@ -49,6 +51,7 @@ const authSlice = createSlice({
       // const {user, props}=action.payload
       state.user = action.payload;
       // state.props = props;
+      console.log(action.payload);
       state.status = "success";
       localStorage.setItem("auth", JSON.stringify(action.payload));
     },

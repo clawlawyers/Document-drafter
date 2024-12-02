@@ -3,12 +3,17 @@ import Footer from "../../components/ui/Footer";
 import HomeNav from "../../components/Navbar/HomeNav";
 import HeroPage from "../../components/ui/HeroPage";
 import { useDispatch, useSelector } from "react-redux";
-import { setPlanData, setUser } from "../../features/authSlice";
+import {
+  retrieveDrafterAuth,
+  setPlanData,
+  setUser,
+} from "../../features/authSlice";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import toast from "react-hot-toast";
 import axios from "axios";
 import { NODE_API_ENDPOINT } from "../../utils/utils";
 import { current } from "@reduxjs/toolkit";
+import store from "../../features/store";
 
 const Hero = () => {
   const dispatch = useDispatch();
@@ -20,14 +25,8 @@ const Hero = () => {
   const [userAuth, setUserS] = useState(user);
   const retrivePlan = async () => {
     console.log(currentUser.jwt);
-    const res = await axios.post(
+    const res = await axios.get(
       `${NODE_API_ENDPOINT}/ai-drafter/retrive-adira_plan`,
-      // {
-      //   headers: {
-      //     Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2NTg5NWQ0ZWQ5NjQyOTJkNjNkOGYzZCIsInBob25lTnVtYmVyIjoiOTc2MTM3MTM1MiIsInNlc3Npb25JZCI6IjY3NDlkN2RkMDczYmM1N2ZhYjc2OGMxNiIsImlhdCI6MTczMjg5MjYzNywiZXhwIjoxNzM1NDg0NjM3fQ.C0bwmaJ0dZBqKnAVOPSrr5Y7dfHjsQjmj6LpbwVzfss`,
-      //     "Content-Type": "application/json",
-      //   },
-      {},
       {
         headers: {
           Authorization: `Bearer ${currentUser.jwt}`,
@@ -42,21 +41,32 @@ const Hero = () => {
     console.log(res.data.plan.plan);
   };
 
+  console.log(currentUser);
+  console.log("here this is hero");
+
   useEffect(() => {
-    // if (currentUser) {
-    //   retrivePlan();
-    //   params.delete("user");
-    //   setParams(params);
-    //   return;
-    // }
+    // Dispatch the action to retrieve drafter auth
+    store.dispatch(retrieveDrafterAuth());
+  }, []);
+
+  useEffect(() => {
+    if (currentUser?.phoneNumber) {
+      retrivePlan();
+      params.delete("user");
+      setParams(params);
+      return;
+    }
     if (!userAuth) {
       return;
     }
+    console.log(userAuth);
+    console.log(atob(userAuth));
+    console.log(JSON.parse(atob(userAuth)));
     dispatch(setUser(JSON.parse(atob(userAuth))));
     params.delete("user");
     setParams(params);
     retrivePlan();
-  }, []);
+  }, [currentUser?.phoneNumber]);
 
   return (
     <div className="flex flex-col justify-center items-center w-full h-screen p-2 relative">

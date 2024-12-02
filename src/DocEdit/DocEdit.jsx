@@ -1390,7 +1390,7 @@ const DocEdit = ({ onSave }) => {
                 onClick={handleClick}
                 onMouseEnter={() => setchatbotDisplay(false)}
                 onMouseLeave={() => setchatbotDisplay(true)}
-                className={`flex items-center   text-clip gap-2  rounded-full border-2 border-white p-2 bg-card-gradient  ${
+                className={`flex items-center cursor-pointer  text-clip gap-2  rounded-full border-2 border-white p-2 bg-card-gradient  ${
                   chatbotDisplay ? "" : "typing-demo2"
                 }`}
               >
@@ -1406,7 +1406,7 @@ const DocEdit = ({ onSave }) => {
                   onClick={handleClick2}
                   onMouseEnter={() => setchatbotDisplay2(false)}
                   onMouseLeave={() => setchatbotDisplay2(true)}
-                  className={`flex items-center   text-clip gap-2  rounded-full border-2 border-white p-2 bg-card-gradient  ${
+                  className={`flex items-center cursor-pointer  text-clip gap-2  rounded-full border-2 border-white p-2 bg-card-gradient  ${
                     chatbotDisplay2 ? "" : "typing-demo"
                   }`}
                 >

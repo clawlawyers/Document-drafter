@@ -124,8 +124,10 @@ function AuthGuard() {
 
   useEffect(() => {
     // Dispatch the action to retrieve drafter auth
-    store.dispatch(retrieveDrafterAuth());
+    // store.dispatch(retrieveDrafterAuth());
+    console.log("here");
   }, []);
+  console.log("here i am");
 
   return (
     <>
