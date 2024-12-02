@@ -1,6 +1,6 @@
 export const NODE_API_ENDPOINT =
   process.env.NODE_ENV === "production"
-    ? "https://claw-backend.onrender.com/api/v1"
+    ? "https://adira-backend.onrender.com/api/v1"
     : "http://localhost:8000/api/v1";
 export const LEGAL_GPT_ENDPOINT =
   process.env.NODE_ENV === "production"
