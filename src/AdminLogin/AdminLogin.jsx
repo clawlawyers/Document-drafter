@@ -75,7 +75,7 @@ const AdminLogin = () => {
           onClick={handlelogin}
           className="px-6 py-2 bg-customBlack font-sans rounded-md"
         >
-          Login
+          {loading ? "Logging..." : "Login"}
         </button>
       </div>
     </div>
