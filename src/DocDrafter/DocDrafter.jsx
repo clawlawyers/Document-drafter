@@ -41,6 +41,17 @@ const DocDrafter = () => {
 
   return (
     <div className="flex font-sans flex-col justify-center items-center w-full h-screen p-2 relative">
+      <Helmet>
+        <title>Adira-Powered Drafting </title>
+        <meta
+          name="description"
+          content="Transform the way you draft legal documents with Adira Drafter. This AI-driven tool helps you create precise, professional documents in no time."
+        />
+        <meta
+          name="keywords"
+          content="legal drafting, Adira Drafter, AI legal tech, document automation, efficient legal writing, contract drafting, AI document tools, law tech innovation, legal efficiency, drafting solutions"
+        />
+      </Helmet>
       <div
         className="w-full h-screen absolute p-3 rounded-lg"
         style={{

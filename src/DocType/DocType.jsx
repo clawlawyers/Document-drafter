@@ -82,6 +82,17 @@ const DocType = () => {
 
   return (
     <main className="flex flex-col justify-center items-center w-full h-screen p-2 relative">
+      <Helmet>
+        <title>Custom Templates with Adira AI</title>
+        <meta
+          name="description"
+          content="Adira DocType offers customizable templates to streamline your legal document creation process, saving you time and effort."
+        />
+        <meta
+          name="keywords"
+          content="document templates, legal automation, customizable forms, law tools, template solutions, legal efficiency, Adira templates, time-saving tools, legal forms, AI document management"
+        />
+      </Helmet>
       <div
         className="w-full h-screen absolute p-3 rounded-lg"
         style={{

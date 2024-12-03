@@ -14,6 +14,7 @@ import axios from "axios";
 import { NODE_API_ENDPOINT } from "../../utils/utils";
 import { current } from "@reduxjs/toolkit";
 import store from "../../features/store";
+import { Helmet } from "react-helmet";
 
 const Hero = () => {
   const dispatch = useDispatch();
@@ -70,6 +71,17 @@ const Hero = () => {
 
   return (
     <div className="flex flex-col justify-center items-center w-full h-screen p-2 relative">
+      <Helmet>
+        <title>Revolutionizing Legal Tech</title>
+        <meta
+          name="description"
+          content="Discover Adira by Claw: the cutting-edge platform transforming the legal industry with advanced AI tools and solutions."
+        />
+        <meta
+          name="keywords"
+          content="Adira legal tech, AI legal solutions, Claw Adira, legal technology, law innovation, AI for lawyers, digital law tools, legal industry transformation, legaltech platform, AI efficiency"
+        />
+      </Helmet>
       <div className="w-full h-screen absolute p-3 rounded-lg">
         {/* Video background */}
         <video

@@ -182,6 +182,18 @@ const PromptFile = () => {
 
   return (
     <div className="flex font-sans flex-col justify-center items-center w-full h-screen p-2 relative">
+      <Helmet>
+        <title>Legal Insights by Adira</title>
+        <meta
+          name="description"
+          content="Get instant insights and solutions with Adira's intelligent legal prompts. Designed to enhance decision-making for legal professionals."
+        />
+        <meta
+          name="keywords"
+          content="legal prompts, intelligent solutions, AI legal assistance, quick insights, decision-making tools, law innovation, Adira prompts, legal AI solutions, professional support, legaltech innovation"
+        />
+      </Helmet>
+
       <div
         className="w-full h-screen absolute p-3 rounded-lg"
         style={{
