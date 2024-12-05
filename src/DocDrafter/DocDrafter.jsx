@@ -8,6 +8,7 @@ import { createDoc, getDocFromPrompt } from "../actions/createDoc";
 import { useDispatch, useSelector } from "react-redux";
 import aiIcon from "../assets/icons/back.gif";
 import backGif from "../assets/icons/backgif.gif";
+import { Helmet } from "react-helmet";
 
 import { setPrompt } from "../features/PromptSlice";
 import { useNavigate } from "react-router-dom";

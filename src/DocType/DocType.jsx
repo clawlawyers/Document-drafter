@@ -16,6 +16,7 @@ import { NODE_API_ENDPOINT } from "../utils/utils";
 import { Autocomplete, TextField } from "@mui/material";
 import aiIcon from "../assets/icons/back.gif";
 import backGif from "../assets/icons/backgif.gif";
+import { Helmet } from "react-helmet";
 
 const DocType = () => {
   let navigate = useNavigate();

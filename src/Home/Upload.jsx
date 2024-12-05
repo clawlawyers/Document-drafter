@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import UploadDialog from "../components/Dialogs/UploadDialog";
 import { setIsThisBypromptFalse } from "../features/DocumentSlice";
+import { Helmet } from "react-helmet";
 
 const Upload = () => {
   const dispatch = useDispatch();
