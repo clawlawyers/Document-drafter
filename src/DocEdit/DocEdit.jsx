@@ -23,12 +23,15 @@ import { formatText } from "../utils/utils";
 import rehypeRaw from "rehype-raw";
 import rehypeSanitize from "rehype-sanitize";
 import PDFDownloadButton from "../PdfDownloader/PdfDoc";
-import { Edit } from "@mui/icons-material";
+import { Close, Edit } from "@mui/icons-material";
 import { setIsGenerateDocCalledFalse } from "../features/DocumentSlice";
 import chatbot from "../assets/icons/chatbot.svg";
+import faq from "../assets/icons/FAQ.svg";
 import Popover from "@mui/material/Popover";
 import Typography from "@mui/material/Typography";
 import toast from "react-hot-toast";
+import "./DocEdit.css";
+import { Tooltip } from "@mui/material";
 
 const DocEdit = ({ onSave }) => {
   // const faqData = [
@@ -559,15 +562,12 @@ const DocEdit = ({ onSave }) => {
   };
 
   const chatbotData = [
-    <>
-      <p className="text-[10px]  mb-4">
+    <div className="h-96 overflow-auto scrollbar-hide">
+      <p className="text-sm  mb-2">
         Talk to an Expert Lawyer at your convenient time by entering some
         important details below
       </p>
-      <form
-        onSubmit={handleNext1}
-        className="text-[10px] bg-white p-2 rounded-md"
-      >
+      <form onSubmit={handleNext1} className="text-sm bg-white p-2 rounded-md">
         <div className="mb-2 text-xs">
           <input
             type="text"
@@ -632,122 +632,22 @@ const DocEdit = ({ onSave }) => {
           </button>
         </div>
       </form>
-    </>,
-    <>
-      <p className="text-[10px]  mb-4">
+    </div>,
+    <div className="h-96 overflow-auto scrollbar-hide">
+      <p className="text-sm  mb-3">
         Talk to an Expert Lawyer at your convenient time by entering some
         important details below
       </p>
 
       <div className="text-[10px] mb-20 flex flex-col gap-3 bg-white p-2 rounded-md">
-        <div className="flex p-4 bg-[#004343]">
+        <div className="flex p-4 bg-[#004343] rounded-lg">
           <input
             type="date"
             name="date"
             onChange={handleChange}
-            className="bg-[#004343]"
+            className="bg-[#004343] w-full text-sm text-white focus:outline-none"
           ></input>
         </div>
-        {/* <Accordion
-          style={{
-            backgroundColor: "#004343",
-            font: "",
-            boxShadow: "0px",
-            "border-radius": "5px",
-          }}
-          className=" rounded-md bg-[#004343]"
-        >
-          <AccordionSummary
-            expandIcon={
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="18"
-                height="18"
-                viewBox="0 0 18 18"
-                fill="none"
-              >
-                <path
-                  d="M9 10.8C9.178 10.8 9.35201 10.7472 9.50001 10.6483C9.64802 10.5494 9.76337 10.4089 9.83149 10.2444C9.89961 10.08 9.91743 9.899 9.88271 9.72442C9.84798 9.54984 9.76226 9.38947 9.6364 9.2636C9.51053 9.13774 9.35016 9.05202 9.17558 9.01729C9.001 8.98257 8.82004 9.00039 8.65558 9.06851C8.49113 9.13663 8.35057 9.25198 8.25168 9.39999C8.15278 9.54799 8.1 9.722 8.1 9.9C8.1 10.1387 8.19482 10.3676 8.3636 10.5364C8.53239 10.7052 8.7613 10.8 9 10.8ZM13.5 10.8C13.678 10.8 13.852 10.7472 14 10.6483C14.148 10.5494 14.2634 10.4089 14.3315 10.2444C14.3996 10.08 14.4174 9.899 14.3827 9.72442C14.348 9.54984 14.2623 9.38947 14.1364 9.2636C14.0105 9.13774 13.8502 9.05202 13.6756 9.01729C13.501 8.98257 13.32 9.00039 13.1556 9.06851C12.9911 9.13663 12.8506 9.25198 12.7517 9.39999C12.6528 9.54799 12.6 9.722 12.6 9.9C12.6 10.1387 12.6948 10.3676 12.8636 10.5364C13.0324 10.7052 13.2613 10.8 13.5 10.8ZM9 14.4C9.178 14.4 9.35201 14.3472 9.50001 14.2483C9.64802 14.1494 9.76337 14.0089 9.83149 13.8444C9.89961 13.68 9.91743 13.499 9.88271 13.3244C9.84798 13.1498 9.76226 12.9895 9.6364 12.8636C9.51053 12.7377 9.35016 12.652 9.17558 12.6173C9.001 12.5826 8.82004 12.6004 8.65558 12.6685C8.49113 12.7366 8.35057 12.852 8.25168 13C8.15278 13.148 8.1 13.322 8.1 13.5C8.1 13.7387 8.19482 13.9676 8.3636 14.1364C8.53239 14.3052 8.7613 14.4 9 14.4ZM13.5 14.4C13.678 14.4 13.852 14.3472 14 14.2483C14.148 14.1494 14.2634 14.0089 14.3315 13.8444C14.3996 13.68 14.4174 13.499 14.3827 13.3244C14.348 13.1498 14.2623 12.9895 14.1364 12.8636C14.0105 12.7377 13.8502 12.652 13.6756 12.6173C13.501 12.5826 13.32 12.6004 13.1556 12.6685C12.9911 12.7366 12.8506 12.852 12.7517 13C12.6528 13.148 12.6 13.322 12.6 13.5C12.6 13.7387 12.6948 13.9676 12.8636 14.1364C13.0324 14.3052 13.2613 14.4 13.5 14.4ZM4.5 10.8C4.678 10.8 4.85201 10.7472 5.00001 10.6483C5.14802 10.5494 5.26337 10.4089 5.33149 10.2444C5.39961 10.08 5.41743 9.899 5.38271 9.72442C5.34798 9.54984 5.26226 9.38947 5.1364 9.2636C5.01053 9.13774 4.85016 9.05202 4.67558 9.01729C4.501 8.98257 4.32004 9.00039 4.15558 9.06851C3.99113 9.13663 3.85057 9.25198 3.75168 9.39999C3.65278 9.54799 3.6 9.722 3.6 9.9C3.6 10.1387 3.69482 10.3676 3.8636 10.5364C4.03239 10.7052 4.2613 10.8 4.5 10.8ZM15.3 1.8H14.4V0.9C14.4 0.661305 14.3052 0.432387 14.1364 0.263604C13.9676 0.0948211 13.7387 0 13.5 0C13.2613 0 13.0324 0.0948211 12.8636 0.263604C12.6948 0.432387 12.6 0.661305 12.6 0.9V1.8H5.4V0.9C5.4 0.661305 5.30518 0.432387 5.1364 0.263604C4.96761 0.0948211 4.73869 0 4.5 0C4.2613 0 4.03239 0.0948211 3.8636 0.263604C3.69482 0.432387 3.6 0.661305 3.6 0.9V1.8H2.7C1.98392 1.8 1.29716 2.08446 0.790812 2.59081C0.284464 3.09716 0 3.78392 0 4.5V15.3C0 16.0161 0.284464 16.7028 0.790812 17.2092C1.29716 17.7155 1.98392 18 2.7 18H15.3C16.0161 18 16.7028 17.7155 17.2092 17.2092C17.7155 16.7028 18 16.0161 18 15.3V4.5C18 3.78392 17.7155 3.09716 17.2092 2.59081C16.7028 2.08446 16.0161 1.8 15.3 1.8ZM16.2 15.3C16.2 15.5387 16.1052 15.7676 15.9364 15.9364C15.7676 16.1052 15.5387 16.2 15.3 16.2H2.7C2.46131 16.2 2.23239 16.1052 2.0636 15.9364C1.89482 15.7676 1.8 15.5387 1.8 15.3V7.2H16.2V15.3ZM16.2 5.4H1.8V4.5C1.8 4.2613 1.89482 4.03239 2.0636 3.8636C2.23239 3.69482 2.46131 3.6 2.7 3.6H15.3C15.5387 3.6 15.7676 3.69482 15.9364 3.8636C16.1052 4.03239 16.2 4.2613 16.2 4.5V5.4ZM4.5 14.4C4.678 14.4 4.85201 14.3472 5.00001 14.2483C5.14802 14.1494 5.26337 14.0089 5.33149 13.8444C5.39961 13.68 5.41743 13.499 5.38271 13.3244C5.34798 13.1498 5.26226 12.9895 5.1364 12.8636C5.01053 12.7377 4.85016 12.652 4.67558 12.6173C4.501 12.5826 4.32004 12.6004 4.15558 12.6685C3.99113 12.7366 3.85057 12.852 3.75168 13C3.65278 13.148 3.6 13.322 3.6 13.5C3.6 13.7387 3.69482 13.9676 3.8636 14.1364C4.03239 14.3052 4.2613 14.4 4.5 14.4Z"
-                  fill="white"
-                />
-              </svg>
-            }
-            aria-controls="panel1-content"
-            id="panel1-header"
-            style={{
-              backgroundColor: "rgba(34, 34, 34,",
-              // backgroundColor:"rgba(34, 34, 34, 0.8)",
-              font: "",
-              boxShadow: "0px",
-              color: "white",
-            }}
-          >
-            select date
-          </AccordionSummary>
-          <AccordionDetails>
-            {" "}
-            <div class="" >
-              <div class="datepicker-header">
-                <button class="prev">Prev</button>
-
-                <div>
-                  <select class="month-input">
-                    <option>January</option>
-                    <option>February</option>
-                    <option>March</option>
-                    <option>April</option>
-                    <option>May</option>
-                    <option>June</option>
-                    <option>July</option>
-                    <option>August</option>
-                    <option>September</option>
-                    <option>October</option>
-                    <option>November</option>
-                    <option>December</option>
-                  </select>
-                  <input type="number" class="year-input" />
-                </div>
-
-                <button class="next">Next</button>
-              </div>
-
-              <div class="days">
-                <span>Sun</span>
-                <span>Mon</span>
-                <span>Tue</span>
-                <span>Wed</span>
-                <span>Thu</span>
-                <span>Fri</span>
-                <span>Sat</span>
-              </div>
-
-              <div class="dates">
-                <button>1</button>
-                <button>2</button>
-                <button>3</button>
-                <button>4</button>
-                <button>5</button>
-                <button>6</button>
-                <button>7</button>
-                <button>8</button>
-                <button>9</button>
-                <button>10</button>
-                <button>11</button>  
-                <button>12</button>  
-                <button>13</button>  
-                <button>14</button>  
-                <button>11</button>  
-                <button>11</button>  
-                <button>11</button>  
-              </div>
-
-              <div class="datepicker-footer">
-                <button class="cancel">Cancel</button>
-                <button class="apply">Apply</button>
-              </div>
-            </div>
-          </AccordionDetails>
-        </Accordion> */}
         <Accordion
           style={{
             backgroundColor: "#004343",
@@ -764,7 +664,7 @@ const DocEdit = ({ onSave }) => {
             style={{
               backgroundColor: "rgba(34, 34, 34,",
               // backgroundColor:"rgba(34, 34, 34, 0.8)",
-              font: "",
+              fontSize: 14,
               boxShadow: "0px",
               color: "white",
             }}
@@ -772,7 +672,7 @@ const DocEdit = ({ onSave }) => {
             Select A Time Slot
           </AccordionSummary>
           <AccordionDetails>
-            <div className="grid text-[8px] text-white grid-cols-4 gap-1">
+            <div className="grid text-xs text-white grid-cols-4 gap-1">
               {rows.map((val) => val)}
             </div>
           </AccordionDetails>
@@ -787,9 +687,9 @@ const DocEdit = ({ onSave }) => {
           </button>
         </div>
       </div>
-    </>,
-    <>
-      <p className="text-[10px]  mb-4">
+    </div>,
+    <div className="h-96 overflow-auto scrollbar-hide">
+      <p className="text-sm  mb-2">
         Talk to an Expert Lawyer at your convenient time by entering some
         important details below
       </p>
@@ -823,13 +723,16 @@ const DocEdit = ({ onSave }) => {
           <div className="text-right">
             {!showMore2 ? (
               <>
-                <span className="text-[15px] font-bold">₹699 </span>
-                <span className="text-xs ">/slot</span>
+                <span className="text-[15px] font-bold">₹ 699 </span>
+                <span className="text-xs "> / slot</span>
               </>
             ) : (
-              <span className="text-[15px] font-bold">
-                {699 + (noOfPages < 20 ? noOfPages * 200 : noOfPages * 100)}
-              </span>
+              <>
+                <span className="text-[15px] font-bold">
+                  ₹ {699 + (noOfPages < 20 ? noOfPages * 200 : noOfPages * 100)}
+                </span>
+                <span className="text-xs "> / slot</span>
+              </>
             )}
           </div>
         </div>
@@ -875,20 +778,20 @@ const DocEdit = ({ onSave }) => {
           </div>
         )}
       </div>
-    </>,
-    <>
-      <p className="text-[10px]  mb-4">
-        Choose one option from the below available facililties
+    </div>,
+    <div className="h-96 overflow-auto scrollbar-hide">
+      <p className="text-sm  mb-2">
+        Choose one option from the below available facililties :
       </p>
       <div className="flex flex-col gap-3">
-        <div className="flex flex-col border-2 border-white p-2 rounded bg-teal-900">
-          <div
-            onClick={() => setPageNo(4)}
-            className="text-white cursor-pointer text-[12px] font-bold border-b-2 pb-1"
-          >
+        <div
+          onClick={() => setPageNo(4)}
+          className="flex cursor-pointer flex-col border-2 border-white p-2 rounded bg-teal-900"
+        >
+          <div className="text-white  text-sm font-bold border-b-2 pb-1">
             Document Related Consultation
           </div>
-          <div className="text-white pt-1 text-[10px]  ">
+          <div className="text-white pt-1 text-xs  ">
             For Consultation with our Expert on Legal Documents that you
             generated or might want to have.
           </div>
@@ -900,21 +803,21 @@ const DocEdit = ({ onSave }) => {
           }}
           className="flex flex-col cursor-pointer border-2 border-white p-2 rounded bg-teal-900"
         >
-          <div className="text-white text-[12px] font-bold border-b-2 pb-1">
+          <div className="text-white text-sm font-bold border-b-2 pb-1">
             Basic Legal Consultation
           </div>
-          <div className="text-white pt-1 text-[10px] ">
+          <div className="text-white pt-1 text-xs ">
             For Consultation with our Expert on Legal Matters that of any type
             and gain legal advice on topics of your choice
           </div>
         </div>
       </div>
       <div className="pb-[100px]"></div>
-    </>,
-    <>
+    </div>,
+    <div className="h-96 overflow-auto scrollbar-hide">
       <div className="flex flex-col gap-1">
         <p>Document Related Consultation</p>
-        <p className="text-[10px]  mb-4">
+        <p className="text-xs  mb-4">
           For Consultation with our Expert on Legal Documents that you generated
           or might want to have.
         </p>
@@ -972,12 +875,12 @@ const DocEdit = ({ onSave }) => {
           </div>
         </div>
       </div>
-    </>,
-    <>
+    </div>,
+    <div className="h-96 overflow-auto scrollbar-hide">
       <div className="flex flex-col gap-3">
         <div className="flex flex-col gap-3  p-4 rounded-md bg-[#004343]">
           <div className="text-[15px] font-bold">
-            Document Generated ByAdira AI
+            Document Generated By Adira AI
           </div>
           <div>
             <ul className="list-disc text-xs list-inside">
@@ -1035,13 +938,18 @@ const DocEdit = ({ onSave }) => {
               {!showMore1 ? (
                 <>
                   <span className="text-[15px] font-bold">
-                    {noOfPages < 20 ? noOfPages * 200 : noOfPages * 100}
+                    ₹ {noOfPages < 20 ? noOfPages * 200 : noOfPages * 100}
                   </span>
+                  <span className="text-xs "> / slot</span>
                 </>
               ) : (
-                <span className="text-[15px] font-bold">
-                  {699 + (noOfPages < 20 ? noOfPages * 200 : noOfPages * 100)}
-                </span>
+                <>
+                  <span className="text-[15px] font-bold">
+                    ₹{" "}
+                    {699 + (noOfPages < 20 ? noOfPages * 200 : noOfPages * 100)}
+                  </span>
+                  <span className="text-xs "> / slot</span>
+                </>
               )}
             </div>
           </div>
@@ -1056,7 +964,7 @@ const DocEdit = ({ onSave }) => {
           Proceed with Booking
         </div>
         {!showMore1 && (
-          <div className="flex gap-3">
+          <div className="flex items-center gap-3">
             <div className="w-2/3 text-xs">
               Basic Consultation on Legal Matters
             </div>
@@ -1082,12 +990,12 @@ const DocEdit = ({ onSave }) => {
                   fill="white"
                 />
               </svg>
-              <span>Add</span>
+              <span className="py-1">Add</span>
             </button>
           </div>
         )}
       </div>
-    </>,
+    </div>,
   ];
   return (
     <main className="h-screen font-sans w-full">
@@ -1132,33 +1040,34 @@ const DocEdit = ({ onSave }) => {
               )}
             </div>
             <div className="flex flex-row  justify-between">
-              <Popover
-                id={id}
-                open={open}
-                anchorEl={anchorEl}
-                onClose={handleClose}
-                anchorOrigin={{
-                  vertical: "bottom",
-                  horizontal: "left",
-                }}
-                sx={{
-                  "& .MuiPaper-root": {
-                    borderRadius: "1rem", // Custom border radius
-                  },
-                  "& .MuiPaper-root::-webkit-scrollbar": {
-                    display: "none",
-                  },
-                }}
-                className="flex w-[30%] bg-transparent overflow-auto hide-scrollbar   rounded-2xl  "
-              >
-                {!payemnetComplete ? (
-                  <div className="p-4 rounded-2xl flex overflow-auto flex-col hide-scrollbar gap-4  bg-btn-gradient">
-                    <div className="max-w-sm mx-auto flex flex-col gap-3 hide-scrollbar bg-[#00232F] text-white rounded-2xl p-6 shadow-lg">
-                      <div className="flex border-b-2 border-b-[#004343] pb-1 justify-around flex-row gap-2 scrollbar-hide  items-start">
+              <div className="flex gap-3">
+                <Popover
+                  id={id}
+                  open={open}
+                  anchorEl={anchorEl}
+                  onClose={handleClose}
+                  anchorOrigin={{
+                    vertical: "bottom",
+                    horizontal: "left",
+                  }}
+                  sx={{
+                    "& .MuiPaper-root": {
+                      borderRadius: "1rem",
+                    },
+                    "& .MuiPaper-root::-webkit-scrollbar": {
+                      display: "none",
+                    },
+                  }}
+                  className="flex w-[30%] bg-transparent overflow-auto hide-scrollbar   rounded-2xl  "
+                >
+                  {!payemnetComplete ? (
+                    // <div className="p-4 rounded-2xl flex overflow-auto flex-col hide-scrollbar gap-4  bg-btn-gradient">
+                    <div className="max-w-sm mx-auto h-full flex flex-col gap-3 hide-scrollbar bg-[#00232F] border-2 border-[#00A9AB]  text-white rounded-2xl p-6 shadow-lg">
+                      <div className="flex border-b-2 border-b-[#004343] pb-2 justify-around flex-row gap-2 scrollbar-hide  items-center ">
                         <img src={chatbot} alt="" />
 
-                        <h2 className="text-[15px] scrollbar-hide font-semibold mb-4">
-                          How Can We Help You Today?
+                        <h2 className="text-[15px] scrollbar-hide font-semibold">
+                          How Can We Help You Today ?
                         </h2>
                         {pageNo != 0 ? (
                           <div
@@ -1173,23 +1082,10 @@ const DocEdit = ({ onSave }) => {
                         ) : (
                           ""
                         )}
-                        <svg
+                        <Close
                           onClick={handleClose}
-                          xmlns="http://www.w3.org/2000/svg"
-                          width="28"
-                          height="28"
-                          viewBox="0 0 28 28"
-                          fill="none"
-                        >
-                          <path
-                            d="M14 0C11.2311 0 8.52431 0.821086 6.22202 2.35943C3.91973 3.89777 2.12532 6.08427 1.06569 8.64243C0.00606596 11.2006 -0.271181 14.0155 0.269012 16.7313C0.809205 19.447 2.14258 21.9416 4.10051 23.8995C6.05845 25.8574 8.55301 27.1908 11.2687 27.731C13.9845 28.2712 16.7994 27.9939 19.3576 26.9343C21.9157 25.8747 24.1022 24.0803 25.6406 21.778C27.1789 19.4757 28 16.7689 28 14C28 10.287 26.525 6.72601 23.8995 4.1005C21.274 1.475 17.713 0 14 0ZM14 26C11.6266 26 9.30655 25.2962 7.33316 23.9776C5.35977 22.6591 3.8217 20.7849 2.91345 18.5922C2.0052 16.3995 1.76756 13.9867 2.23058 11.6589C2.69361 9.33114 3.83649 7.19295 5.51472 5.51472C7.19296 3.83649 9.33115 2.6936 11.6589 2.23058C13.9867 1.76755 16.3995 2.00519 18.5922 2.91345C20.7849 3.8217 22.6591 5.35977 23.9776 7.33316C25.2962 9.30655 26 11.6266 26 14C26 17.1826 24.7357 20.2348 22.4853 22.4853C20.2348 24.7357 17.1826 26 14 26Z"
-                            fill="white"
-                          />
-                          <path
-                            d="M20.7099 7.28994C20.617 7.19621 20.5064 7.12182 20.3845 7.07105C20.2627 7.02028 20.132 6.99414 19.9999 6.99414C19.8679 6.99414 19.7372 7.02028 19.6154 7.07105C19.4935 7.12182 19.3829 7.19621 19.2899 7.28994L13.9999 12.5899L8.70994 7.28994C8.52164 7.10164 8.26624 6.99585 7.99994 6.99585C7.73364 6.99585 7.47824 7.10164 7.28994 7.28994C7.10164 7.47824 6.99585 7.73364 6.99585 7.99994C6.99585 8.26624 7.10164 8.52164 7.28994 8.70994L12.5899 13.9999L7.28994 19.2899C7.19621 19.3829 7.12182 19.4935 7.07105 19.6154C7.02028 19.7372 6.99414 19.8679 6.99414 19.9999C6.99414 20.132 7.02028 20.2627 7.07105 20.3845C7.12182 20.5064 7.19621 20.617 7.28994 20.7099C7.3829 20.8037 7.4935 20.8781 7.61536 20.9288C7.73722 20.9796 7.86793 21.0057 7.99994 21.0057C8.13195 21.0057 8.26266 20.9796 8.38452 20.9288C8.50638 20.8781 8.61698 20.8037 8.70994 20.7099L13.9999 15.4099L19.2899 20.7099C19.3829 20.8037 19.4935 20.8781 19.6154 20.9288C19.7372 20.9796 19.8679 21.0057 19.9999 21.0057C20.132 21.0057 20.2627 20.9796 20.3845 20.9288C20.5064 20.8781 20.617 20.8037 20.7099 20.7099C20.8037 20.617 20.8781 20.5064 20.9288 20.3845C20.9796 20.2627 21.0057 20.132 21.0057 19.9999C21.0057 19.8679 20.9796 19.7372 20.9288 19.6154C20.8781 19.4935 20.8037 19.3829 20.7099 19.2899L15.4099 13.9999L20.7099 8.70994C20.8037 8.61698 20.8781 8.50638 20.9288 8.38452C20.9796 8.26266 21.0057 8.13195 21.0057 7.99994C21.0057 7.86793 20.9796 7.73722 20.9288 7.61536C20.8781 7.4935 20.8037 7.3829 20.7099 7.28994Z"
-                            fill="white"
-                          />
-                        </svg>
+                          className="cursor-pointer"
+                        />
                       </div>
                       {/* <hr className="bg-[#004343] border border-[#004343]" /> */}
 
@@ -1240,107 +1136,81 @@ const DocEdit = ({ onSave }) => {
                         </button>
                       </div>
                     </form> */}
-                    </div>
-                    {/* 
+                      {/* </div> */}
+                      {/* 
                   <div onclick={() => console.log("as")} className="p-1 rounded-sm flex justify-around bg-white">
 
                     <button onMouseDown={setSwitch} className="text-white rounded-md text-[12px] w-[50%] p-1   bg-[#004343] ">Talk To An Expert</button>
                     <button onclick={() => console.log("as")} className="text-[#004343] text-[12px] w-[50%] p-1  ">FAQs</button>
                   </div> */}
-                  </div>
-                ) : (
-                  <div className="p-4 text-white rounded-2xl flex overflow-auto flex-col hide-scrollbar gap-4  bg-btn-gradient">
-                    <div className="flex gap-10 items-center flex-col">
+                    </div>
+                  ) : (
+                    <div className="p-4 h-full text-white rounded-2xl flex overflow-auto flex-col hide-scrollbar gap-4  bg-btn-gradient border-2">
+                      {/* <div className="flex gap-10 items-center justify-center flex-col"> */}
                       <div className="flex justify-end w-full items-end">
-                        <svg
+                        <Close
+                          className="cursor-pointer"
                           onClick={() => {
                             setpayemnetComplete(false);
                             setPageNo(0);
                             handleClose();
                           }}
-                          xmlns="http://www.w3.org/2000/svg"
-                          width="28"
-                          height="28"
-                          viewBox="0 0 28 28"
-                          fill="none"
-                        >
-                          <path
-                            d="M14 0C11.2311 0 8.52431 0.821086 6.22202 2.35943C3.91973 3.89777 2.12532 6.08427 1.06569 8.64243C0.00606596 11.2006 -0.271181 14.0155 0.269012 16.7313C0.809205 19.447 2.14258 21.9416 4.10051 23.8995C6.05845 25.8574 8.55301 27.1908 11.2687 27.731C13.9845 28.2712 16.7994 27.9939 19.3576 26.9343C21.9157 25.8747 24.1022 24.0803 25.6406 21.778C27.1789 19.4757 28 16.7689 28 14C28 10.287 26.525 6.72601 23.8995 4.1005C21.274 1.475 17.713 0 14 0ZM14 26C11.6266 26 9.30655 25.2962 7.33316 23.9776C5.35977 22.6591 3.8217 20.7849 2.91345 18.5922C2.0052 16.3995 1.76756 13.9867 2.23058 11.6589C2.69361 9.33114 3.83649 7.19295 5.51472 5.51472C7.19296 3.83649 9.33115 2.6936 11.6589 2.23058C13.9867 1.76755 16.3995 2.00519 18.5922 2.91345C20.7849 3.8217 22.6591 5.35977 23.9776 7.33316C25.2962 9.30655 26 11.6266 26 14C26 17.1826 24.7357 20.2348 22.4853 22.4853C20.2348 24.7357 17.1826 26 14 26Z"
-                            fill="white"
-                          />
-                          <path
-                            d="M20.7099 7.28994C20.617 7.19621 20.5064 7.12182 20.3845 7.07105C20.2627 7.02028 20.132 6.99414 19.9999 6.99414C19.8679 6.99414 19.7372 7.02028 19.6154 7.07105C19.4935 7.12182 19.3829 7.19621 19.2899 7.28994L13.9999 12.5899L8.70994 7.28994C8.52164 7.10164 8.26624 6.99585 7.99994 6.99585C7.73364 6.99585 7.47824 7.10164 7.28994 7.28994C7.10164 7.47824 6.99585 7.73364 6.99585 7.99994C6.99585 8.26624 7.10164 8.52164 7.28994 8.70994L12.5899 13.9999L7.28994 19.2899C7.19621 19.3829 7.12182 19.4935 7.07105 19.6154C7.02028 19.7372 6.99414 19.8679 6.99414 19.9999C6.99414 20.132 7.02028 20.2627 7.07105 20.3845C7.12182 20.5064 7.19621 20.617 7.28994 20.7099C7.3829 20.8037 7.4935 20.8781 7.61536 20.9288C7.73722 20.9796 7.86793 21.0057 7.99994 21.0057C8.13195 21.0057 8.26266 20.9796 8.38452 20.9288C8.50638 20.8781 8.61698 20.8037 8.70994 20.7099L13.9999 15.4099L19.2899 20.7099C19.3829 20.8037 19.4935 20.8781 19.6154 20.9288C19.7372 20.9796 19.8679 21.0057 19.9999 21.0057C20.132 21.0057 20.2627 20.9796 20.3845 20.9288C20.5064 20.8781 20.617 20.8037 20.7099 20.7099C20.8037 20.617 20.8781 20.5064 20.9288 20.3845C20.9796 20.2627 21.0057 20.132 21.0057 19.9999C21.0057 19.8679 20.9796 19.7372 20.9288 19.6154C20.8781 19.4935 20.8037 19.3829 20.7099 19.2899L15.4099 13.9999L20.7099 8.70994C20.8037 8.61698 20.8781 8.50638 20.9288 8.38452C20.9796 8.26266 21.0057 8.13195 21.0057 7.99994C21.0057 7.86793 20.9796 7.73722 20.9288 7.61536C20.8781 7.4935 20.8037 7.3829 20.7099 7.28994Z"
-                            fill="white"
-                          />
-                        </svg>
+                        />
                       </div>
-                      <img className="h-20 w-20" src={chatbot}></img>
-                      <div className="flex flex-col items-center">
-                        <div className="text-md font-bold">
-                          Your Session is booked with our Expert
+                      <div className="flex-1 flex flex-col justify-center items-center">
+                        <img className="h-20 w-20" src={chatbot}></img>
+                        <div className="flex-1 flex flex-col items-center">
+                          <div className="text-md font-bold">
+                            Your Session is booked with our Expert
+                          </div>
+                          <div className="text-xs">
+                            Please Check Your Mail for all the session details
+                          </div>
                         </div>
-                        <div className="text-xs">
-                          Please Check Your Mail for all the session details
-                        </div>
+                        <div className="pb-[200px]"></div>
                       </div>
-                      <div className="pb-[200px]"></div>
                     </div>
-                  </div>
-                )}
-              </Popover>
+                  )}
+                </Popover>
 
-              <Popover
-                id={id2}
-                open={open2}
-                anchorEl={anchorEl2}
-                onClose={handleClose2}
-                anchorOrigin={{
-                  vertical: "bottom",
-                  horizontal: "left",
-                }}
-                sx={{
-                  "& .MuiPaper-root": {
-                    borderRadius: "1rem", // Custom border radius
-                  },
-                  "& .MuiPaper-root::-webkit-scrollbar": {
-                    display: "none",
-                  },
-                }}
-                className="flex w-[40%] bg-transparent overflow-auto hide-scrollbar   rounded-2xl  "
-              >
-                <div className="p-4 rounded-2xl flex overflow-auto flex-col hide-scrollbar gap-4  bg-btn-gradient">
-                  <div className="max-w-sm mx-auto flex flex-col gap-3 hide-scrollbar bg-[#00232F] text-white rounded-2xl p-6 shadow-lg">
+                <Popover
+                  id={id2}
+                  open={open2}
+                  anchorEl={anchorEl2}
+                  onClose={handleClose2}
+                  anchorOrigin={{
+                    vertical: "bottom",
+                    horizontal: "left",
+                  }}
+                  sx={{
+                    "& .MuiPaper-root": {
+                      borderRadius: "1rem", // Custom border radius
+                    },
+                    "& .MuiPaper-root::-webkit-scrollbar": {
+                      display: "none",
+                    },
+                  }}
+                  className="flex w-[40%] bg-transparent overflow-auto hide-scrollbar   rounded-2xl  "
+                >
+                  {/* <div className="p-4 rounded-2xl flex overflow-auto flex-col hide-scrollbar gap-4  bg-btn-gradient"> */}
+                  <div className="max-w-sm mx-auto flex flex-col gap-3 hide-scrollbar bg-[#00232F] border-2 border-[#00A9AB] text-white rounded-2xl p-6 shadow-lg">
                     <div className="flex border-b-2 border-b-[#004343] pb-1 justify-between flex-row gap-2 scrollbar-hide  items-start">
                       {/* <img src={chatbot} alt="" /> */}
 
                       <h2 className="text-[15px] scrollbar-hide font-semibold mb-4">
-                        FrequentlyAsked Questions
+                        Frequently Asked Questions
                       </h2>
-                      <svg
+                      <Close
+                        className="cursor-pointer"
                         onClick={handleClose2}
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="28"
-                        height="28"
-                        viewBox="0 0 28 28"
-                        fill="none"
-                      >
-                        <path
-                          d="M14 0C11.2311 0 8.52431 0.821086 6.22202 2.35943C3.91973 3.89777 2.12532 6.08427 1.06569 8.64243C0.00606596 11.2006 -0.271181 14.0155 0.269012 16.7313C0.809205 19.447 2.14258 21.9416 4.10051 23.8995C6.05845 25.8574 8.55301 27.1908 11.2687 27.731C13.9845 28.2712 16.7994 27.9939 19.3576 26.9343C21.9157 25.8747 24.1022 24.0803 25.6406 21.778C27.1789 19.4757 28 16.7689 28 14C28 10.287 26.525 6.72601 23.8995 4.1005C21.274 1.475 17.713 0 14 0ZM14 26C11.6266 26 9.30655 25.2962 7.33316 23.9776C5.35977 22.6591 3.8217 20.7849 2.91345 18.5922C2.0052 16.3995 1.76756 13.9867 2.23058 11.6589C2.69361 9.33114 3.83649 7.19295 5.51472 5.51472C7.19296 3.83649 9.33115 2.6936 11.6589 2.23058C13.9867 1.76755 16.3995 2.00519 18.5922 2.91345C20.7849 3.8217 22.6591 5.35977 23.9776 7.33316C25.2962 9.30655 26 11.6266 26 14C26 17.1826 24.7357 20.2348 22.4853 22.4853C20.2348 24.7357 17.1826 26 14 26Z"
-                          fill="white"
-                        />
-                        <path
-                          d="M20.7099 7.28994C20.617 7.19621 20.5064 7.12182 20.3845 7.07105C20.2627 7.02028 20.132 6.99414 19.9999 6.99414C19.8679 6.99414 19.7372 7.02028 19.6154 7.07105C19.4935 7.12182 19.3829 7.19621 19.2899 7.28994L13.9999 12.5899L8.70994 7.28994C8.52164 7.10164 8.26624 6.99585 7.99994 6.99585C7.73364 6.99585 7.47824 7.10164 7.28994 7.28994C7.10164 7.47824 6.99585 7.73364 6.99585 7.99994C6.99585 8.26624 7.10164 8.52164 7.28994 8.70994L12.5899 13.9999L7.28994 19.2899C7.19621 19.3829 7.12182 19.4935 7.07105 19.6154C7.02028 19.7372 6.99414 19.8679 6.99414 19.9999C6.99414 20.132 7.02028 20.2627 7.07105 20.3845C7.12182 20.5064 7.19621 20.617 7.28994 20.7099C7.3829 20.8037 7.4935 20.8781 7.61536 20.9288C7.73722 20.9796 7.86793 21.0057 7.99994 21.0057C8.13195 21.0057 8.26266 20.9796 8.38452 20.9288C8.50638 20.8781 8.61698 20.8037 8.70994 20.7099L13.9999 15.4099L19.2899 20.7099C19.3829 20.8037 19.4935 20.8781 19.6154 20.9288C19.7372 20.9796 19.8679 21.0057 19.9999 21.0057C20.132 21.0057 20.2627 20.9796 20.3845 20.9288C20.5064 20.8781 20.617 20.8037 20.7099 20.7099C20.8037 20.617 20.8781 20.5064 20.9288 20.3845C20.9796 20.2627 21.0057 20.132 21.0057 19.9999C21.0057 19.8679 20.9796 19.7372 20.9288 19.6154C20.8781 19.4935 20.8037 19.3829 20.7099 19.2899L15.4099 13.9999L20.7099 8.70994C20.8037 8.61698 20.8781 8.50638 20.9288 8.38452C20.9796 8.26266 21.0057 8.13195 21.0057 7.99994C21.0057 7.86793 20.9796 7.73722 20.9288 7.61536C20.8781 7.4935 20.8037 7.3829 20.7099 7.28994Z"
-                          fill="white"
-                        />
-                      </svg>
+                      />
                     </div>
-                    <div className="flex flex-col gap-2">
+                    <div className="flex flex-col gap-2 overflow-auto h-96 scrollbar-hide">
                       {faqLoading ? (
-                        <div className="h-full w-full p-3 flex flex-col gap-2">
-                          <div className="w-full h-3 bg-slate-600 animate-pulse  rounded-full"></div>
-                          <div className="w-full h-3 bg-slate-600 animate-pulse  rounded-full"></div>
-                          <div className="w-[60%] h-3 bg-slate-600 animate-pulse  rounded-full"></div>
-                          <div className="w-[40%] h-3 bg-slate-600 animate-pulse  rounded-full"></div>
+                        <div className="h-full w-full flex flex-col gap-2">
+                          <div className="w-full h-12 bg-[#004343] animate-pulse  rounded-lg"></div>
+                          <div className="w-full h-12 bg-[#004343] animate-pulse  rounded-lg"></div>
+                          <div className="w-full h-12 bg-[#004343] animate-pulse  rounded-lg"></div>
                         </div>
                       ) : (
                         faqData.map((val, i) => {
@@ -1365,11 +1235,11 @@ const DocEdit = ({ onSave }) => {
                                   color: "white",
                                   borderRadius: "0.5rem",
                                 }}
-                                className="rounded-md"
+                                className="rounded-md uppercase"
                               >
-                                {val.title}
+                                {val.title.split("_").join(" ")}
                               </AccordionSummary>
-                              <AccordionDetails className="bg-[#00A9AB]">
+                              <AccordionDetails className="bg-white rounded-lg">
                                 {val.data}
                               </AccordionDetails>
                             </Accordion>
@@ -1384,49 +1254,22 @@ const DocEdit = ({ onSave }) => {
                     <button onMouseDown={setSwitch} className="text-white rounded-md text-[12px] w-[50%] p-1   bg-[#004343] ">Talk To An Expert</button>
                     <button onclick={() => console.log("as")} className="text-[#004343] text-[12px] w-[50%] p-1  ">FAQs</button>
                   </div> */}
-                </div>
-              </Popover>
-              <div
-                onClick={handleClick}
-                onMouseEnter={() => setchatbotDisplay(false)}
-                onMouseLeave={() => setchatbotDisplay(true)}
-                className={`flex items-center cursor-pointer  text-clip gap-2  rounded-full border-2 border-white p-2 bg-card-gradient  ${
-                  chatbotDisplay ? "" : "typing-demo2"
-                }`}
-              >
-                <img src={chatbot} alt="" />
-                {chatbotDisplay ? (
-                  ""
-                ) : (
-                  <span className="text-xs">Talk to an Expert</span>
+                  {/* </div> */}
+                </Popover>
+                <Tooltip title="Talk To Expert">
+                  <img onClick={handleClick} src={chatbot} alt="" />
+                </Tooltip>
+                {chatbotDisplay && (
+                  <Tooltip title="FAQs">
+                    <img onClick={handleClick2} src={faq} alt="" />
+                  </Tooltip>
                 )}
               </div>
-              {chatbotDisplay && (
-                <div
-                  onClick={handleClick2}
-                  onMouseEnter={() => setchatbotDisplay2(false)}
-                  onMouseLeave={() => setchatbotDisplay2(true)}
-                  className={`flex items-center cursor-pointer  text-clip gap-2  rounded-full border-2 border-white p-2 bg-card-gradient  ${
-                    chatbotDisplay2 ? "" : "typing-demo"
-                  }`}
-                >
-                  <img src={chatbot} alt="" />
-                  {chatbotDisplay2 ? "" : <span className="text-xs ">FAQ</span>}
-                </div>
-              )}
 
-              <div className="flex flex-row justify-end items-center gap-5">
-                {/* <button
-                onClick={setReadyDownload(true)}
-                className="bg-card-gradient p-2 border border-white rounded-md"
-              >
-                Download Document
-              </button>
-              {readyDownload ? ( */}
+              <div className="w-[80%] flex justify-evenly items-center gap-3">
                 {!loading ? (
-                  // <PDFDownloadButton pdfDownloadText={formatPdfText(ediText)} />
                   <button
-                    className=" transition ease-in-out duration-1000  hover:scale-110 p-2 rounded-md px-10 border-2 border-teal-700"
+                    className="py-2 w-full transition ease-in-out duration-1000  hover:scale-110 rounded-md border-2 border-teal-700"
                     onClick={() => {
                       if (PlanData?.isDownloadWithWaterMark) {
                         handlepdfdownload();
@@ -1438,21 +1281,18 @@ const DocEdit = ({ onSave }) => {
                     Download
                   </button>
                 ) : (
-                  <div className="p-2 rounded-md px-10 border-2 border-teal-700">
+                  <div className="py-2 rounded-md border-2 border-teal-700">
                     Downloading
                   </div>
                 )}
-                {/* // ) : (
-              //   ""
-              // )} */}
                 <button
-                  className="transition ease-in-out duration-1000  hover:scale-110 rounded-md p-2 bg-card-gradient text-white font-semibold"
+                  className="py-3 w-full text-sm transition ease-in-out duration-1000  hover:scale-110 rounded-md  bg-card-gradient text-white font-semibold"
                   onClick={handleEditClick}
                 >
                   Edit Document With AI
                 </button>
                 <button
-                  className="transition ease-in-out duration-1000  hover:scale-110 p-2 px-5 rounded-md border-2 border-teal-700"
+                  className="py-2 w-full transition ease-in-out duration-1000  hover:scale-110 rounded-md border-2 border-teal-700"
                   onClick={() => {
                     if (PlanData?.isSummerizeDocument) {
                       handlePreviewClick();
@@ -1472,12 +1312,12 @@ const DocEdit = ({ onSave }) => {
                         toast.error("PLEASE UPGRADE YOUR PLAN");
                       }
                     }}
-                    className="transition ease-in-out duration-1000  hover:scale-110 p-2 rounded-md px-10 border-2 border-teal-700"
+                    className="py-2 w-full transition ease-in-out duration-1000  hover:scale-110 rounded-md border-2 border-teal-700"
                   >
                     Save
                   </button>
                 ) : (
-                  <div className="p-1 send-button rounded-md px-10 border-2 border-teal-700">
+                  <div className="py-2 w-full send-button rounded-md border-2 border-teal-700">
                     Loading...
                   </div>
                 )}
@@ -1505,16 +1345,15 @@ const DocEdit = ({ onSave }) => {
                   animate={{ x: 0, opacity: 1 }}
                   exit={{ x: -300, opacity: 0 }}
                   transition={{ duration: 0.5 }}
-                  className="p-4 bg-transparent rounded-md w-full"
+                  className="p-4 bg-transparent rounded-md w-full h-full flex flex-col items-center justify-center "
                 >
-                  <h4 className="font-semibold">Document Preview</h4>
-                  <p>
-                    Please check the Document Preview before proceeding with AI
-                    Drafter.
+                  <h1 className="font-semibold text-xl">Document Preview</h1>
+                  <p className="text-sm text-center">
+                    Please check the Document Preview before proceeding with{" "}
+                    <span className="text-teal-500 font-semibold">
+                      Adira AI Drafter
+                    </span>
                   </p>
-                  <span className="text-teal-500 font-semibold">
-                    Adira AI Drafter
-                  </span>
                 </motion.div>
               )}
             </AnimatePresence>

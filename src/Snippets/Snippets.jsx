@@ -16,7 +16,7 @@ import { NODE_API_ENDPOINT } from "../utils/utils";
 import toast from "react-hot-toast";
 
 const Snippets = () => {
-  const queryBox = useRef()
+  const queryBox = useRef();
   let navigate = useNavigate();
   const doc_id = useSelector((state) => state.document.docId);
   const [showGIF, setShowGif] = useState(false);
@@ -36,15 +36,14 @@ const Snippets = () => {
   useEffect(() => {
     // Scroll to the bottom of the chat container when textBoxData changes
     if (chatContainerRef.current) {
-      chatContainerRef.current.scrollTop =
-        0;
+      chatContainerRef.current.scrollTop = 0;
     }
   }, [textBoxData]);
 
   const handleSend = async (e) => {
     e.preventDefault();
     setLoading(true);
-   
+
     let data = JSON.stringify({
       doc_id: doc_id,
       query: query,
@@ -54,11 +53,11 @@ const Snippets = () => {
       method: "post",
       maxBodyLength: Infinity,
       url: `${NODE_API_ENDPOINT}/ai-drafter/ask_question`,
-      
-        headers: {
-          Authorization: `Bearer ${currentUser.jwt}`,
-          "Content-Type": "application/json",
-        },
+
+      headers: {
+        Authorization: `Bearer ${currentUser.jwt}`,
+        "Content-Type": "application/json",
+      },
       data: data,
     };
     var newdata = textBoxData;
@@ -71,7 +70,6 @@ const Snippets = () => {
     setTextBoxData([...newdata]);
     console.log(textBoxData);
 
-   
     try {
       const response = await axios.request(config);
       newdata[newdata.length - 1].isLoading = true;
@@ -89,7 +87,6 @@ const Snippets = () => {
     } finally {
       setLoading(false);
     }
-   
   };
 
   return (
@@ -147,19 +144,22 @@ const Snippets = () => {
             >
               {textBoxData.length > 0 ? (
                 <div className="flex flex-col justify-center items-center w-full pb-10 gap-3">
-                  {textBoxData.slice().reverse().map((item, i) => {
-                    if (item.isLoading)
-                      return  <TextBoxDialog key={i} responseData={item} />;
-                    return (
-                      // <img className="h-40 w-40" src={giff} key={i} alt="" />
-                      <div className="h-full w-full p-3 flex flex-col gap-2">
-                      <div className="w-full h-3 bg-slate-600 animate-pulse  rounded-full"></div>
-                      <div className="w-full h-3 bg-slate-600 animate-pulse  rounded-full"></div>
-                      <div className="w-[60%] h-3 bg-slate-600 animate-pulse  rounded-full"></div>
-                      <div className="w-[40%] h-3 bg-slate-600 animate-pulse  rounded-full"></div>
-                    </div>
-                    );
-                  })}
+                  {textBoxData
+                    .slice()
+                    .reverse()
+                    .map((item, i) => {
+                      if (item.isLoading)
+                        return <TextBoxDialog key={i} responseData={item} />;
+                      return (
+                        // <img className="h-40 w-40" src={giff} key={i} alt="" />
+                        <div className="h-full w-full p-3 flex flex-col gap-2">
+                          <div className="w-full h-3 bg-slate-600 animate-pulse  rounded-full"></div>
+                          <div className="w-full h-3 bg-slate-600 animate-pulse  rounded-full"></div>
+                          <div className="w-[60%] h-3 bg-slate-600 animate-pulse  rounded-full"></div>
+                          <div className="w-[40%] h-3 bg-slate-600 animate-pulse  rounded-full"></div>
+                        </div>
+                      );
+                    })}
                 </div>
               ) : (
                 <QueryGIF />
@@ -167,7 +167,7 @@ const Snippets = () => {
             </div>
             <form
               onSubmit={handleSend}
-              className="sticky w-[95%] p-2 space-x-2 flex flex-row justify-center items-center bottom-3"
+              className="p-2 space-x-2 flex flex-row justify-center items-center bottom-3"
             >
               <input
                 className="bg-white text-black rounded-md border-[0.05rem] border-black p-2 px-4 w-full"
@@ -179,7 +179,7 @@ const Snippets = () => {
               />
               <button
                 type="submit"
-                className="text-sm text-white bg-[#001616] p-2.5 px-3 rounded"
+                className="text-sm text-white bg-teal-700 p-2.5 px-3 rounded"
                 disabled={loading}
               >
                 SEND

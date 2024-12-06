@@ -20,7 +20,7 @@ const UploadSummary = () => {
   const [loading, setLoading] = useState(false);
   const [downloading, setdownLoading] = useState(true);
   const doc_id = useSelector((state) => state.document.docId);
-  const currentUser = useSelector((state)=> state.auth.user)
+  const currentUser = useSelector((state) => state.auth.user);
 
   let navigate = useNavigate();
   let Sumarypath = localStorage.getItem("SummaryPath");
@@ -67,7 +67,7 @@ const UploadSummary = () => {
   const fetchSummary = async () => {
     setLoading(true);
     try {
-      const res = await getSummary(doc_id , currentUser.jwt);
+      const res = await getSummary(doc_id, currentUser.jwt);
       // console.log(res);
       let temp = String.raw`${res.data.data.fetchedData.summary}`;
 
@@ -133,7 +133,7 @@ const UploadSummary = () => {
           <div className="flex flex-col w-full justify-start items-start h-[80vh] gap-3 p-2 ">
             <div className="flex flex-row pt-3">
               <p className="text-3xl font-semibold text-teal-500">Adira AI</p>
-              <sup>by Claw</sup>
+              <sup className="pl-2 pt-4">by Claw</sup>
             </div>
             {loading ? (
               <div className="flex flex-col h-full items-center justify-center w-full">
@@ -174,10 +174,10 @@ const UploadSummary = () => {
           </p>
         </div>
         {/* buttons */}
-        <div className="flex flex-row justify-center scale-90 items-center w-full space-x-5">
+        <div className="w-full flex flex-row items-center scale-90 gap-3">
           <button
             onClick={handleNavigate}
-            className="bg-card-gradient  text-white font-bold p-3 px-10 rounded-md"
+            className="w-full py-2 bg-card-gradient  text-white font-bold rounded-md"
           >
             Go Back
           </button>
@@ -190,13 +190,13 @@ const UploadSummary = () => {
           {downloading ? (
             // <PDFDownloadButton pdfDownloadText={formatPdfText(ediText)} />
             <button
-              className=" transition ease-in-out duration-1000  hover:scale-110 p-2 rounded-md px-10 border-2 border-teal-700"
+              className="w-full py-2 transition ease-in-out duration-1000  hover:scale-110 rounded-md border-2 border-teal-700"
               onClick={handlepdfdownload}
             >
               Download
             </button>
           ) : (
-            <div className="p-2 rounded-md px-10 border-2 border-teal-700">
+            <div className="w-full py-2 rounded-md border-2 border-teal-700">
               Downloading
             </div>
           )}

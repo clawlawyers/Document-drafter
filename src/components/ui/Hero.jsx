@@ -7,7 +7,7 @@ const HeroText = () => {
         <h4 className="text-teal-500 font-bold max-text-6xl text-6xl">
           Adira AI
         </h4>
-        <sup className="text-xl font-semibold">by Claw</sup>
+        <sup className="text-xl font-semibold pt-5">by Claw</sup>
       </div>
       <p className="text-lg text-neutral-400">
         Adira AI Legal Document Drafter by CLAW

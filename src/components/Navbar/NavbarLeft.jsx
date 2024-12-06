@@ -11,14 +11,16 @@ const NavbarLeft = () => {
   const isSnippetPath = location.pathname.startsWith("/Snippets/");
 
   return (
-    <div className="flex flex-row justify-end items-start gap-2">
-     
-        <div className="cursor-pointer" onClick={() => navigate(-1)}>
-          <img src={Back} alt="back" />
-        </div>
-      
+    <div className="flex flex-row justify-end items-start gap-2 ">
+      <div
+        className="cursor-pointer hover:scale-105 duration-200"
+        onClick={() => navigate(-1)}
+      >
+        <img src={Back} alt="back" />
+      </div>
+
       <HomeIcon
-        className="cursor-pointer hover:scale-105 duration-200 "
+        className="cursor-pointer hover:scale-105 duration-200"
         onClick={() => navigate("/")}
       />
       {/* <UserModal/> */}

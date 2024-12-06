@@ -85,6 +85,7 @@ const DrafterArgs = () => {
 
   const handleCancelLanguageSelection = () => {
     setLanguageDialogOpen(false);
+    setSelectedLanguages([]);
   };
 
   const languages = ["English", "Hindi", "Telugu", "Tamil", "Kannada"];
@@ -405,9 +406,9 @@ const DrafterArgs = () => {
             }
           );
           if (response.status == 200) {
-            toast.success("file Uploaded");
+            toast.success("File uploaded successfully");
           } else {
-            toast.error("error uploading file");
+            toast.error("Error in uploading file");
           }
           console.log(response);
         }
@@ -449,6 +450,7 @@ const DrafterArgs = () => {
                   src={loaderGif}
                   alt="Loading..."
                 />
+                <p className="font-semibold">Generating Document...</p>
               </div>
             ) : (
               <div>
@@ -497,12 +499,12 @@ const DrafterArgs = () => {
                         color: "white",
                       }}
                     >
-                      Essetional Requirements
+                      Essential Requirements
                     </AccordionSummary>
                     <AccordionDetails>
                       {Object.keys(EssentialReq || {}).map((req, index) => (
                         <div key={index}>
-                          <label htmlFor={req} className="text-white text-xs">
+                          <label htmlFor={req} className="text-white text-sm">
                             {req.replaceAll("_", " ")}
                           </label>
                           <input
@@ -511,7 +513,7 @@ const DrafterArgs = () => {
                             value={essentialInputs[req]}
                             onChange={(e) => handleInputChange(e, "essential")}
                             style={{ border: "1px solid #d1d5db" }}
-                            className="w-full p-0.5 bg-customBlack border-white rounded-md text-white"
+                            className="w-full p-0.5 bg-customBlack border-white rounded-md text-white text-xs"
                           />
                         </div>
                       ))}
@@ -629,7 +631,7 @@ const DrafterArgs = () => {
                         fill="white"
                       />
                     </svg>
-                    <span>Uplaod Document</span>
+                    <span>Upload Document</span>
                   </div>
                 </button>
                 <Dialog
@@ -637,9 +639,11 @@ const DrafterArgs = () => {
                   onClose={handleCancelLanguageSelection}
                   PaperProps={{
                     style: {
-                      background: "linear-gradient(135deg, #1f4037, #99f2c8)",
+                      background: "linear-gradient(135deg, #004343, #00A9AB)",
                       color: "#fff",
                       borderRadius: "15px",
+                      width: "30%",
+                      border: "2px solid white",
                     },
                   }}
                 >
@@ -677,7 +681,7 @@ const DrafterArgs = () => {
                         backgroundColor: "transparent",
                         color: "#fff",
                         border: "2px solid #fff",
-                        borderRadius: "20px",
+                        borderRadius: "10px",
                         padding: "5px 15px",
                         fontWeight: "bold",
                         textTransform: "none",
@@ -689,9 +693,10 @@ const DrafterArgs = () => {
                       onClick={handleLanguageConfirm}
                       disabled={selectedLanguages.length === 0}
                       style={{
-                        backgroundColor: "#00b894",
+                        backgroundColor: "#018081",
                         color: "#fff",
-                        borderRadius: "20px",
+                        border: "2px solid #fff",
+                        borderRadius: "10px",
                         padding: "5px 15px",
                         fontWeight: "bold",
                         textTransform: "none",
@@ -704,13 +709,13 @@ const DrafterArgs = () => {
               </div>
             )}
           </div>
-          <div className="flex font-sans flex-row w-full  justify-between items-center">
+          <div className="flex font-sans flex-row w-full  justify-between items-center gap-3">
             <button
               onClick={() => {
                 if (path !== "docType") navigate("/Drafter");
                 else navigate("/DocType");
               }}
-              className="transition  ease-in-out duration-1000  hover:scale-110  bg-btn-gradient p-2 rounded-md text-sm border-white border-2"
+              className="w-full py-2 transition  ease-in-out duration-500  hover:scale-110  bg-[#004343] rounded-md text-sm border-white border-2"
             >
               {path !== "docType" ? "Re-enter Prompt" : "Re-select doctype"}
             </button>
@@ -723,7 +728,7 @@ const DrafterArgs = () => {
                   loading || reqLoading
                     ? " pointer-events-none genarate-button cursor-not-allowed"
                     : ""
-                }border-white border-2 transition ease-in-out duration-1000  hover:scale-110  bg-btn-gradient p-2  rounded-md text-sm`}
+                } w-full py-2 border-white border-2 transition ease-in-out duration-1000  hover:scale-110  bg-[#004343]   rounded-md text-sm`}
               >
                 {reqLoading ? "Generating ..." : "Generate Document"}
               </button>
@@ -736,7 +741,7 @@ const DrafterArgs = () => {
                   loading || reqLoading
                     ? "opacity-75 pointer-events-none cursor-not-allowed"
                     : ""
-                }border-white border-2 transition ease-in-out duration-1000  hover:scale-110  bg-btn-gradient p-2  rounded-md text-sm`}
+                } w-full border-white border-2 transition ease-in-out duration-1000  hover:scale-110  bg-[#004343]  py-2  rounded-md text-sm`}
               >
                 {reqLoading ? "Generating ..." : "Generate Document"}
               </button>

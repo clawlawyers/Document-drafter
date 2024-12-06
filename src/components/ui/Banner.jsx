@@ -6,7 +6,7 @@ const Banner = () => {
   const [svgHover2, setSvgHover2] = useState(false);
   const [svgHover3, setSvgHover3] = useState(false);
   return (
-    <div className="flex flex-row font-sans space-x-10  w-full px-10     justify-between">
+    <div className="flex flex-row font-sans  w-[80%] m-auto    justify-between">
       <motion.div
         onHoverStart={() => setSvgHover1(true)}
         onHoverEnd={() => setSvgHover1(false)}

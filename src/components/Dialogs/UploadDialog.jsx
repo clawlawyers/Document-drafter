@@ -34,6 +34,7 @@ import {
 import DocEdit from "../../DocEdit/DocEdit";
 import toast from "react-hot-toast";
 import { NODE_API_ENDPOINT } from "../../utils/utils";
+import TipsComponent from "../TipsComponent/TipsComponent";
 
 const UploadDialog = () => {
   const [file, setFile] = useState(null);
@@ -52,18 +53,22 @@ const UploadDialog = () => {
   const currentUser = useSelector((state) => state.auth.user);
   // console.log(currentUser);
   const breakoutCalledRef = useRef(false); // Use ref to avoid re-render on change
+
   const languages = ["English", "Hindi", "Telugu", "Tamil", "Kannada"];
+
   const handleLanguageChange = (event) => {
     const { value, checked } = event.target;
     setSelectedLanguages((prev) =>
       checked ? [...prev, value] : prev.filter((lang) => lang !== value)
     );
   };
-  console.log(selectedLanguages);
+  // console.log(selectedLanguages);
 
   const handleCancelLanguageSelection = () => {
     setLanguageDialogOpen(false);
+    setSelectedLanguages([]);
   };
+
   const handleLanguageConfirm = () => {
     setLanguageDialogOpen(false);
     handleComputerUpload();
@@ -286,9 +291,9 @@ const UploadDialog = () => {
       {/* </div> */}
 
       <div className="flex flex-row justify-center w-full  items-center h-[80vh]">
-        <div className="flex flex-col w-1/2 p-5 bg-upload-card rounded-md space-y-7">
+        <div className="flex flex-col w-1/2 p-5 bg-upload-card rounded-md space-y-7 relative">
           <div>
-            <div className="w-full flex justify-end">
+            <div className="absolute right-5 w-full flex justify-end">
               {uploadStatus !== "analyzing" && (
                 <HighlightOffIcon
                   onClick={handleCancel}
@@ -305,18 +310,32 @@ const UploadDialog = () => {
           </div>
 
           {file ? (
-            <div className="flex flex-col w-full items-center space-y-4">
+            <div className="flex flex-col w-full items-center">
               {uploadStatus === "uploading" && (
-                <div className="flex flex-col w-full space-y-5 pb-7 ">
-                  <p className="text-2xl font-semibold text-teal-600 text-center">
-                    Uploading... {uploadProgress}%
+                <div className="flex flex-col items-center justify-center w-full space-y-5 ">
+                  <p className="text-4xl font-semibold text-teal-600 text-center">
+                    Uploading Document...
                   </p>
-
-                  <LinearProgress
-                    variant="determinate"
-                    value={uploadProgress}
-                    sx={{ height: "4px", width: "90%", padding: "5px" }}
-                  />
+                  <div className="w-full flex gap-2 justify-center items-center">
+                    <LinearProgress
+                      variant="determinate"
+                      value={uploadProgress}
+                      sx={{
+                        height: "10px",
+                        width: "90%",
+                        padding: "5px",
+                        "& .MuiLinearProgress-bar": {
+                          backgroundColor: "#0d9488", // Customize progress bar color here
+                        },
+                      }}
+                    />
+                    <span className="text-teal-600 font-semibold">
+                      {uploadProgress}%
+                    </span>
+                  </div>
+                  <div className="w-[30rem] h-16 text-teal-600 text-center">
+                    <TipsComponent />
+                  </div>
                 </div>
               )}
 
@@ -328,14 +347,17 @@ const UploadDialog = () => {
 
               {uploadStatus === "analyzing" && (
                 <div className="flex flex-col items-center">
+                  <p className="text-4xl font-semibold text-teal-600 text-center">
+                    Analyzing Documents
+                  </p>
                   <img
                     src={analyzingGif}
                     alt="Analyzing"
-                    className="w-80 h-80"
+                    className="w-60 h-60"
                   />
-                  <p className="text-2xl font-semibold text-teal-600 text-center">
-                    Analyzing Documents
-                  </p>
+                  <div className="w-[30rem] h-16 text-teal-600 text-center">
+                    <TipsComponent />
+                  </div>
                 </div>
               )}
             </div>
@@ -379,9 +401,11 @@ const UploadDialog = () => {
         onClose={handleCancelLanguageSelection}
         PaperProps={{
           style: {
-            background: "linear-gradient(135deg, #1f4037, #99f2c8)",
+            background: "linear-gradient(135deg, #004343, #00A9AB)",
             color: "#fff",
             borderRadius: "15px",
+            width: "30%",
+            border: "2px solid white",
           },
         }}
       >
@@ -417,7 +441,7 @@ const UploadDialog = () => {
               backgroundColor: "transparent",
               color: "#fff",
               border: "2px solid #fff",
-              borderRadius: "20px",
+              borderRadius: "10px",
               padding: "5px 15px",
               fontWeight: "bold",
               textTransform: "none",
@@ -429,9 +453,10 @@ const UploadDialog = () => {
             onClick={handleLanguageConfirm}
             disabled={selectedLanguages.length === 0}
             style={{
-              backgroundColor: "#00b894",
+              backgroundColor: "#018081",
               color: "#fff",
-              borderRadius: "20px",
+              border: "2px solid #fff",
+              borderRadius: "10px",
               padding: "5px 15px",
               fontWeight: "bold",
               textTransform: "none",
