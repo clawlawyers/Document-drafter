@@ -14,6 +14,8 @@ import QueryGIF from "../components/ui/QueryGIF";
 import giff from "../assets/icons/2.gif";
 import { NODE_API_ENDPOINT } from "../utils/utils";
 import toast from "react-hot-toast";
+import Dropdown from "./Dropdown";
+import { ToastContainer } from "react-toastify";
 
 const Snippets = () => {
   const queryBox = useRef();
@@ -140,8 +142,7 @@ const Snippets = () => {
           <div className="overflow-y-auto flex relative flex-col h-[80vh] mt-4 p-2 gap-3 rounded-[0.625rem] bg-customBlack">
             <div
               ref={chatContainerRef}
-              className="chat section overflow-y-auto scrollbar-hide h-full flex flex-col"
-            >
+              className="chat section overflow-y-auto scrollbar-hide h-full flex flex-col">
               {textBoxData.length > 0 ? (
                 <div className="flex flex-col justify-center items-center w-full pb-10 gap-3">
                   {textBoxData
@@ -165,10 +166,12 @@ const Snippets = () => {
                 <QueryGIF />
               )}
             </div>
+            <div className="flex justify-center items-center  ">
+              <Dropdown />
+            </div>
             <form
               onSubmit={handleSend}
-              className="p-2 space-x-2 flex flex-row justify-center items-center bottom-3"
-            >
+              className="p-2 space-x-2 flex flex-row justify-center items-center bottom-3">
               <input
                 className="bg-white text-black rounded-md border-[0.05rem] border-black p-2 px-4 w-full"
                 type="text"
@@ -180,8 +183,7 @@ const Snippets = () => {
               <button
                 type="submit"
                 className="text-sm text-white bg-teal-700 p-2.5 px-3 rounded"
-                disabled={loading}
-              >
+                disabled={loading}>
                 SEND
               </button>
             </form>
