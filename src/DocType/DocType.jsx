@@ -30,6 +30,8 @@ const DocType = () => {
   const [subOption, setSubOptions] = useState([]);
   const currentUser = useSelector((state) => state.auth.user);
 
+  console.log(currentUser);
+
   useEffect(() => {
     if (selectedValue !== "") {
       setSelectedSubType("");
